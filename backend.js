@@ -1,3 +1,3 @@
 function cato(){
-    console.log("NEVER SAY THAT AYTOUAOTWJ");
+    alert("What is this?");
 }
