@@ -1,18 +1,40 @@
-.h1 {
-    color: rgb(75, 63, 63);
-    margin-left: 109px;
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-weight: bold;
 }
-.meow {
-    color:blueviolet;
+
+#navBarMain {
+    background-color: #42c0fb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: large;
+    font-weight: bolder;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
-head {
-    background: #99dfff;
+
+.marginAdderNav {
+    margin: 0 35px;
 }
-.test {
-    background-color: blue;
-    color: red;
+
+#mainPage {
+    background-color: #73d1fc;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -20;
 }
-.test1 {
-    color: green;
-    background-color: #99dfff;
+
+#navTitle {
+    font-size: 30px;
+}
+
+#randomTestParagraph {
+    position: relative;
+    margin: 100px;
 }
