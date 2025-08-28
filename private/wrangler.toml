@@ -1,0 +1,3 @@
+name = "appcalculusworker"
+main = "src/backend.js"
+compatibility_date = "2025-08-24"
