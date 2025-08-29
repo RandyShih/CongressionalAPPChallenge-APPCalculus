@@ -1,16 +1,25 @@
 * {
     padding: 0px;
     margin: 0px;
+    box-sizing: content-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     font-weight: bold;
 }
 
+.divDropdownHolder:hover .mainDropdownMenu {
+
+    top: 140%;
+    opacity: 100;
+    transition: top .75s ease-in, opacity .75s ease-in;
+    pointer-events: auto;
+}
+
 #navBarMain {
     background-color: #42c0fb;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 50px;
+    align-items: top;
     color: white;
     font-size: large;
     font-weight: bolder;
@@ -18,8 +27,55 @@
     box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
 
-.marginAdderNav {
-    margin: 0 35px;
+#redirectButtonsCategory {
+    display: flex;
+    margin-left: auto;
+    padding: 10px 30px;
+}
+
+#logoImage {
+    width:  50px;
+    height: 50px;
+    border-radius: 5px;
+    margin: 0px 10px;
+}
+
+.divDropdownHolder {
+    position: relative;
+    padding: 0 50px;
+    cursor: pointer;
+}
+
+.mainDropdownMenu {
+    position: absolute;
+    top: 80%;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #04afff;
+    padding: 20px;
+    border-radius: 5px;
+    pointer-events: none;
+    transition: top .75s ease-out, opacity .75s ease-out;
+}
+
+.divDropdownHolder .dropdownSelectionSetUp {
+    font-weight: bold;
+    position: relative;
+    background-color: rgb(40, 174, 236);
+    width: 120px;
+    height: 20px;
+    padding: 15px;
+    font-weight: lighter;
+    cursor: pointer;
+    transition: background-color 1s;
+    border: solid #04afff;
+    visibility: visible;
+    border-radius: 10px;
+}
+
+.dropdownSelectionSetUp:hover {
+    background-color: #a8e1fb;
 }
 
 #mainPage {
@@ -32,6 +88,8 @@
 
 #navTitle {
     font-size: 30px;
+    padding-right: 0 100px;
+    margin: 2px 10px;
 }
 
 #randomTestParagraph {
