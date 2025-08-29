@@ -52,7 +52,7 @@
 #contactButtonDesign {
     margin: 5px 10px;
     width: 100px;
-    height: 50px;
+    height: 40px;
     background-color: #27b2f2;
     border-width: 0px;
     border-radius: 5px;
@@ -151,9 +151,15 @@
 #mainScreenDivDescriptor {
     color: #27b2f2;
     font-weight: lighter;
-    font-size: 26px;
+    font-size: 15px;
+    animation: fontSizeChange 1s forwards;
     text-align: center;
     padding: 25px 25px 30px 25px;
+}
+
+@keyframes fontSizeChange {
+    from {font-size: 15px;}
+    to {font-size: 26px;}
 }
 
 #mainScreenDivDesciptorDiv {
@@ -193,7 +199,8 @@
     margin-top: 70px;
     color: #27b2f2;
     font-weight: lighter;
-    font-size: 26px;
+    font-size: 15px;
+    animation: fontSizeChange 1s forwards;
     text-align: center;
     padding: 0px 0px 30px 0px;
 }
