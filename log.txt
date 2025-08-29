@@ -1,0 +1,2 @@
+.09 - Main page concept done.
+.1 - Refactor the main page and think of ways to improve it.
