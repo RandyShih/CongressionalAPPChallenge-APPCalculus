@@ -110,7 +110,7 @@
 
 /*Page below the main header*/
 #imageBackground {
-    background-image: url("mainBackgroundTemp.png");
+    background-image: url("imageFiles/mainBackgroundTemp.png");
     position: absolute;
     z-index: -100;
     width: 100%;
