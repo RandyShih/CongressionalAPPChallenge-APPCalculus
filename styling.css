@@ -16,13 +16,15 @@
 
 #navBarMain {
     background-color: #42c0fb;
+    position: fixed;
     display: flex;
     height: 8vh;
+    width: 100vw;
     align-items: center;
     color: white;
     font-size: large;
     font-weight: bolder;
-    padding: 10px;
+    padding: 10px 25px 10px 0;
     box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
 
@@ -97,17 +99,6 @@
     background-color: #a8e1fb;
 }
 
-#mainPage {
-    background-image: url("mainBackgroundTemp.png");
-    opacity: 80;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    max-height: 92vh;
-    z-index: -5;
-}
 
 #navTitle {
     font-size: 30px;
@@ -116,45 +107,78 @@
     color: #5e17eb;
 }
 
-#mainScreenDiv {
+
+/*Page below the main header*/
+#imageBackground {
+    background-image: url("mainBackgroundTemp.png");
     position: absolute;
+    z-index: -100;
+    width: 100%;
+    height: 92vh;
+    filter: blur(2px);
+
+}
+
+#mainPage {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 100%;
+    height: 110vh;
+    animation: mainPageInitAnimation 1s forwards;
+    z-index: -5;
+}
+
+@keyframes mainPageInitAnimation {
+    from {height: 110vh}
+    to {height: 160vh}
+}
+
+#mainPage_lowerDiv {
     background-color: #dcf4ff;
     display: flex;
     flex-direction: column;
     color :#04afff;
-    margin-bottom: 10px;
-    align-self: center;
-    height: 70%;
-    width: 60%;
-    animation: relativeXYZoom 1s forwards;
+    height: 80vh;
+    width: 100vw;
     border-radius: 10px;
-    z-index: 100;
+    z-index: 10;
     font-size: 30px;
 
 }
 
-@keyframes relativeXYZoom {
-    from {height: 70%; width:60%}
-    to {height: 80%; width:75%;}
+#mainPage_centeredDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+
 }
 
-#mainScreenDivTitle {
-    font-size: 40px;
-    color: #27b2f2;
-    align-self: top;
-    justify-self: top;
-    text-align: center;
-    margin: 20px;
-    padding: 10px 20px;
+#mainPage_centeredDiv_title {
+    font-size: 52px;
 }
 
-#mainScreenDivDescriptor {
-    color: #27b2f2;
+#mainPage_centeredDiv_button {
+    width: 150px;
+    height: 40px;
+    background-color: #27b2f2;
+    border-width: 0px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 1s;
+}
+
+#mainPage_centeredDiv_purposeSummary {
+    padding: 5px 0px 15px 0px; 
     font-weight: lighter;
-    font-size: 15px;
-    animation: fontSizeChange 1s forwards;
-    text-align: center;
-    padding: 25px 25px 30px 25px;
+}
+
+#mainPage_centeredDiv_button:hover {
+    background-color: #93d8f8;
 }
 
 @keyframes fontSizeChange {
@@ -162,50 +186,7 @@
     to {font-size: 26px;}
 }
 
-#mainScreenDivDesciptorDiv {
-    display: flex;
-    background-color: #cae7f4;
-    position: relative;
-    margin: 0px 15px;
-    justify-self: left;
-    align-self: left;
-    border-radius: 5px;
-    height: 100%;
-    width: 50%;
-}
-
-#mainScreenDivDesciptorDivSiteDetails {
-    display: flex;
-    flex-direction: column;
-    background-color: #cae7f4;
-    position: relative;
-    margin: 0px 15px;
-    padding: 25px;
-    justify-self: left;
-    align-self: left;
-    border-radius: 5px;
-    height: 100%;
-    width: 50%;
-}
-
-#mainScreenDescriptorContainerDiv {
-    display: flex;
-    flex-direction: row;
-    height: 75%;
-}
-
-
-#mainScreenDivDesciptorSiteDetails {
-    margin-top: 70px;
-    color: #27b2f2;
-    font-weight: lighter;
-    font-size: 15px;
-    animation: fontSizeChange 1s forwards;
-    text-align: center;
-    padding: 0px 0px 30px 0px;
-}
-
-#mainScreenDescriptorSiteDetailsButton {
+/*#mainScreenDescriptorSiteDetailsButton {
     position: relative;
     width: 150px;
     height: 40px;
@@ -216,7 +197,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 1s;
-}
+} */
 
 #mainScreenDescriptorSiteDetailsButton:hover {
     background-color: #93d8f8;
