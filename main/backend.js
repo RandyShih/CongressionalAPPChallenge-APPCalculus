@@ -1,27 +1,25 @@
-// Check if a name is already stored
-let name = localStorage.getItem('name');
-
-if (!name) {
-    // Prompt the user for their name
-    name = prompt("Please enter your name:");
-
-    // Store it in Local Storage
-    if (name) { // make sure they actually typed something
-        localStorage.setItem('name', name);
-        alert(`Thanks, ${name}! Your name has been saved.`);
-    }
-} else {
-    // Greet the user if name already exists
-    alert(`Welcome back, ${name}!`);
-}
-
-
-
 function siteRedirect() {
-    /*window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQn1CCsHeMndLWWdk6ilUlblrh4VHgvfa_Ap8azPtA-L3tww/viewform";*/
-    alert(env.testing);
+    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQn1CCsHeMndLWWdk6ilUlblrh4VHgvfa_Ap8azPtA-L3tww/viewform";
 }
 
 function pageRedirect(page) {
-    window.location.href = page
+    window.location.href = page;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const homeSideBar_aHolderLeftBorderExpand = document.getElementsByClassName("sidebar_aHolder");
+    for (let i = 0; i < homeSideBar_aHolderLeftBorderExpand.length; i++) {
+        homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseenter", () => {
+            homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(1)";
+        });
+        homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseleave", () => {
+            homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(0)";
+        });
+    
+    }
+
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Loaded!");
+})

@@ -202,3 +202,106 @@
 #mainScreenDescriptorSiteDetailsButton:hover {
     background-color: #93d8f8;
 }
+
+
+/* Home CSS */
+
+#mainBackgroundDiv {
+    position: absolute;
+    background-color: #dcf4ff;
+    width: 100vw;
+    height: 100vh;
+}
+
+#sidebar {
+    position: relative;
+    height: 100vh;
+    width: 5.5vw;
+    background-color: #9ddefc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+#sidebar_a1 {
+    background: url("imageFiles/logo.png");
+    border-radius: 5px;
+    background-size: cover;
+    width: 3.1vw;
+    height: 6vh;
+}
+
+#sidebar_a2 {
+    background: url("imageFiles/temp.png");
+    background-size: cover;
+    cursor: pointer;
+    width: 3vw;
+    height: 6vh;
+}
+
+#sidebar_a3 {
+    background: url("imageFiles/temp.png");
+    background-size: cover;
+    cursor: pointer;
+    width: 3vw;
+    height: 6vh;
+}
+
+#sidebar_a4 {
+    background: url("imageFiles/temp.png");
+    background-size: cover;
+    cursor: pointer;
+    width: 3vw;
+    height: 6vh;
+}
+
+#sidebar_a5 {
+    background: url("imageFiles/temp.png");
+    background-size: cover;
+    width: 3vw;
+    height: 6vh;
+    cursor: pointer;
+}
+
+.sideBar_aHolderLeftBorderExpand {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    height: 6vh;
+    align-self: left;
+    left: 0;
+    width: 4px;
+    border-radius: 2px;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 1s ease;
+}
+
+.sidebar_aHolder {
+    display: flex;
+    justify-content: center;
+    height: 6vh;
+    width: 5vw;
+    margin: 15px 0px;
+}
+
+#sideBarDivider {
+    background-color: white;
+    width: 50px;
+    border-radius: 2px;
+    border-width: 0px;
+    height: 2px;
+}
+
+
+
+
+@keyframes spin {
+    from {transform: rotate(20deg);}
+    to {transform: rotate(100deg);}
+}
+
+@keyframes whiteLeftBorderexpandOut {
+    from {transform: scaleY(0);}
+    to {transform: scaleY(1);}
+}
