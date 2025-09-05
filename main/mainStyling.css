@@ -221,47 +221,70 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: width 1s ease;
     
+}
+
+.sidebar_widgetNextToSideBar_a {
+    position: absolute;
+    left: 5.7vw;
+    transform: scaleX(.1);
+    transform-origin: left;
+    opacity: 0;
+    color: #5e17eb;
+    font-size: 30px;
+    font-weight: bolder;
+    transition: opacity .35s ease .4s transform .35 ease .4;
+}
+
+#sidebar_a2Holder {
+    margin-top: 15px;
 }
 
 #sidebar_a1 {
     background: url("imageFiles/logo.png");
     border-radius: 5px;
+    position: absolute;
     background-size: cover;
     width: 3.1vw;
     height: 6vh;
+    left: 1vw;
 }
 
 #sidebar_a2 {
     background: url("imageFiles/temp.png");
     background-size: cover;
-    cursor: pointer;
+    position: absolute;
     width: 3vw;
     height: 6vh;
+    left: 1vw;
 }
 
 #sidebar_a3 {
     background: url("imageFiles/temp.png");
     background-size: cover;
-    cursor: pointer;
+    position: absolute;
     width: 3vw;
     height: 6vh;
+    left: 1vw;
 }
 
 #sidebar_a4 {
     background: url("imageFiles/temp.png");
     background-size: cover;
-    cursor: pointer;
+    position: absolute;
     width: 3vw;
     height: 6vh;
+    left: 1vw;
 }
 
 #sidebar_a5 {
     background: url("imageFiles/temp.png");
     background-size: cover;
+    position: absolute;
     width: 3vw;
     height: 6vh;
-    cursor: pointer;
+    left: 1vw;
 }
 
 .sideBar_aHolderLeftBorderExpand {
@@ -279,21 +302,28 @@
 
 .sidebar_aHolder {
     display: flex;
-    justify-content: center;
-    height: 6vh;
-    width: 5vw;
-    margin: 15px 0px;
+    flex-direction: row;
+    justify-items: right;
+    align-items: center;
+    cursor: pointer;
+    height: 9vh;
+    width: 5.5vw;
+    margin: 0px 0px;
+    transition: width 1s ease, background-color 1s ease;
 }
 
 #sideBarDivider {
     background-color: white;
+    position: relative;
     width: 50px;
     border-radius: 2px;
     border-width: 0px;
-    height: 2px;
+    margin: 15px 0px;
+    height: 4px;
+    transform-origin: center;
+    transform: scaleX(1);
+    transition: transform 1s ease;
 }
-
-
 
 
 @keyframes spin {
