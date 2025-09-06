@@ -207,6 +207,8 @@
 /* Home CSS */
 
 #mainBackgroundDiv {
+    display: flex;
+    flex-direction: row;
     position: absolute;
     background-color: #dcf4ff;
     width: 100vw;
@@ -214,7 +216,7 @@
 }
 
 #sidebar {
-    position: relative;
+    position: fixed;
     height: 100vh;
     width: 5.5vw;
     background-color: #9ddefc;
@@ -222,6 +224,7 @@
     flex-direction: column;
     align-items: center;
     transition: width 1s ease;
+    z-index: 100;
     
 }
 
@@ -325,6 +328,64 @@
     transition: transform 1s ease;
 }
 
+#homePage_rightSide {
+    display: flex;
+    align-self: right;
+    margin-left: 5.5vw;
+    background-color: #dcf4ff;
+    width: 94.5vw;
+    height: 100vh;
+}
+
+#homePage_rightSide_upperDiv {
+    display: flex;
+    flex-direction: row;
+    background-color: #dcf4ff;
+    padding-left: 30px;
+    width: 94.5vw;
+    height: 60vh;
+}
+
+#homePage_rightSide_upperDiv_leftDiv {
+    background-color: #42c0fb;
+    display: flex;
+    width: 40vw;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px rgb(71, 66, 66);
+    margin: 40px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 1s ease;
+}
+
+#homePage_rightSide_upperDiv_rightDiv {
+    background-color: #42c0fb;
+    width: 40vw;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px rgb(71, 66, 66);
+    margin: 40px;
+    align-self: center;
+    transition: box-shadow .8s ease;
+}
+
+#homePage_rightSide_lowerDiv {
+    background-color: #dcf4ff;
+    width: 94.5vw;
+    height: 60vh;
+}
+
+#mainPage_backgroundBlocker {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
 
 @keyframes spin {
     from {transform: rotate(20deg);}
