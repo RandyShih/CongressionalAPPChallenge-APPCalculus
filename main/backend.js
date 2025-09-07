@@ -30,7 +30,7 @@ function databaseInitialization() {
     }
     
     request.onupgradeneeded = (upgradeEvent) => {
-        const db = upgradeEvent.target.request;
+        db = upgradeEvent.target.result;
         if (!db.objectStoreNames.contains("Quizzes")) {
             const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
         }
@@ -86,9 +86,7 @@ function dataUpdater(database, objectID, key) {
 }
 
 function testing() {
-    dataAccessor(db, "Quizzes", 2, (daResults) => {
-        alert(daResults);
-    })
+    dataAmender(db, "Quizzes", "hello");
 }
 
 function siteRedirect() {
