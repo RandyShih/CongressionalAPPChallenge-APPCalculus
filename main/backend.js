@@ -1,6 +1,20 @@
-import dotenv from "dotenv";
-dotenv.config(); 
-const mainAPIKey = process.env.testAPI;
+const request = indexedDB.open("MyDatabase", 1);
+
+request.onupgradeneeded = function(event) {
+  const db = event.target.result;
+  const store = db.createObjectStore("items", { keyPath: "id", autoIncrement: true });
+  console.log("Database created or upgraded!");
+};
+navigator.storage.estimate().then(estimate => {
+  console.log(`Quota: ${estimate.quota} bytes`);
+  console.log(`Usage: ${estimate.usage} bytes`);
+});
+
+
+request.onsuccess = function(event) {
+  const db = event.target.result;
+  console.log("Database opened successfully:", db);
+};
 
 
 function siteRedirect() {
