@@ -1,21 +1,95 @@
-const request = indexedDB.open("MyDatabase", 1);
+if (localStorage.getItem("databaseActive") == null) {
+    localStorage.setItem("databaseActive", "true");
+    sessionStorage.setItem("DBError", "0");
+}
 
-request.onupgradeneeded = function(event) {
-  const db = event.target.result;
-  const store = db.createObjectStore("items", { keyPath: "id", autoIncrement: true });
-  console.log("Database created or upgraded!");
-};
-navigator.storage.estimate().then(estimate => {
-  console.log(`Quota: ${estimate.quota} bytes`);
-  console.log(`Usage: ${estimate.usage} bytes`);
-});
+let databaseActive = localStorage.getItem("databaseActive");
+let db;
+
+function databaseInitialization() {
+    const request = window.indexedDB.open("mainDataBase", 5);
+    request.onerror = (errorEvent) => {
+        console.error("MainDataBase was not able to be loaded.");
+        if (sessionStorage.getItem("DBError") != "1") {
+            alert("Local database was not able to be loaded, try refreshing the website.");
+        } else {
+            alert("Local database cannot be loaded in due to the error: " + errorEvent.target.error + " Please copy and paste this error into my contact form.");
+            let dataDeletionRequest = prompt('Do you want to delete your data to possibly resolve this issue? (please type "yes" or "no," which will disable the database for now)');
+            dataDeletionRequest = dataDeletionRequest.toLowerCase();
+            if (dataDeletionRequest == "yes") {
+                alert("Database has been deleted.");
+                indexedDB.deleteDatabase("mainDataBase");
+            } else if (dataDeletionRequest == "no") {
+                alert("Database has been disabled, please contact me to resolve this issue.")
+                localStorage.setItem("databaseActive", "false");
+            } else {
+                alert("Invalid input.");
+            }
+        }
+        sessionStorage.setItem("DBError", "1");
+    }
+    
+    request.onupgradeneeded = (upgradeEvent) => {
+        const db = upgradeEvent.target.request;
+        if (!db.objectStoreNames.contains("Quizzes")) {
+            const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
+        }
+    }
+
+    request.onsuccess = (successEvent) => {
+        db = successEvent.target.result;
+        console.log("MainDataBase was successfully loaded.");
+        navigator.storage.estimate().then(estimationData => {
+            console.log("Max data: " + estimationData.quota + " bytes.");
+            console.log("Used data: " + estimationData.usage + " bytes.");
+        })
+    }
 
 
-request.onsuccess = function(event) {
-  const db = event.target.result;
-  console.log("Database opened successfully:", db);
-};
+}
 
+if (databaseActive == "true") {
+    databaseInitialization();
+}
+
+
+function dataAmender(database, objectID, data) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
+    dataOpener.add(data);
+}
+
+function dataAccessor(database, objectID, key, callback) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID);
+    if (key != null) {
+        const dataAccessorRequest = dataOpener.get(key);
+        dataAccessorRequest.onsuccess = (dbAccessResults) => {
+            callback(JSON.stringify(dbAccessResults.target.result));
+        }
+        dataAccessorRequest.onerror = (dbAccessResults) => {
+            callback(null);
+            console.error("Error with dataAccessorRequest for a key.");
+        }
+    } else {
+        const dataAccessorRequest = dataOpener.getAll();
+        dataAccessorRequest.onsuccess = (dbAccessResults) => {
+            callback(JSON.stringify(dbAccessResults.target.result));
+        }
+        dataAccessorRequest.onerror = (dbAccessResults) => {
+            callback(null);
+            console.error("Error with dataAccessorRequest for all of the data in an object.")
+        }
+    }
+}
+
+function dataUpdater(database, objectID, key) {
+    
+}
+
+function testing() {
+    dataAccessor(db, "Quizzes", 2, (daResults) => {
+        alert(daResults);
+    })
+}
 
 function siteRedirect() {
     window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQn1CCsHeMndLWWdk6ilUlblrh4VHgvfa_Ap8azPtA-L3tww/viewform";
@@ -23,6 +97,10 @@ function siteRedirect() {
 
 function pageRedirect(page) {
     window.location.href = page;
+}
+
+function test() {
+    dataAmender(db, "Quizzes", {"test": 1, "no":3});
 }
 
 document.addEventListener("DOMContentLoaded", () => {
