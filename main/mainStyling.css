@@ -19,6 +19,7 @@
     position: fixed;
     display: flex;
     height: 8vh;
+    max-height: 8vh;
     width: 100vw;
     align-items: center;
     color: white;
