@@ -1,2 +1,5 @@
-.09 - Main page concept done. Fix cache requests, ?v=.09.
-.1 - Refactor the main page and think of ways to improve it.
+ ?v=.101
+.0951 - .101: Database setup is almost done and the main dashboard is being worked on.
+.09 - .094: Main page concept is done. Fixed cache requests.
+.08 - .0852: Main page sidebar and top bar is done.
+.01 - .018: Basic website details and setup are complete.
