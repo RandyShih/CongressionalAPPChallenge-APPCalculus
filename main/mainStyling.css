@@ -464,8 +464,6 @@
     transition: opacity 1s ease;
 }
 
-<<<<<<< HEAD
-=======
 @keyframes spin {
     from {transform: rotate(20deg);}
     to {transform: rotate(100deg);}
@@ -475,4 +473,3 @@
     from {transform: scaleY(0);}
     to {transform: scaleY(1);}
 }
->>>>>>> 63cfbe1836776dd654454d90abbbbab1e362e18e
