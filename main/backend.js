@@ -5,9 +5,10 @@ if (localStorage.getItem("databaseActive") == null) {
 
 let databaseActive = localStorage.getItem("databaseActive");
 let db;
+let objectStoreNames = ["Quizzes", "ProgressTracker"];
 
 function databaseInitialization() {
-    const request = window.indexedDB.open("mainDataBase", 5);
+    const request = window.indexedDB.open("mainDataBase", 6);
     request.onerror = (errorEvent) => {
         console.error("MainDataBase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
@@ -34,6 +35,9 @@ function databaseInitialization() {
         if (!db.objectStoreNames.contains("Quizzes")) {
             const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
         }
+        if (!db.objectStoreNames.contains("ProgressTracker")) {
+            const progressTrackerData = db.createObjectStore("ProgressTracker", {autoIncrement: false})
+        }
     }
 
     request.onsuccess = (successEvent) => {
@@ -52,10 +56,28 @@ if (databaseActive == "true") {
     databaseInitialization();
 }
 
-
-function dataAmender(database, objectID, data) {
+function dataAmender(database, objectID, data, keySpecific, key) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
-    dataOpener.add(data);
+    if (!keySpecific) {
+        const dataAmenderRequest = dataOpener.add(data);
+        dataAmenderRequest.onsuccess = dataAmenderSuccess => {
+            console.log("Data successfully added." + " Details: " + "data: " + data + ".");
+        }
+        dataAmenderRequest.onerror = dataAmenderRequestError => {
+            console.error("Data amendment error: " + dataAmenderRequestError.target.result + " Details: " + "data: " + data + ".")
+        }
+    } else if (keySpecific) {
+        const dataAmenderRequest = dataOpener.add(data, key);
+        dataAmenderRequest.onsuccess = dataAmenderRequestSuccess => {
+            console.log("Data successfully added." + " Details: " + "key: " + key + "," + " data: " + data + ".");
+        }
+        dataAmenderRequest.onerror = dataAmenderRequestError => {
+            console.error("Data amendment error: " + dataAmenderRequestError.target.result + ". Details: " + "key: " + key + "," + " data: " + data + ".");
+        }
+    } else {
+        return null
+    }
+    
 }
 
 function dataAccessor(database, objectID, key, callback) {
@@ -86,7 +108,11 @@ function dataUpdater(database, objectID, key) {
 }
 
 function testing() {
-    dataAmender(db, "Quizzes", "hello");
+    dataAccessor(db, "Quizzes", 1, dataAccessorData => {
+        console.log(dataAccessorData)
+    });
+    dataAmender(db, "Quizzes", "hello", false, null);
+    dataAmender(db, "ProgressTracker", "heljlhdwadwadio", true, "headwdfwadadwadwadwo");
 }
 
 function siteRedirect() {
@@ -109,19 +135,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainPage_graphCreation = new Chart(mainPageGraph, {
         type: "line",
         data: {
-            labels: [1, 2, 3, 4, 5],
+            labels: [1, 2, 3, 4, 5, 6],
             datasets: [{
                 label: "Amount of Quizzes completed",
-                data: [215, 232, 2323, 424, 323]
+                data: [215, 232, 2323, 424, 323, "<img src=x onerror=alert(1)>"]
             }, {
                 label: "Amount of Tests completed",
-                data: [2315, 3232, 23233, 4234, 3223]
+                data: [2315, 3232, 23233, 4234, 3223, 23]
             }]
         },
         options: {responsive: false, maintainAspectRatio: false}
     })
     const mainPage_backgroundBlocker = document.getElementById("mainPage_backgroundBlocker");
     const homeSideBar_aHolderLeftBorderExpand = document.getElementsByClassName("sidebar_aHolder");
+    const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv = document.getElementsByClassName("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
     const sidebar = document.getElementById("sidebar");
     const hrDivider = document.getElementById("sideBarDivider");
     const homePage_rightSide_upperDiv_leftDiv = document.getElementById("homePage_rightSide_upperDiv_leftDiv");
@@ -138,6 +165,14 @@ document.addEventListener("DOMContentLoaded", () => {
     homePage_rightSide_upperDiv_rightDiv.addEventListener("mouseleave", () => {
         homePage_rightSide_upperDiv_rightDiv.style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
     });
+    for (let i = 0; i < homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv.length; i++) {
+        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseenter", () => {
+            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
+        });
+        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseleave", () => {
+            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
+        });
+    }
     for (let i = 0; i < homeSideBar_aHolderLeftBorderExpand.length; i++) {
         homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseenter", () => {
             homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(1.5)";

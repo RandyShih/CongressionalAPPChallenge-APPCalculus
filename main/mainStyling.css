@@ -20,6 +20,7 @@
     display: flex;
     height: 8vh;
     width: 100vw;
+    min-height: 80px;
     align-items: center;
     color: white;
     font-size: large;
@@ -46,6 +47,7 @@
     position: relative;
     font-weight: lighter;
     color: rgb(255, 255, 255);
+    white-space: nowrap;
     height: 40px;
     padding: 0 30px;
     cursor: pointer;
@@ -240,24 +242,26 @@
     transition: opacity .35s ease .4s transform .35 ease .4;
 }
 
-#sidebar_a2Holder {
-    margin-top: 15px;
+#sidebar_a1Holder {
+    margin: 15px 10px 0px 0px;
 }
 
 #sidebar_a1 {
     background: url("imageFiles/logo.png");
-    border-radius: 5px;
+    border-radius: 6px;
     position: absolute;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     width: 3.1vw;
-    height: 6vh;
-    left: 1vw;
+    height: 5.9vh;
+    left: 1.25vw;
 }
 
 #sidebar_a2 {
     background: url("imageFiles/temp.png");
-    background-size: cover;
+    background-size: contain;
     position: absolute;
+    background-repeat: no-repeat;
     width: 3vw;
     height: 6vh;
     left: 1vw;
@@ -265,8 +269,9 @@
 
 #sidebar_a3 {
     background: url("imageFiles/temp.png");
-    background-size: cover;
+    background-size: contain;
     position: absolute;
+    background-repeat: no-repeat;
     width: 3vw;
     height: 6vh;
     left: 1vw;
@@ -274,7 +279,8 @@
 
 #sidebar_a4 {
     background: url("imageFiles/temp.png");
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     position: absolute;
     width: 3vw;
     height: 6vh;
@@ -283,7 +289,8 @@
 
 #sidebar_a5 {
     background: url("imageFiles/temp.png");
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     position: absolute;
     width: 3vw;
     height: 6vh;
@@ -331,10 +338,43 @@
 #homePage_rightSide {
     display: flex;
     align-self: right;
+    flex-direction: column;
     margin-left: 5.5vw;
     background-color: #dcf4ff;
     width: 94.5vw;
     height: 100vh;
+}
+
+
+#homePage_rightSide_upperDiv_leftDiv {
+    background-color: #42c0fb;
+    display: flex;
+    width: 42vw;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px rgb(71, 66, 66);
+    margin: 10px 20px 40px 20px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    transition: box-shadow 1s ease;
+}
+
+#homePage_rightSide_upperDiv_rightDiv {
+    background-color: #42c0fb;
+    width: 45vw;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px rgb(71, 66, 66);
+    margin: 10px 40px 40px 20px;
+    align-self: center;
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+    transition: box-shadow .8s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 #homePage_rightSide_upperDiv {
@@ -343,38 +383,75 @@
     background-color: #dcf4ff;
     padding-left: 30px;
     width: 94.5vw;
-    height: 60vh;
+    height: 45vh;
 }
 
-#homePage_rightSide_upperDiv_leftDiv {
-    background-color: #42c0fb;
-    display: flex;
-    width: 40vw;
-    height: 40vh;
-    border-radius: 10px;
-    box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 40px;
-    align-self: center;
-    align-items: center;
-    justify-content: center;
-    transition: box-shadow 1s ease;
-}
-
-#homePage_rightSide_upperDiv_rightDiv {
-    background-color: #42c0fb;
-    width: 40vw;
-    height: 40vh;
-    border-radius: 10px;
-    box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 40px;
-    align-self: center;
-    transition: box-shadow .8s ease;
-}
 
 #homePage_rightSide_lowerDiv {
     background-color: #dcf4ff;
     width: 94.5vw;
-    height: 60vh;
+    height: 40vh;
+}
+
+#homePage_rightSide_titleDiv {
+    padding-left: 35px;
+    display: flex;
+    flex-direction: column;
+    width: 94.5vw;
+    height: 15vh;
+}
+
+#homePage_rightSide_upperDiv_rightDiv_verticalDiv_cardName {
+    margin: 10px 0px 0px 0px;
+    padding: 0px 0px 0px 10px;
+    font-size: 20px;
+    font-weight: bolder;
+    color:#dcf4ff;
+}
+
+#homePage_rightSide_titleDiv_title {
+    margin: 10px 0px 0px 0px;
+    color:#04afff;
+    font-weight: bolder;
+    font-size: 60px;
+}
+
+#homePage_rightSide_titleDiv_divider {
+    margin: 5px 0px 5px 0px;
+    background-color: #04afff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 8px;
+    width: 90vw;
+}
+
+#homePage_rightSide_upperDiv_rightDiv_verticalDiv_divider {
+    margin: 10px 10px 5px 10px;
+    background-color: #dcf4ff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 4px;
+}
+
+#homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder {
+    width: 38vw;
+    height: 18vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv {
+    background-color: #9ddefc;
+    width: 22%;
+    height: 29vh;
+    border-radius: 4px;
+    margin: 0px 10px 10px 10px;
+    box-shadow: 0px 0px 0px black;
+    cursor: pointer;
+    transition: box-shadow 1s ease;
+
 }
 
 #mainPage_backgroundBlocker {
@@ -387,12 +464,3 @@
     transition: opacity 1s ease;
 }
 
-@keyframes spin {
-    from {transform: rotate(20deg);}
-    to {transform: rotate(100deg);}
-}
-
-@keyframes whiteLeftBorderexpandOut {
-    from {transform: scaleY(0);}
-    to {transform: scaleY(1);}
-}
