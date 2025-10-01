@@ -150,7 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     if (htmlLoaded == "home.html" || htmlLoaded == "lessons.html" || htmlLoaded == "vocabulary.html" || htmlLoaded == "settings.html" || htmlLoaded == "practice.html") {
-        if (window.location.pathname.split("/").pop() == "home.html") {
+        if (htmlLoaded == "home.html") {
+            console.log("hey");
             const mainPageGraph = document.getElementById("mainPage_graph");
             mainPageGraph.style.width = "35vw";
             mainPageGraph.style.height = "35vh";
