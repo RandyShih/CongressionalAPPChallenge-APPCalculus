@@ -5,8 +5,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../imageFiles/logo.png">
-        <link rel="stylesheet" href="../mainStyling.css?v=.102">
-        <script src="../backend.js?v=.102"></script>
+        <link rel="stylesheet" href="../mainStyling.css?v=.21">
+        <script src="../backend.js?v=.22"></script>
     </head>
 
     <!--Home Page-->
@@ -14,30 +14,36 @@
     <div id="mainBackgroundDiv">
         <div id="sidebar">
             <div class="sidebar_aHolder" id="sidebar_a1Holder">
-                <a class="siderbar_aClass" id="sidebar_a1"></a>
-                <a class="sidebar_widgetNextToSideBar_a">APPCalculus</a>
+                <div class="siderbar_aClass" id="sidebar_a1">
+                    <div onclick="pageRedirect('../index.html');" id="sidebar_a1_logoImage"></div>
+                </div>
+                <div class="sidebar_widgetNextToSideBar_a" id="sidebar_widgetNextToSideBar_a1">APPCalculus</div>
             </div>
             <hr id="sideBarDivider"></hr>
-            
-            <div onclick="testing()" class="sidebar_aHolder" id="sidebar_a2Holder">
-                <a class="siderbar_aClass" id="sidebar_a2"></a>
-                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a2HolderLeftBorderExpand"></a>
-            </div>
-
-            <div class="sidebar_aHolder" id="sidebar_a3Holder">
-                <a class="siderbar_aClass" id="sidebar_a3"> </a>
-                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a3HolderLeftBorderExpand"></a>
-            </div>
-
-            <div class="sidebar_aHolder" id="sidebar_a4Holder">
-                <a class="siderbar_aClass" id="sidebar_a4"></a>
-                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a4HolderLeftBorderExpand"></a>
-            </div>
-
-            <div class="sidebar_aHolder" id="sidebar_a5Holder">
+            <div onclick="pageRedirect('home.html');" class="sidebar_aHolder" id="sidebar_a5Holder">
                 <a class="siderbar_aClass" id="sidebar_a5"></a>
                 <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a5HolderLeftBorderExpand"></a>
+                <div class="sidebar_widgetNextToSideBar_a">Dashboard</div>
             </div>
+            <div onclick="pageRedirect('lessons.html');" class="sidebar_aHolder" id="sidebar_a2Holder">
+                <a class="siderbar_aClass" id="sidebar_a2"></a>
+                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a2HolderLeftBorderExpand"></a>
+                <div class="sidebar_widgetNextToSideBar_a">Lessons</div>
+            </div>
+
+            <div onclick="pageRedirect('vocabulary.html');" class="sidebar_aHolder" id="sidebar_a3Holder">
+                <a class="siderbar_aClass" id="sidebar_a3"> </a>
+                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a3HolderLeftBorderExpand"></a>
+                <div class="sidebar_widgetNextToSideBar_a">Vocabulary</div>
+            </div>
+
+            <div onclick="pageRedirect('practice.html');" class="sidebar_aHolder" id="sidebar_a4Holder">
+                <a class="siderbar_aClass" id="sidebar_a4"></a>
+                <a class="sideBar_aHolderLeftBorderExpand" id="sideBar_a4HolderLeftBorderExpand"></a>
+                <div class="sidebar_widgetNextToSideBar_a">Practice</div>
+            </div>
+
+
         </div>
         <div id="mainPage_backgroundBlocker"></div> 
         <div id="homePage_rightSide">
@@ -46,7 +52,9 @@
                 <hr id="homePage_rightSide_titleDiv_divider"></hr>
             </div>
             <div id="homePage_rightSide_upperDiv">
-                <div id="homePage_rightSide_upperDiv_leftDiv"><canvas id="mainPage_graph"></canvas></div>
+                <div id="homePage_rightSide_upperDiv_leftDiv">
+                    <canvas id="mainPage_graph"></canvas>
+                </div>
                 <div id="homePage_rightSide_upperDiv_rightDiv">
                     <div id="homePage_rightSide_upperDiv_rightDiv_verticalDiv">
                         <div id="homePage_rightSide_upperDiv_rightDiv_verticalDiv_cardName">Continue</div>
@@ -60,9 +68,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-            <div id="homePage_rightSide_lowerDiv">
-
+                <div id="homePage_rightSide_lowerDiv">
+                    <div id="homePage_rightSide_lowerDiv_mainDiv">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

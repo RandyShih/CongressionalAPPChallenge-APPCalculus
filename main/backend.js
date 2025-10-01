@@ -128,83 +128,116 @@ function test() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const mainPageGraph = document.getElementById("mainPage_graph");
-    mainPageGraph.style.width = "35vw";
-    mainPageGraph.style.height = "35vh";
-    mainPageGraph.style.color = "black";
-    const mainPage_graphCreation = new Chart(mainPageGraph, {
-        type: "line",
-        data: {
-            labels: [1, 2, 3, 4, 5, 6],
-            datasets: [{
-                label: "Amount of Quizzes completed",
-                data: [215, 232, 2323, 424, 323, "<img src=x onerror=alert(1)>"]
-            }, {
-                label: "Amount of Tests completed",
-                data: [2315, 3232, 23233, 4234, 3223, 23]
-            }]
-        },
-        options: {responsive: false, maintainAspectRatio: false}
-    })
-    const mainPage_backgroundBlocker = document.getElementById("mainPage_backgroundBlocker");
-    const homeSideBar_aHolderLeftBorderExpand = document.getElementsByClassName("sidebar_aHolder");
-    const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv = document.getElementsByClassName("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
-    const sidebar = document.getElementById("sidebar");
-    const hrDivider = document.getElementById("sideBarDivider");
-    const homePage_rightSide_upperDiv_leftDiv = document.getElementById("homePage_rightSide_upperDiv_leftDiv");
-    const homePage_rightSide_upperDiv_rightDiv = document.getElementById("homePage_rightSide_upperDiv_rightDiv");
-    homePage_rightSide_upperDiv_leftDiv.addEventListener("mouseenter", () => {
-        homePage_rightSide_upperDiv_leftDiv.style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
-    });
-    homePage_rightSide_upperDiv_leftDiv.addEventListener("mouseleave", () => {
-        homePage_rightSide_upperDiv_leftDiv.style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
-    });
-    homePage_rightSide_upperDiv_rightDiv.addEventListener("mouseenter", () => {
-        homePage_rightSide_upperDiv_rightDiv.style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
-    });
-    homePage_rightSide_upperDiv_rightDiv.addEventListener("mouseleave", () => {
-        homePage_rightSide_upperDiv_rightDiv.style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
-    });
-    for (let i = 0; i < homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv.length; i++) {
-        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseenter", () => {
-            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
-        });
-        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseleave", () => {
-            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
-        });
-    }
-    for (let i = 0; i < homeSideBar_aHolderLeftBorderExpand.length; i++) {
-        homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseenter", () => {
-            homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(1.5)";
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.opacity = 1;
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.transform = "scaleX(1)";
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDelay = ".20s";
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDuration = ".6s";
-            sidebar.style.width = "20vw";
-            for (t=0; t<homeSideBar_aHolderLeftBorderExpand.length; t++){
-                homeSideBar_aHolderLeftBorderExpand[t].style.width = "20vw";
-            }
-            homeSideBar_aHolderLeftBorderExpand[i].style.backgroundColor = "#79cbf0";
-            hrDivider.style.transform = "scaleX(5)";
-            mainPage_backgroundBlocker.style.opacity = .35;
-        });
-        homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseleave", () => {
-            homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(0)";
-            for (b=0; b<homeSideBar_aHolderLeftBorderExpand.length; b++){
-                homeSideBar_aHolderLeftBorderExpand[b].style.width = "5.5vw";
-            }
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDelay = "0s";
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.transform = "scaleX(.1)";
-            homeSideBar_aHolderLeftBorderExpand[0].querySelector(".sidebar_widgetNextToSideBar_a").style.opacity = 0;
-            homeSideBar_aHolderLeftBorderExpand[i].style.backgroundColor = "#9ddefc";
-            hrDivider.style.transform = "scaleX(1)";
-            sidebar.style.width = "5.5vw";
-            mainPage_backgroundBlocker.style.opacity = 0;
 
-        });
-    
+    if (window.location.pathname.split("/").pop() == "lessons.html") {
+        const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
+        const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
+        for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
+            lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].addEventListener("click", event => {
+                lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].classList.toggle("lessonCompButtonActive");                
+            })
+        }
+        for (let lesson=0; lesson<lessons_rightSide_lessonDiv_lessons.length; lesson++) {
+            lessons_rightSide_lessonDiv_lessons[lesson].addEventListener("mouseenter", event => {
+                lessons_rightSide_lessonDiv_lessons[lesson].style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
+            })
+        }
+        for (let lesson=0; lesson<lessons_rightSide_lessonDiv_lessons.length; lesson++) {
+            lessons_rightSide_lessonDiv_lessons[lesson].addEventListener("mouseleave", event => {
+                lessons_rightSide_lessonDiv_lessons[lesson].style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
+            })
+        }
     }
+    if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
+        if (window.location.pathname.split("/").pop() == "home.html") {
+            console.log("hey");
+            const mainPageGraph = document.getElementById("mainPage_graph");
+            mainPageGraph.style.width = "35vw";
+            mainPageGraph.style.height = "35vh";
+            mainPageGraph.style.color = "black";
+            const mainPage_graphCreation = new Chart(mainPageGraph, {
+                type: "line",
+                data: {
+                    labels: [1, 2, 3, 4, 5, 6],
+                    datasets: [{
+                        label: "Amount of Quizzes completed",
+                        data: [215, 232, 2323, 424, 323, "<img src=x onerror=alert(1)>"]
+                    }, {
+                        label: "Amount of Tests completed",
+                        data: [2315, 3232, 23233, 4234, 3223, 23]
+                    }]
+                },
+                options: {responsive: false, maintainAspectRatio: false}
+            })
+            const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv = document.getElementsByClassName("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
+            const homePage_rightSide_upperDiv_leftDiv = document.getElementById("homePage_rightSide_upperDiv_leftDiv");
+            const homePage_rightSide_upperDiv_rightDiv = document.getElementById("homePage_rightSide_upperDiv_rightDiv");
+            homePage_rightSide_upperDiv_leftDiv.addEventListener("mouseenter", () => {
+                homePage_rightSide_upperDiv_leftDiv.style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
+            });
+            homePage_rightSide_upperDiv_leftDiv.addEventListener("mouseleave", () => {
+                homePage_rightSide_upperDiv_leftDiv.style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
+            });
+            homePage_rightSide_upperDiv_rightDiv.addEventListener("mouseenter", () => {
+                homePage_rightSide_upperDiv_rightDiv.style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
+            });
+            homePage_rightSide_upperDiv_rightDiv.addEventListener("mouseleave", () => {
+                homePage_rightSide_upperDiv_rightDiv.style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
+            });
+            for (let i = 0; i < homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv.length; i++) {
+                homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseenter", () => {
+                    homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
+                });
+                homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].addEventListener("mouseleave", () => {
+                    homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv[i].style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
+                });
+            }   
+        }
 
+        const mainPage_backgroundBlocker = document.getElementById("mainPage_backgroundBlocker");
+        const homeSideBar_aHolderLeftBorderExpand = document.getElementsByClassName("sidebar_aHolder");
+        const sidebar = document.getElementById("sidebar");
+        const hrDivider = document.getElementById("sideBarDivider");
+
+        for (let i = 0; i < homeSideBar_aHolderLeftBorderExpand.length; i++) {
+            homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseenter", () => {
+                homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(1.5)";
+                for (let a = 0; a < homeSideBar_aHolderLeftBorderExpand.length; a++) {
+                    homeSideBar_aHolderLeftBorderExpand[a].querySelector(".sidebar_widgetNextToSideBar_a").style.opacity = 1;
+                    homeSideBar_aHolderLeftBorderExpand[a].querySelector(".sidebar_widgetNextToSideBar_a").style.transform = "scaleX(1)";
+                    homeSideBar_aHolderLeftBorderExpand[a].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDelay = ".20s";
+                    homeSideBar_aHolderLeftBorderExpand[a].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDuration = ".6s";
+                }
+                
+
+                
+                sidebar.style.width = "20vw";
+                for (t=0; t<homeSideBar_aHolderLeftBorderExpand.length; t++){
+                    homeSideBar_aHolderLeftBorderExpand[t].style.width = "20vw";
+                }
+                homeSideBar_aHolderLeftBorderExpand[i].style.backgroundColor = "#79cbf0";
+                hrDivider.style.transform = "scaleX(5)";
+                mainPage_backgroundBlocker.style.opacity = .35;
+            });
+            homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseleave", () => {
+                homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(0)";
+                for (b=0; b<homeSideBar_aHolderLeftBorderExpand.length; b++){
+                    homeSideBar_aHolderLeftBorderExpand[b].style.width = "5.5vw";
+                }
+                for (let g = 0; g < homeSideBar_aHolderLeftBorderExpand.length; g++) {
+                    homeSideBar_aHolderLeftBorderExpand[g].querySelector(".sidebar_widgetNextToSideBar_a").style.transitionDelay = "0s";
+                    homeSideBar_aHolderLeftBorderExpand[g].querySelector(".sidebar_widgetNextToSideBar_a").style.transform = "scaleX(.1)";
+                    homeSideBar_aHolderLeftBorderExpand[g].querySelector(".sidebar_widgetNextToSideBar_a").style.opacity = 0;
+                }
+
+                homeSideBar_aHolderLeftBorderExpand[i].style.backgroundColor = "#9ddefc";
+                hrDivider.style.transform = "scaleX(1)";
+                sidebar.style.width = "5.5vw";
+                mainPage_backgroundBlocker.style.opacity = 0;
+
+            });
+        }
+    }
 })
 
 document.addEventListener("DOMContentLoaded", () => {
