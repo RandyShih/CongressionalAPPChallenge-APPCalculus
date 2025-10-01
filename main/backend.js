@@ -128,9 +128,8 @@ function test() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    let htmlLoaded = window.location.pathname.split("/").pop();
 
-    if (htmlLoaded = "lessons.html") {
+    if (window.location.pathname.split("/").pop() = "lessons.html") {
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
         const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
         for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
@@ -149,8 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
     }
-    if (htmlLoaded == "home.html" || htmlLoaded == "lessons.html" || htmlLoaded == "vocabulary.html" || htmlLoaded == "settings.html" || htmlLoaded == "practice.html") {
-        if (htmlLoaded == "home.html") {
+    if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
+        if (window.location.pathname.split("/").pop() == "home.html") {
             console.log("hey");
             const mainPageGraph = document.getElementById("mainPage_graph");
             mainPageGraph.style.width = "35vw";
