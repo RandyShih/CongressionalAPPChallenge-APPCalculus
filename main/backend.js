@@ -129,7 +129,7 @@ function test() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    if (window.location.pathname.split("/").pop() = "lessons.html") {
+    if (window.location.pathname.split("/").pop() == "lessons.html") {
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
         const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
         for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
