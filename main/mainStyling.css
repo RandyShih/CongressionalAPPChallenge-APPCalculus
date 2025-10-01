@@ -183,10 +183,7 @@
     background-color: #93d8f8;
 }
 
-@keyframes fontSizeChange {
-    from {font-size: 15px;}
-    to {font-size: 26px;}
-}
+
 
 /*#mainScreenDescriptorSiteDetailsButton {
     position: relative;
@@ -231,27 +228,42 @@
 }
 
 .sidebar_widgetNextToSideBar_a {
-    position: absolute;
-    left: 5.7vw;
     transform: scaleX(.1);
     transform-origin: left;
     opacity: 0;
-    color: #5e17eb;
-    font-size: 30px;
-    font-weight: bolder;
+    color:#ffffff;
+    width: 0px;
+    max-width: 5vw;
+    font-size: 2vmax;
+    font-weight: bold;
     transition: opacity .35s ease .4s transform .35 ease .4;
 }
 
 #sidebar_a1 {
-    background: url("imageFiles/logo.png");
-    background-color: black;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.5vw;
+    height: 5vh;
+}
+
+#sidebar_widgetNextToSideBar_a1 {
+    color:#5e17eb;
+    font-weight: bolder;
+}
+
+#sidebar_a1Holder {
+    margin: 10px 0px 0px 0px;
+}
+
+#sidebar_a1_logoImage {
+    background-image: url("imageFiles/logo.png");
     background-size: contain;
     background-repeat: no-repeat;
-    margin: 0px 0px 0px .8vw; 
-    max-width: 8vh;
-    width: 5vh;
-    height: 5vh;
+    background-position: center;
+    width: 3.5vw;
+    height: 5.5vh;
+    border-radius: 14px;
 }
 
 #sidebar_a2 {
@@ -260,8 +272,7 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    max-width: 8vh;
-    width: 5vw;
+    width: 5.5vw;
     height: 5vh;
 }
 
@@ -271,19 +282,16 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    max-width: 8vh;
-    width: 5vw;
+    width: 5.5vw;
     height: 5vh;
 }
 
 #sidebar_a4 {
     background: url("imageFiles/temp.png");
-    background-color: BLACK;
     align-content: center;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    max-width: 8vh;
     width: 5.5vw;
     height: 5vh;
 }
@@ -294,15 +302,14 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    max-width: 5vw;
-    width: 5vw;
+    width: 5.5vw;
     height: 5vh;
 }
 
 .sideBar_aHolderLeftBorderExpand {
     position: absolute;
     background-color: rgb(255, 255, 255);
-    height: 6vh;
+    height: 6.7vh;
     align-self: left;
     left: 0;
     width: 4px;
@@ -316,8 +323,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-items: center;
     cursor: pointer;
-    height: 9vh;
+    height: 10vh;
     width: 5.5vw;
     margin: 0px 0px;
     transition: width 1s ease, background-color 1s ease;
@@ -329,7 +337,7 @@
     width: 3.0vw;
     border-radius: 2px;
     border-width: 0px;
-    margin: 15px 0px;
+    margin: 1.2vh 0px;
     height: 4px;
     transform-origin: center;
     transform: scaleX(1);
@@ -351,10 +359,10 @@
     background-color: #42c0fb;
     display: flex;
     width: 42vw;
-    height: 40vh;
+    height: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 10px 20px 40px 20px;
+    margin: 10px 20px 20px 20px;
     align-self: center;
     align-items: center;
     justify-content: center;
@@ -365,10 +373,10 @@
 #homePage_rightSide_upperDiv_rightDiv {
     background-color: #42c0fb;
     width: 45vw;
-    height: 40vh;
+    height: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 10px 40px 40px 20px;
+    margin: 10px 40px 20px 20px;
     align-self: center;
     align-items: center;
     justify-items: center;
@@ -379,6 +387,7 @@
 }
 
 #homePage_rightSide_upperDiv {
+    position: relative;
     display: flex;
     flex-direction: row;
     background-color: #dcf4ff;
@@ -389,17 +398,19 @@
 
 
 #homePage_rightSide_lowerDiv {
+    position: relative;
     background-color: #dcf4ff;
     width: 94.5vw;
     height: 40vh;
 }
 
 #homePage_rightSide_titleDiv {
-    padding-left: 35px;
+    position: relative;
+    padding: 15px 0px 0px 35px;
     display: flex;
     flex-direction: column;
     width: 94.5vw;
-    height: 10vh;
+    height: 15%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv {
@@ -408,31 +419,28 @@
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv_cardName {
-    margin: 10px 0px 0px 0px;
-    padding: 0px 0px 0px 10px;
-    font-size: 20px;
+    font-size: 1.2vmax;
     font-weight: bolder;
     color:#dcf4ff;
 }
 
 #homePage_rightSide_titleDiv_title {
-    margin: 10px 0px 0px 0px;
     color:#04afff;
     font-weight: bolder;
-    font-size: 60px;
+    font-size: 2vmax;
 }
 
 #homePage_rightSide_titleDiv_divider {
-    margin: 5px 0px 5px 0px;
+    margin: 1% 0px 5px 0px;
     background-color: #04afff;
     border-width: 0px;
     border-radius: 4px;
-    height: 8px;
-    width: 90vw;
+    height: 8%;
+    width: 98%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv_divider {
-    margin: 10px 10px 5px 10px;
+    margin: 15px 10px 10px 10px;
     background-color: #dcf4ff;
     border-width: 0px;
     border-radius: 4px;
@@ -468,14 +476,166 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 1s ease;
+    z-index: 10;
 }
 
-@keyframes spin {
-    from {transform: rotate(20deg);}
-    to {transform: rotate(100deg);}
+#homePage_rightSide_lowerDiv_mainDiv {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: #42c0fb;
+    width: 94%;
+    height: 90%;
+    border-radius: 6px;
+    justify-self: center;
 }
 
 @keyframes whiteLeftBorderexpandOut {
     from {transform: scaleY(0);}
     to {transform: scaleY(1);}
+}
+
+.lowerPage {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: #dcf4ff;
+}
+
+#lessons_rightSide_lowerPage {
+    width: 100%;
+    height: 100%;
+}
+
+.lesson_rightSide_lessonDiv {
+    height: 45vh;
+    width: 95vw;
+    display: flex;
+    background-color: #dcf4ff;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.lessons_rightSide_lessonDiv_lessons_title_progressDivHolder {
+    display: flex;
+    margin: 0 1%;
+    background-color: #8dceec;
+    border-radius: 4px;
+    align-content: center;
+    justify-content: center;
+    flex-direction: row;
+    height: 100%;
+    width: 70%
+}
+
+.lessons_rightSide_lessonDiv_lessons {
+    margin: 10px 20px 0px 20px;
+    display: flex;
+    height: 80%;
+    width: 20%;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px black;
+    transition: box-shadow 1s ease;
+
+}
+
+.lesson_rightSide_lessonDiv_lessons_title_progressBarPercentage {
+    margin: 0px 2%;
+    font-size: .7vmax;
+    align-self: center;
+    justify-self: center;
+    font-weight: bold;
+}
+
+.lesson_rightSide_lessonDiv_lessons_Inner {
+    background-color: #04afff;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #04afff #a8e1fb;
+}
+
+.lesson_rightSide_lessonDiv_lessons_title_progressBar {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    align-self: center;
+    margin: 0px 2%;
+    width: 60%;
+    height: 15%;
+}
+
+.lessons_rightSide_lessonDiv_lessons_title_wordTitle {
+    text-wrap: nowrap;
+    height: 80%;
+    align-self: center;
+    font-size: 1vmax;
+    margin: 0px 4%;
+}
+
+.lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar {
+    width: 20%;
+    border-radius: 4px;
+    height: 100%;
+    background-color: rgb(20, 188, 255);
+}
+
+.lessons_rightSide_lessonDiv_lessons_title {
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    margin: 4% 0;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+    border-radius: 4px;
+    width: 85%;
+    height: 20%;
+    background-color: #4fc5fc;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content {
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    background-color: #4fc5fc;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonName {
+    width: 67%;
+    margin: 0px 2% 0px 9%;
+    height: 100%;
+    font-weight: 600;
+    font-size: 1vmax;
+    justify-content: center;
+    align-content: center;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion {
+    justify-self: center;
+    align-self: center;
+    aspect-ratio: 1 / 1;
+    width: 12%;
+    border-radius: 50%;
+    border: 3px solid rgb(142, 152, 154);
+    background-color: rgb(190, 210, 196);
+    transition: background-color 1s ease, border 1s ease;
+    /*border: 3px solid rgb(142, 152, 154);
+    background-color: rgb(190, 203, 210);*/
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.lessonCompButtonActive {
+    background-color: rgb(49, 239, 106);
+    border: 3px solid rgba(92, 235, 135, 1);
 }
