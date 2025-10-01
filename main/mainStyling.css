@@ -596,6 +596,7 @@
     flex-direction: column;
     align-self: center;
     justify-self: center;
+    margin: 4% 0px;
     border-radius: 4px;
     width: 85%;
     height: 20%;
@@ -638,4 +639,24 @@
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.lessonCompButtonActive {
     background-color: rgb(49, 239, 106);
     border: 3px solid rgba(92, 235, 135, 1);
+}
+
+#lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit1 {
+    width: 100%;
+}
+
+#lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit2 {
+    width: 15%
+}
+
+#lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit3 {
+    width: 42%;
+}
+
+#lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit4 {
+    width: 72%;
+}
+
+#lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit5 {
+    width: 90%;
 }
