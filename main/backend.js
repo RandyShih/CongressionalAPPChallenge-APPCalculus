@@ -7,8 +7,11 @@ let databaseActive = localStorage.getItem("databaseActive");
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
 
-function databaseInitialization() {
-    const request = window.indexedDB.open("mainDataBase", 6);
+
+
+function databaseInitialization(callback) {
+    let tempDBIU = false; 
+    const request = window.indexedDB.open("mainDataBase", 1);
     request.onerror = (errorEvent) => {
         console.error("MainDataBase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
@@ -28,12 +31,15 @@ function databaseInitialization() {
             }
         }
         sessionStorage.setItem("DBError", "1");
+        callback(0);
     }
     
     request.onupgradeneeded = (upgradeEvent) => {
         db = upgradeEvent.target.result;
+        tempDBIU = true
         if (!db.objectStoreNames.contains("Quizzes")) {
             const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
+
         }
         if (!db.objectStoreNames.contains("ProgressTracker")) {
             const progressTrackerData = db.createObjectStore("ProgressTracker", {autoIncrement: false})
@@ -47,14 +53,16 @@ function databaseInitialization() {
             console.log("Max data: " + estimationData.quota + " bytes.");
             console.log("Used data: " + estimationData.usage + " bytes.");
         })
+        if (tempDBIU == true)  {
+            callback(2);
+        } else {
+            callback(1);
+        }
     }
 
 
 }
 
-if (databaseActive == "true") {
-    databaseInitialization();
-}
 
 function dataAmender(database, objectID, data, keySpecific, key) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
@@ -72,6 +80,9 @@ function dataAmender(database, objectID, data, keySpecific, key) {
             console.log("Data successfully added." + " Details: " + "key: " + key + "," + " data: " + data + ".");
         }
         dataAmenderRequest.onerror = dataAmenderRequestError => {
+            if (dataOpener.get(data) != undefined) {
+                console.error("Key conflict error");
+            }
             console.error("Data amendment error: " + dataAmenderRequestError.target.result + ". Details: " + "key: " + key + "," + " data: " + data + ".");
         }
     } else {
@@ -103,6 +114,8 @@ function dataAccessor(database, objectID, key, callback) {
     }
 }
 
+
+
 function dataUpdater(database, objectID, key) {
     
 }
@@ -112,7 +125,7 @@ function testing() {
         console.log(dataAccessorData)
     });
     dataAmender(db, "Quizzes", "hello", false, null);
-    dataAmender(db, "ProgressTracker", "heljlhdwadwadio", true, "headwdfwadadwadwadwo");
+    dataAmender(db, "ProgressTracker", "heljlhdwa2dwadio", true, "headwdfwkwwadadwadwadwo");
 }
 
 function siteRedirect() {
@@ -127,10 +140,30 @@ function test() {
     dataAmender(db, "Quizzes", {"test": 1, "no":3});
 }
 
+
+if (databaseActive == "true") {
+    databaseInitialization(DBI => {
+        if (DBI == 2) {
+            const data = {12: {
+                14: {
+                    23: 52
+                }
+            }}
+            dataAmender(db, "Quizzes", data, false, null);
+            dataAccessor(db, "Quizzes", 6, DAR => {
+                console.log(DAR);
+            })
+        }
+    }
+)}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
         const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
+        console.log(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion);
+        const lessons_rightSide_lessonDiv_lessons_sublesson = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson");
         for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
             lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].addEventListener("click", event => {
                 lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].classList.toggle("lessonCompButtonActive");                
@@ -146,10 +179,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 lessons_rightSide_lessonDiv_lessons[lesson].style.boxShadow = "0px 0px 0px rgb(71, 66, 66)";
             })
         }
+        for (let sublesson=0; sublesson<lessons_rightSide_lessonDiv_lessons_sublesson.length; sublesson++) {
+            lessons_rightSide_lessonDiv_lessons_sublesson[sublesson].addEventListener("mouseenter", LRLLS => {
+                for (const sublessonChild of lessons_rightSide_lessonDiv_lessons_sublesson[sublesson].children) {
+                    if (sublessonChild.className != "lessons_rightSide_lessonDiv_lessons_sublesson_content") {
+                        sublessonChild.style.position = "static";
+                        sublessonChild.style.transform = "scaleY(1)";
+                        sublessonChild.style.opacity = 1;
+                    }     
+                }
+            })
+            lessons_rightSide_lessonDiv_lessons_sublesson[sublesson].addEventListener("mouseleave", LRLLS => {
+                for (const sublessonChild of lessons_rightSide_lessonDiv_lessons_sublesson[sublesson].children) {
+                    if (sublessonChild.className != "lessons_rightSide_lessonDiv_lessons_sublesson_content") {
+                        sublessonChild.style.transform = "scaleY(.001)";
+                        sublessonChild.style.position = "absolute";
+                        sublessonChild.style.opacity = 0;
+                    }
+                }
+            })
+
+        }
     }
     if (window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
         if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
-            console.log("hey");
             const mainPageGraph = document.getElementById("mainPage_graph");
             mainPageGraph.style.width = "35vw";
             mainPageGraph.style.height = "35vh";

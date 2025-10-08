@@ -261,9 +261,9 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    aspect-ratio: 1 / 1;
     width: 3.5vw;
-    height: 5.5vh;
-    border-radius: 14px;
+    border-radius: 50%;
 }
 
 #sidebar_a2 {
@@ -410,7 +410,7 @@
     display: flex;
     flex-direction: column;
     width: 94.5vw;
-    height: 15%;
+    height: 10%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv {
@@ -521,7 +521,7 @@
 .lessons_rightSide_lessonDiv_lessons_title_progressDivHolder {
     display: flex;
     margin: 0 1%;
-    background-color: #8dceec;
+    background-color: #98dcf7;
     border-radius: 4px;
     align-content: center;
     justify-content: center;
@@ -596,16 +596,23 @@
     flex-direction: column;
     align-self: center;
     justify-self: center;
+    align-items: center;
+    justify-items: center;
     margin: 4% 0px;
+    padding: 5% 0px 5% 0px;
     border-radius: 4px;
-    width: 85%;
-    height: 20%;
+    min-height: 5vh;
+    width: 80%;
+    z-index: 0;
+    height: auto;
     background-color: #4fc5fc;
 }
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content {
     display: flex;
+    pointer-events: none;
     flex-direction: row;
+    align-items: center;
     border-radius: 4px;
     background-color: #4fc5fc;
     cursor: pointer;
@@ -615,22 +622,25 @@
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonName {
     width: 67%;
-    margin: 0px 2% 0px 9%;
+    margin: 0px 4% 0px 9%;
     height: 100%;
-    font-weight: 600;
+    font-weight: 300;
     font-size: 1vmax;
     justify-content: center;
     align-content: center;
 }
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion {
-    justify-self: center;
+    justify-self: left;
+    cursor: pointer;
     align-self: center;
     aspect-ratio: 1 / 1;
-    width: 12%;
+    width: 10%;
     border-radius: 50%;
-    border: 3px solid rgb(142, 152, 154);
+    cursor: pointer;
+    border: 2px solid rgb(142, 152, 154);
     background-color: rgb(190, 210, 196);
+    z-index: 12200;
     transition: background-color 1s ease, border 1s ease;
     /*border: 3px solid rgb(142, 152, 154);
     background-color: rgb(190, 203, 210);*/
@@ -638,7 +648,7 @@
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.lessonCompButtonActive {
     background-color: rgb(49, 239, 106);
-    border: 3px solid rgba(92, 235, 135, 1);
+    border: 2px solid rgba(92, 235, 135, 1);
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit1 {
@@ -659,4 +669,41 @@
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit5 {
     width: 90%;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent.syncAnimationLRLLSCS {
+    display: flex;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent {
+    position: absolute;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    width: 90%;
+    height: 5vh;
+    transform: scaleY(.001);
+    transform-origin: center;
+    background-color:#98dcf7;
+    margin: 4% 0px 0px 0px;
+    border-radius: 4px;
+    transition: transform 1s ease;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent_image {
+    aspect-ratio: 1 / 1;
+    height: 65%;
+    margin-left: 2%;
+    background: url("imageFiles/temp.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent_text {
+    margin: 0px 2%;
+    width: 60%;
+    font-size: 1vmax;
+    font-weight: 300;
 }
