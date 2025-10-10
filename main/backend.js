@@ -120,6 +120,9 @@ function databaseInitialization(callback) {
         if (!db.objectStoreNames.contains("AdaptiveFeedback")) {
             const adaptiveFeedback = db.createObjectStore("AdaptiveFeedback", {autoIncrement: true});
         }
+        if (!db.objectStoreNames.contains("temporaryQuestionHolder")) {
+            const temporaryQuestionHolder = db.createObjectStore("temporaryQuestionHolder", {autoIncrement: true});
+        }
         console.log("Database upgraded.");
     }
 
@@ -321,6 +324,31 @@ document.addEventListener("DOMContentLoaded", () => {
             })
 
         }
+    }
+    if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
+        const dropdownUnitSelector = document.getElementById("SUnits");
+        const dropdownLessonSelector = document.getElementById("OLessons")
+        dropdownUnitSelector.addEventListener("change", DUSC => {
+            const DUSCOptionValue = DUSC.target.value;
+
+            if (keyMapParser(DUSCOptionValue) != null) {
+                const lessonData = dataMap[keyMapParser(DUSCOptionValue)][2];
+                dropdownLessonSelector.disabled = false;
+                dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option> <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="QW">Every Lesson</option>';
+                for (DUSCLessonCounter=0; DUSCLessonCounter<Object.keys(lessonData).length; DUSCLessonCounter++) {
+                    const DUSCLesson = document.createElement("option");
+                    DUSCLesson.value = numberParser(DUSCLessonCounter + 1);
+                    DUSCLesson.textContent = "Lesson " + (DUSCLessonCounter + 1) + ": " + Object.values(lessonData)[DUSCLessonCounter];
+                    DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                    dropdownLessonSelector.appendChild(DUSCLesson);
+                }
+            } else {
+                dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
+                dropdownLessonSelector.disabled = true;
+            }
+            
+            
+        })
     }
     if (window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
         if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
