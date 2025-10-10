@@ -6,12 +6,83 @@ if (localStorage.getItem("databaseActive") == null) {
 let databaseActive = localStorage.getItem("databaseActive");
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
+const dataMap = {1: [
+    "Unit 1", 
+    "Derivatives", {
+        1: "Basic Derivation",
+        2: "Product Rule",
+        3: "Quotient Rule",
+        4: "Chain Rule",
+        5: "Derivative Relationships"
+    }], 
+    2: [
+    "Unit 2",
+    "Graphical Analysis", {
+        1: "Interpretations of Functions",
+        2: "Interpretations of Derivatives",
+        3: "Interpretations of Double Derivatives",
+        4: "Extreme Value Theorem",
+        5: "Intermediate Value Theorem",
+        6: "Mean Value Theorm",
+        7: "Rolle's Theorem"
+    }],
+    3: [
+    "Unit 3",
+    "Integrals", {
+        1: "Integral Approximations",
+        2: "Antiderivatives",
+        3: "First and Second Theorem of Calculus",
+        4: "Definite Integrals",
+        5: "Indefinite Integrals",
+    }
+    ],
+    4: [
+    "Unit 4",
+    "Applications of Integrals", {
+        1: "Washer Method",
+        2: "Disc Method",
+        3: "Cross Sections"
+    } 
+    ],
+    5: [
+    "Unit 5",
+    "Introductory Kinematic Equations", {
+        1: "Derivation of Kinematics",
+        2: "Change by Integration"
+    }
+    ]
+}
 
+const keyMap = {
+        "AB": 1,
+        "BC": 2,
+        "FC": 3,
+        "GH": 4,
+        "JK": 5,
+        "KL": 6,
+        "PI": 7,
+        "TY": 8,
+        "RE": 9,
+        "QW": 0
+}
+
+const keyMapReversed = {
+        1: "AB",
+        2: "BC",
+        3: "FC",
+        4: "GH",
+        5: "JK",
+        6: "KL",
+        7: "PI",
+        8: "TY",
+        9: "RE",
+        0: "QW"
+}
 
 
 function databaseInitialization(callback) {
     let tempDBIU = false; 
-    const request = window.indexedDB.open("mainDataBase", 1);
+    const request = window.indexedDB.open("mainDataBase", 6);
     request.onerror = (errorEvent) => {
         console.error("MainDataBase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
@@ -39,11 +110,17 @@ function databaseInitialization(callback) {
         tempDBIU = true
         if (!db.objectStoreNames.contains("Quizzes")) {
             const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
-
+        }
+        if (!db.objectStoreNames.contains("RecentLessons")) {
+            const recentLessons = db.createObjectStore("RecentLessons", {autoIncrement: true});
         }
         if (!db.objectStoreNames.contains("ProgressTracker")) {
-            const progressTrackerData = db.createObjectStore("ProgressTracker", {autoIncrement: false})
+            const progressTrackerData = db.createObjectStore("ProgressTracker", {autoIncrement: false});
         }
+        if (!db.objectStoreNames.contains("AdaptiveFeedback")) {
+            const adaptiveFeedback = db.createObjectStore("AdaptiveFeedback", {autoIncrement: true});
+        }
+        console.log("Database upgraded.");
     }
 
     request.onsuccess = (successEvent) => {
@@ -114,8 +191,6 @@ function dataAccessor(database, objectID, key, callback) {
     }
 }
 
-
-
 function dataUpdater(database, objectID, key) {
     
 }
@@ -136,24 +211,68 @@ function pageRedirect(page) {
     window.location.href = page;
 }
 
-function test() {
-    dataAmender(db, "Quizzes", {"test": 1, "no":3});
+function keyMapParser(key) {
+    let KMPS = "";
+    if (key.length % 2 == 1) {
+        return null
+    }
+    for (counter=0; counter<(key.length/2); counter++) {
+        let currentKey = key.substring(counter*2, (counter+1)*2);
+        if (keyMap.hasOwnProperty(currentKey)) {
+            KMPS += keyMap[currentKey].toString();
+        } else {
+            return null
+        }
+    }
+    return parseInt(KMPS)
+}
+
+
+function numberParser(number) {
+    let NPNS = "";
+    let newNum = number.toString();
+    console.log(number);
+    for (NPC=0; NPC<newNum.length; NPC++) {
+        if (keyMapReversed.hasOwnProperty(newNum[NPC])) {
+            NPNS = NPNS + keyMapReversed[newNum[NPC]];
+        } else {
+            return null
+        }
+    }
+    return NPNS
 }
 
 
 if (databaseActive == "true") {
     databaseInitialization(DBI => {
-        if (DBI == 2) {
-            const data = {12: {
-                14: {
-                    23: 52
-                }
-            }}
-            dataAmender(db, "Quizzes", data, false, null);
-            dataAccessor(db, "Quizzes", 6, DAR => {
-                console.log(DAR);
-            })
-        }
+        if (DBI == 1) {
+            const quizzesDataFramework = {
+                1: {},
+                2: {},
+                3: {},
+                4: {},
+                5: {}
+            }
+
+            const recentLessonsDataFramework = {
+                1: [0],
+                2: [0],
+                3: [0],
+                4: [0]
+            }
+
+            const progressTrackerdataFramework = {
+                1: [[1], [2], [3], [4], [5]],
+                2: [[1], [2], [3], [4], [5], [6], [7]],
+                3: [[1], [2], [3], [4], [5]],
+                4: [[1], [2], [3]],
+                5: [[1], [2]]
+            }
+            console.log(quizzesDataFramework.length);
+            for (QDFDBI=1; QDFDBI<Object.keys(quizzesDataFramework).length+1; QDFDBI++) {
+                dataAmender(db, "Quizzes", quizzesDataFramework[QDFDBI], false, null);
+            }
+      }
     }
 )}
 
@@ -186,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         sublessonChild.style.position = "static";
                         sublessonChild.style.transform = "scaleY(1)";
                         sublessonChild.style.opacity = 1;
+                        sublessonChild.style.pointerEvents = "auto";
                     }     
                 }
             })
@@ -195,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         sublessonChild.style.transform = "scaleY(.001)";
                         sublessonChild.style.position = "absolute";
                         sublessonChild.style.opacity = 0;
+                        sublessonChild.style.pointerEvents = "none";
                     }
                 }
             })

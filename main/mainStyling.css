@@ -103,7 +103,7 @@
 
 
 #navTitle {
-    font-size: 30px;
+    font-size: 2vmax;
     padding-right: 0 100px;
     margin: 2px 10px;
     color: #5e17eb;
@@ -161,7 +161,7 @@
 }
 
 #mainPage_centeredDiv_title {
-    font-size: 52px;
+    font-size: 3.5vmax;
 }
 
 #mainPage_centeredDiv_button {
@@ -610,7 +610,6 @@
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content {
     display: flex;
-    pointer-events: none;
     flex-direction: row;
     align-items: center;
     border-radius: 4px;
@@ -640,7 +639,7 @@
     cursor: pointer;
     border: 2px solid rgb(142, 152, 154);
     background-color: rgb(190, 210, 196);
-    z-index: 12200;
+    z-index: 100;
     transition: background-color 1s ease, border 1s ease;
     /*border: 3px solid rgb(142, 152, 154);
     background-color: rgb(190, 203, 210);*/
@@ -686,8 +685,9 @@
     height: 5vh;
     transform: scaleY(.001);
     transform-origin: center;
+    pointer-events: none;
     background-color:#98dcf7;
-    margin: 4% 0px 0px 0px;
+    margin: 6% 0px 0px 0px;
     border-radius: 4px;
     transition: transform 1s ease;
 }
@@ -695,15 +695,15 @@
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent_image {
     aspect-ratio: 1 / 1;
     height: 65%;
-    margin-left: 2%;
+    margin-left: 6%;
     background: url("imageFiles/temp.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent_text {
-    margin: 0px 2%;
-    width: 60%;
+    margin: 0px 4%;
+    width: 45%;
     font-size: 1vmax;
     font-weight: 300;
 }
