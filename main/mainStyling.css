@@ -410,7 +410,7 @@
     display: flex;
     flex-direction: column;
     width: 94.5vw;
-    height: 10%;
+    height: 12%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv {
@@ -504,13 +504,13 @@
 }
 
 #lessons_rightSide_lowerPage {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
 }
 
 .lesson_rightSide_lessonDiv {
-    height: 45vh;
-    width: 95vw;
+    height: 45%;
+    width: 92vw;
     display: flex;
     background-color: #dcf4ff;
     flex-direction: row;
@@ -706,4 +706,399 @@
     width: 45%;
     font-size: 1vmax;
     font-weight: 300;
+}
+
+
+/* Practice Page */
+#mainBackgroundDiv_leftDiv {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+#mainBackgroundDiv_rightDiv {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 100%;
+}
+
+.mainBackgroundDiv_leftDiv_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    width: 35%;
+    height: 40%;
+    background: #27b2f2;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px black;
+    margin: 24% 0px 0px 8%;
+    background: linear-gradient(160deg,rgba(67, 195, 250, 1) 24%, rgb(159, 209, 246) 61%, #27b2f2 80%);
+    background-size: 900%;
+    background-position: right;
+    transform: scale(1);
+    transition: background-position 1s ease-in-out, transform .5s ease-in-out, box-shadow 1s ease-in-out;
+
+    
+}
+
+.mainBackgroundDiv_leftDiv_card:hover {
+    background-position: center;
+    transform: scale(1.06);
+    box-shadow: 0px 0px 2px black;
+
+}
+
+
+#mainPage-divHolder {
+    display: none;
+    flex-direction: column;
+    margin-left: 5.5vw;
+    width: 100%;
+    height: 100%;
+}
+
+#mainPage_contentDivHolder {
+    display: flex;
+    flex-direction: row;
+    transform: background-color 1s ease;
+    width: 100%;
+    height: 80%;
+}
+
+#mainPage_titleDivHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 15%;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 92%;
+    margin-top: 4%;
+    background-color: #27b2f2;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px black;
+    transform: scale(1);
+    transition: box-shadow .5s ease-in-out, transform .8s ease-in-out;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv:hover {
+    box-shadow: 0px 0px 4px black;
+    transform: scale(1.02);
+}
+
+#mainPage_titleDivHolder_title {
+    align-content: center;
+    color :#04afff;
+    font-size: 2.5vmax;
+    padding-left: 2.5%;
+    width: 100%;
+    font-weight: bolder;
+    height: 40%;
+}
+
+#mainPage_titleDivHolder_title_divider {
+    background-color: #04afff;
+    border-width: 0px;
+    border-radius: 4px;
+    margin: 1% 0%;
+    height: 5%;
+    width: 95%;
+}
+
+
+.mainBackgroundDiv_leftDiv_card_cardTitle {
+    display: flex;
+    color: #d1eaf4;
+    justify-content: center;
+    align-content: center;
+    font-weight: bold;
+    font-size: 2vmax;
+    width: 60%;
+    height: 10%;
+
+}
+
+
+#mainBackgroundDiv_leftDiv_card_gameCardImage {
+    background-image: url("imageFiles/gameLogo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    aspect-ratio: 1/1;
+    width: 70%
+}
+
+#mainBackgroundDiv_leftDiv_card_questionCardImage { 
+    background-image: url("imageFiles/questionLogo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    aspect-ratio: 1/1;
+    width: 70%
+}
+
+.mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_select {
+    border-radius: 4px;
+    margin: 0% 0% 4% 0%;
+    border-width: 2px;
+    border-color: #4fc5fc;
+    background-color:#d1eaf4;
+    color:#04afff;
+    height: 6%;
+    width: 80%;
+
+}
+
+.mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options {
+    color:#04afff;
+
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_title_divider {
+    background-color:white;
+    margin: 1% 0%;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    width: 90%;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_title {
+    font-size: 2vmax;
+    margin: 1% 0%;
+}
+
+.mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_headerText {
+    font-size: 1.1vmax;
+    margin: 3% 0% 0% 0%;
+    width: 80%;
+    height: 5%;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addQuestion {
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    border-width: 0px;
+    font-size: 1vmax;
+    height: 70%;
+    width: 30%;
+    margin-right: 4%;
+    background-color: #5abdea;
+    pointer-events: none;
+    box-shadow: 0px 0px 0px black;
+    transition: box-shadow .4s ease-in-out;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addQuestion:hover {
+    box-shadow: 0px 0px 4px black;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addAdaptiveQuestions {
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    border-width: 0px;
+    font-size: 1vmax;
+    height: 70%;
+    width: 30%;
+    margin-left: 4%;
+    background-color: #93d8f8;
+    box-shadow: 0px 0px 0px black;
+    transition: box-shadow .4s ease-in-out;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addAdaptiveQuestions:hover {
+    box-shadow: 0px 0px 4px black;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_buttonHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2% 0%;
+    width: 95%;
+    height: 10%;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder {
+    background-color: #a8e1fb;
+    margin: 1%;
+    height: 35%;
+    width: 90%;
+    border-radius: 4px;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_title {
+    font-size: 1.1vmax;
+    margin: 2%;
+}
+
+#mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    width: 90%;
+    align-self: center;
+    align-items: center;
+    justify-self: center;
+    border-radius: 4px;
+    background-color: #04afff;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #04afff #a8e1fb;
+}
+
+.mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question {
+    display: flex;
+    margin-top: 2%;
+    font-size: 1vmax;
+    align-items: center;
+    padding-left: 2%;
+    color:#04afff;
+    flex-shrink: 0;
+    width: 90%;
+    border-radius: 4px;
+    height: 20%;
+    background-color: #d1eaf4;
+}
+
+.mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv {
+    display: flex;
+    cursor: pointer;
+    aspect-ratio: 1/1;
+    font-size: 1vmax;
+    width: 4.5%;
+    margin-left: auto;
+    margin-right: 2%;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    border-radius: 2px;
+
+}
+
+#hiddenDivGame {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5.5vw;
+    width: 100%;
+    height: 100%;
+}
+
+#hiddenDivGame_mainScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+}
+
+#hiddenDivGame_mainScreen_gameScreen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #04afff;
+    width: 90%;
+    height: 85%;
+    border-radius: 4px;
+}
+
+#hiddenDivGame_bottomScreen {
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    width: 100%;
+}
+
+#hiddenDivGame_returnButton {
+    cursor: pointer;
+    display: flex;
+    width: 10%;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    border-radius: 4px;
+    margin-bottom: 4%;
+    margin-left: 4%;
+    background-color: #04afff;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder {
+    display: flex;
+    flex-direction: column;
+    width: 45%; 
+    margin: 2%;
+    border-radius: 4px;
+    height: 90%;
+    background-color:#c2e0ee;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgTitle {
+    display: flex;
+    margin-top: 4%;
+    margin-left: 4%;
+    font-size: 2.5vmax;
+    color:#04afff;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney {
+    color: #04afff;
+    margin: 1% 4%;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_separator {
+    background-color:#04afff;
+    margin-top: 1%;
+    margin-left: 4%;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    width: 90%;
+}
+
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg {
+    display: flex;
+    margin-left: 4%;
+    border-radius: 4px;
+    margin-top: 4%;
+    background-color:#04afff;
+    width: 90%;
+    padding: 4%;
+    font-size: 2vmax;
+    height: 10%;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vmax;
+    height: 100%;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_cost {
+    display: flex;
+    height: 100%;
+    width: 50%; 
+    align-items: center;
+    justify-items: center;
+    font-size: 1vmax;
 }

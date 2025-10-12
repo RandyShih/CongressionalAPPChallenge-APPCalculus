@@ -6,6 +6,90 @@ if (localStorage.getItem("databaseActive") == null) {
 let databaseActive = localStorage.getItem("databaseActive");
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
+
+/* Game Data */
+let currency = 0;
+let upg1 = 0;
+let upg2 = 0;
+let upg3 = 0;
+let upg4 = 0;
+let upg5 = 0;
+let upg1_price = 100 * (1.25^upg1);
+let upg2_price = 1000 * (1.40^upg2);
+let upg3_price = 10000 * (1.75^upg3);
+let upg4_price = 100000 * (1.90^upg4);
+let upg5_price = 1000000 * (2^upg5);
+let rebirth = 0;
+let rebirthCost = 100000 * (4^rebirth);
+let rUpg1 = 0;
+let rUpg2 = 0;
+let rUpg3 = 0;
+let rUpg4 = 0;
+let rUpg5 = 0;
+let card50Val = 2;
+let card30Val = 3;
+let card10Val = 5;
+let card8Val = 10;
+let card2Val = 20;
+let card50 = 0;
+let card30 = 0;
+let card10 = 0;
+let card8 = 0;
+let card2 = 0;
+let rUpg1_price = 1 * (1.50^rUpg1);
+let rUpg2_price = 1 * (2.0^rUpg2);
+let rUpg3_price = 1 * (2.50^rUpg3);
+let rUpg4_price = 1 * (4.0^rUpg4);
+let rUpg5_price = 1 * (8.0^rUpg5);
+let rMultiplier = 1 * (1 + rUpg4_price) * (1+ rUpg5_price) * (1 + card8) * (1 + card2);
+let multiplier = 1 * (1 + upg1 * 2 + upg2 * 3 + upg3 * 5 + upg4 * 10 + upg5 * 25) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 + card30 + card10 + card8 + card2);
+
+function gameInitiation() {
+    const dataSet = [upg1, upg2, upg3, upg4, upg5];
+    const up1Button = document.getElementById("up1Button");
+    const up2Button = document.getElementById("up2Button");
+    const up3Button = document.getElementById("up3Button");
+    const up4Button = document.getElementById("up4Button");
+    const up5Button = document.getElementById("up5Button");
+    currency = 0;
+    upg1 = 0;
+    upg2 = 0;
+    upg3 = 0;
+    upg4 = 0;
+    upg5 = 0;
+    rebirth = 0;
+    rUpg1 = 0;
+    rUpg2 = 0;
+    rUpg3 = 0;
+    rUpg4 = 0;
+    rUpg5 = 0;
+    card50 = 0;
+    card30 = 0;
+    card10 = 0;
+    card8 = 0;
+    card2 = 0;
+
+}
+
+function gameLogic() {
+    currency += multiplier;
+}
+
+
+const questionsUnit1 = {
+    1: {"What is the derivative of 5x?": {1: ["5x", "5", "10x^2", "0"]}, 
+        2: {"What is the derivative of $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}},
+    2: {1: {}, 
+        2: {}},
+    3: {1: {},
+        2: {}},
+    4: {1: {},
+        2: {}},
+    5: {1: {}, 
+        2: {}}
+}
+
+
 const dataMap = {1: [
     "Unit 1", 
     "Derivatives", {
@@ -80,11 +164,39 @@ const keyMapReversed = {
 }
 
 
+
+function dataTraverser(database, objectStore, keys, callback) {
+    if (keys.length != 0) {
+        dataAccessor(database, objectStore, keys[0], DTDA => {
+            if (DTDA != null){
+                let temporaryHolder = JSON.parse(DTDA);
+                for (DTFor=1; DTFor<keys.length; DTFor++) {
+                    temporaryHolder = temporaryHolder[keys[DTFor]];
+                }
+                callback(temporaryHolder);
+            }
+        })
+    } else {
+        callback(null);
+    }
+}
+
+
+function deleteDatabase(aDatabase) {
+    const DBR = indexedDB.deleteDatabase(aDatabase);
+    DBR.onerror = DBRONE => {
+        console.error("Error: " + DBRONE.target.error + ", database was not able to be successfully deleted.");
+    }
+    DBR.onsuccess = DBRONS => {
+        console.log("Database was successfully deleted.");
+    }
+}
+
 function databaseInitialization(callback) {
     let tempDBIU = false; 
-    const request = window.indexedDB.open("mainDataBase", 6);
+    const request = window.indexedDB.open("mainDatabase", 3);
     request.onerror = (errorEvent) => {
-        console.error("MainDataBase was not able to be loaded.");
+        console.error("mainDatabase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
             alert("Local database was not able to be loaded, try refreshing the website.");
         } else {
@@ -93,7 +205,7 @@ function databaseInitialization(callback) {
             dataDeletionRequest = dataDeletionRequest.toLowerCase();
             if (dataDeletionRequest == "yes") {
                 alert("Database has been deleted.");
-                indexedDB.deleteDatabase("mainDataBase");
+                deleteDatabase("mainDatabase");
             } else if (dataDeletionRequest == "no") {
                 alert("Database has been disabled, please contact me to resolve this issue.")
                 localStorage.setItem("databaseActive", "false");
@@ -120,12 +232,20 @@ function databaseInitialization(callback) {
         if (!db.objectStoreNames.contains("AdaptiveFeedback")) {
             const adaptiveFeedback = db.createObjectStore("AdaptiveFeedback", {autoIncrement: true});
         }
+        if (!db.objectStoreNames.contains("temporaryQuestionHolder")) {
+            const temporaryQuestionHolder = db.createObjectStore("temporaryQuestionHolder", {autoIncrement: false});
+        }
         console.log("Database upgraded.");
+    }
+
+    request.onblocked = (databaseBlocked) => {
+        console.error("Blocked database request.")
+        callback(3);
     }
 
     request.onsuccess = (successEvent) => {
         db = successEvent.target.result;
-        console.log("MainDataBase was successfully loaded.");
+        console.log("mainDatabase was successfully loaded.");
         navigator.storage.estimate().then(estimationData => {
             console.log("Max data: " + estimationData.quota + " bytes.");
             console.log("Used data: " + estimationData.usage + " bytes.");
@@ -136,8 +256,6 @@ function databaseInitialization(callback) {
             callback(1);
         }
     }
-
-
 }
 
 
@@ -170,30 +288,71 @@ function dataAmender(database, objectID, data, keySpecific, key) {
 
 function dataAccessor(database, objectID, key, callback) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID);
-    if (key != null) {
-        const dataAccessorRequest = dataOpener.get(key);
-        dataAccessorRequest.onsuccess = (dbAccessResults) => {
-            callback(JSON.stringify(dbAccessResults.target.result));
+    try {
+        if (key != null) {
+            if (parseInt(key) == NaN) {
+                console.log(parseInt(key))
+                parsedKey = parseInt(key);
+            } else {
+                parsedKey = key;
+            }
+            console.log(parsedKey)
+            const dataAccessorRequest = dataOpener.get(parsedKey);
+            dataAccessorRequest.onsuccess = (dbAccessResults) => {
+                callback(JSON.stringify(dbAccessResults.target.result));
+            }
+            dataAccessorRequest.onerror = (dbAccessResults) => {
+                callback(null);
+                console.error("Error with dataAccessorRequest for a key.");
+            }
+        } else {
+            const dataAccessorRequest = dataOpener.getAll();
+            dataAccessorRequest.onsuccess = (dbAccessResults) => {
+                callback(JSON.stringify(dbAccessResults.target.result));
+            }
+            dataAccessorRequest.onerror = (dbAccessResults) => {
+                callback(null);
+                console.error("Error with dataAccessorRequest for all of the data in an object.")
+            }
         }
-        dataAccessorRequest.onerror = (dbAccessResults) => {
-            callback(null);
-            console.error("Error with dataAccessorRequest for a key.");
-        }
-    } else {
-        const dataAccessorRequest = dataOpener.getAll();
-        dataAccessorRequest.onsuccess = (dbAccessResults) => {
-            callback(JSON.stringify(dbAccessResults.target.result));
-        }
-        dataAccessorRequest.onerror = (dbAccessResults) => {
-            callback(null);
-            console.error("Error with dataAccessorRequest for all of the data in an object.")
-        }
+    } catch(error) {
+        console.error("Data accessor error.")
+        callback(error);
     }
 }
 
 function dataUpdater(database, objectID, key) {
     
 }
+
+function dataRemover(database, objectID, keyroute) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID);
+    if (keyroute.length > 1) {
+        dataOpener.openCursor().onsuccess = DROC => {
+            console.log(2);
+        }
+    dataOpener.close();
+    } else if (keyroute.length == 1) {
+        dataAccessor(database, objectID, keyroute[0], DRDA => {
+            if (DRDA != null) {
+                const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID);
+                const DRRequest = dataOpener.delete(keyroute[0]);
+                DRRequest.onsuccess = DDRS => {
+                    console.log("Data with the key, " + keyroute[0] + ", was successfully deleted.");
+                } 
+                DRRequest.onerror = DDRE => {
+                    console.error("Failed to delete data with the key: " + keyroute[0] + ".")
+                }
+            } else {
+                console.error("Data remover error: " + "database: " + database + ", objectID: " + objectID + ", key route: " + keyroute + ".");
+            }
+        })
+        
+    }
+    
+}
+
+
 
 function testing() {
     dataAccessor(db, "Quizzes", 1, dataAccessorData => {
@@ -231,7 +390,6 @@ function keyMapParser(key) {
 function numberParser(number) {
     let NPNS = "";
     let newNum = number.toString();
-    console.log(number);
     for (NPC=0; NPC<newNum.length; NPC++) {
         if (keyMapReversed.hasOwnProperty(newNum[NPC])) {
             NPNS = NPNS + keyMapReversed[newNum[NPC]];
@@ -242,42 +400,65 @@ function numberParser(number) {
     return NPNS
 }
 
-
-if (databaseActive == "true") {
-    databaseInitialization(DBI => {
-        if (DBI == 1) {
-            const quizzesDataFramework = {
-                1: {},
-                2: {},
-                3: {},
-                4: {},
-                5: {}
-            }
-
-            const recentLessonsDataFramework = {
-                1: [0],
-                2: [0],
-                3: [0],
-                4: [0]
-            }
-
-            const progressTrackerdataFramework = {
-                1: [[1], [2], [3], [4], [5]],
-                2: [[1], [2], [3], [4], [5], [6], [7]],
-                3: [[1], [2], [3], [4], [5]],
-                4: [[1], [2], [3]],
-                5: [[1], [2]]
-            }
-            console.log(quizzesDataFramework.length);
-            for (QDFDBI=1; QDFDBI<Object.keys(quizzesDataFramework).length+1; QDFDBI++) {
-                dataAmender(db, "Quizzes", quizzesDataFramework[QDFDBI], false, null);
-            }
-      }
+let gameActive = true;
+let initiation = true;
+function gameStart(quizData) {
+    if (!gameActive) {
+        return
     }
-)}
+    if (initiation) {
+        initiation = false;
+        gameInitiation
+    }
+
+    requestAnimationFrame(gameStart);
+} 
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (databaseActive == "true") {
+        databaseInitialization(DBI => {
+            if (DBI == 2) {
+                const quizzesDataFramework = {
+                    1: {"AB":{3:4}},
+                    2: {3:{"AB":5}},
+                    3: {4:{"BC":6}},
+                    4: {5:{6:7}},
+                    5: {6:{7:8}}
+                }
+
+                const recentLessonsDataFramework = {
+                    1: [0],
+                    2: [0],
+                    3: [0],
+                    4: [0]
+                }
+                
+                /* Keep data in dictionaries 
+                const progressTrackerdataFramework = {
+                    1: [[1], [2], [3], [4], [5]],
+                    2: [[1], [2], [3], [4], [5], [6], [7]],
+                    3: [[1], [2], [3], [4], [5]],
+                    4: [[1], [2], [3]],
+                    5: [[1], [2]]
+                } */
+
+                console.log(quizzesDataFramework.length);
+                for (QDFDBI=0; QDFDBI<Object.keys(quizzesDataFramework).length; QDFDBI++) {
+                    console.log(Object.keys(quizzesDataFramework));
+                    dataAmender(db, "Quizzes", quizzesDataFramework[Object.keys(quizzesDataFramework)[QDFDBI]], false, null);
+                }
+            } else if (DBI == 4) {
+                console.error("Undocumented error. (error code: 4)");
+                alert("Error Code 4: Try refreshing your webpage, and if that does not work, delete your webpage data. (On Google, click on the lock button on the top left, site settings, and press on delete data)");
+            } else if (DBI == 1) {
+                console.log("The database was successfully loaded without any upgrades necessary.")
+            } else {
+                console.error("Unknown error.")
+            }
+    }
+    )}
     if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
         const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
@@ -321,6 +502,83 @@ document.addEventListener("DOMContentLoaded", () => {
             })
 
         }
+    }
+    if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
+        const dropdownUnitSelector = document.getElementById("SUnits");
+        const dropdownLessonSelector = document.getElementById("OLessons")
+        const questionAdderButton = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addQuestion");
+        const mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder");
+        const mainPage = document.getElementById("mainPage-divHolder");
+        const gameButton = document.getElementById("gameStartButton");
+        gameButton.addEventListener("click", GBC => {
+            mainPage.style.display = "none";
+        })
+        dropdownUnitSelector.addEventListener("change", DUSC => {
+            const DUSCOptionValue = DUSC.target.value;
+            if (keyMapParser(DUSCOptionValue) != null) {
+                const lessonData = dataMap[keyMapParser(DUSCOptionValue)][2];
+                dropdownLessonSelector.disabled = false;
+                dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option> <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="QW">Every Lesson</option>';
+                for (DUSCLessonCounter=0; DUSCLessonCounter<Object.keys(lessonData).length; DUSCLessonCounter++) {
+                    const DUSCLesson = document.createElement("option");
+                    DUSCLesson.value = numberParser(DUSCLessonCounter + 1);
+                    DUSCLesson.textContent = "Lesson " + (DUSCLessonCounter + 1) + ": " + Object.values(lessonData)[DUSCLessonCounter];
+                    DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                    dropdownLessonSelector.appendChild(DUSCLesson);
+                }
+            } else {
+                dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
+                dropdownLessonSelector.disabled = true;
+            }
+        })
+        dropdownLessonSelector.addEventListener("change", DLSC => {
+            if (dropdownUnitSelector.value != "none" && dropdownLessonSelector.value != "none") {
+                questionAdderButton.style.pointerEvents = "auto";
+                questionAdderButton.style.backgroundColor = "#93d8f8"
+            } else {
+                questionAdderButton.style.pointerEvents = "none";
+                questionAdderButton.style.backgroundColor = "#5abdea"
+            }
+        })
+
+        questionAdderButton.addEventListener("click", DABC => {
+                dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, dropdownLessonSelector.value], true, dropdownUnitSelector.value + dropdownLessonSelector.value);
+                questionContainer = [];
+                const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
+                const dataLooperRequest = dataOpener.openCursor();
+                dataLooperRequest.onsuccess = DLR => {
+                    if (DLR.target.result) {
+                        const successResults = DLR.target.result;
+                        questionContainer.push(successResults.key);
+                        successResults.continue();
+                    } else {
+                        console.log("Data collection complete.")
+                    }
+                    questionContainer = questionContainer.flat();
+                    for (questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
+                        if (document.querySelector("#" + questionContainer[questionAdder]) == null) {
+                            const newChild = document.createElement("div");
+                            newChild.id = questionContainer[questionAdder];
+                            newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
+                            if (questionContainer[questionAdder].substring(2, 4) != "QW"){
+                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
+                            } else {
+                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Every Question";
+                            } 
+                            const childOfNewChild = document.createElement("div");
+                            childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
+                            childOfNewChild.textContent = "X";
+                            childOfNewChild.addEventListener("click", CONCC => {
+                                childOfNewChild.parentElement.remove();
+                                console.log(childOfNewChild.parentElement.id)
+                                dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                            })
+                            newChild.appendChild(childOfNewChild);
+                            mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
+                    }
+                }
+            }  
+        })
     }
     if (window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
         if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
@@ -416,4 +674,3 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Loaded!");
 })
-

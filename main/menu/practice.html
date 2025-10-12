@@ -3,10 +3,21 @@
     <!--Head/Main Configs-->
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script>
+            MathJax = {
+                tex: {
+                    inlineMath: [["$", "$"], ["\\(", "\\)"]]
+                },
+                options: {
+                    enableExplorer: false
+                }
+            };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../imageFiles/logo.png">
-        <link rel="stylesheet" href="../mainStyling.css?v=.3">
-        <script src="../backend.js?v=.3" defer></script>
+        <link rel="stylesheet" href="../mainStyling.css?v=.4">
+        <script src="../backend.js?v=.4" defer></script>
     </head>
     <body>
     <div id="mainBackgroundDiv">
@@ -43,7 +54,114 @@
 
         </div>
         <div id="mainPage_backgroundBlocker"></div> 
-    
+        <div id="mainPage-divHolder">
+            <div id="mainPage_titleDivHolder">
+                <div id="mainPage_titleDivHolder_title"> 
+                    Practice
+                </div>
+                <hr id="mainPage_titleDivHolder_title_divider"></hr>
+            </div>
+            <div id="mainPage_contentDivHolder">
+                <div id="mainBackgroundDiv_leftDiv">
+                        <div class="mainBackgroundDiv_leftDiv_card", id="gameStartButton">
+                            <div class="mainBackgroundDiv_leftDiv_card_cardTitle">Game</div>
+                            <div id="mainBackgroundDiv_leftDiv_card_gameCardImage"></div>
+                        </div>
+                        <div class="mainBackgroundDiv_leftDiv_card">
+                            <div class="mainBackgroundDiv_leftDiv_card_cardTitle">Quiz</div>
+                            <div id="mainBackgroundDiv_leftDiv_card_questionCardImage"></div>
+                        </div>
+                </div>
+                <div id="mainBackgroundDiv_rightDiv">
+                    <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv">
+                        <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_title">
+                            Question Picker
+                        </div>
+                        <hr id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_title_divider"></hr>
+                        <div class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_headerText">
+                            Select a Unit
+                        </div>
+
+                        <select class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_select" id="SUnits">
+                            <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Unit --</option>
+                            <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="AB">Unit 1: Derivatives</option>
+                            <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="BC">Unit 2: Graphical Analysis</option>
+                        </select>
+                        <div class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_headerText">
+                            Select a Lesson
+                        </div>
+                        <select class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_select" id="OLessons" disabled>
+                            <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>
+                            <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="QW">Every Lesson</option>
+                        </select>
+                        <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_buttonHolder">
+                            <button id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addQuestion">
+                                Add Question
+                            </button>
+                            <button id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addAdaptiveQuestions">
+                                Add Adaptive Questions
+                            </button>
+                        </div>
+                        <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder">
+                            <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_title">
+                                Question Unit and Lesson Preview
+                            </div>
+                            <div id="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </div>
+        <div id="hiddenDivGame">
+            <div id="hiddenDivGame_mainScreen">
+                <div id="hiddenDivGame_mainScreen_gameScreen">
+                    <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder">
+
+                        <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgTitle">
+                            Upgrades 
+                        </div>
+                        <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney">
+                            Money: 0 
+                        </div>
+                        
+                        <hr id="hiddenDivGame_mainScreen_gameScreen_upgHolder_separator"> </hr>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title">
+                                Extra Money |
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_cost">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg">
+                            Upgrades 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg">
+                            Upgrades 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg">
+                            Upgrades 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg">
+                            Upgrades 
+                        </div>
+                    </div>
+                    <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder">
+                        
+                    </div>
+
+                </div>
+            </div>
+            <div id="hiddenDivGame_bottomScreen">
+                <div id="hiddenDivGame_returnButton">
+                    Return
+                </div>
+                <div id="hiddenDivGame_restartButton">
+                    
+                </div>
+            </div>
+        </div>
         </div>
     </body>
 </html>
