@@ -14,13 +14,13 @@ let upg2 = 0;
 let upg3 = 0;
 let upg4 = 0;
 let upg5 = 0;
-let upg1_price = 100 * (1.25^upg1);
-let upg2_price = 1000 * (1.40^upg2);
-let upg3_price = 10000 * (1.75^upg3);
-let upg4_price = 100000 * (1.90^upg4);
-let upg5_price = 1000000 * (2^upg5);
+let upg1_price = 10 * Math.pow(1.25, upg1);
+let upg2_price = 100 * Math.pow(1.4, upg2);
+let upg3_price = 500 * Math.pow(1.75, upg3);
+let upg4_price = 5000 * Math.pow(1.9, upg4);
+let upg5_price = 50000 * Math.pow(2.3, upg5);
 let rebirth = 0;
-let rebirthCost = 100000 * (4^rebirth);
+let rebirthCost = 100000 * Math.pow(3, rebirth);
 let rUpg1 = 0;
 let rUpg2 = 0;
 let rUpg3 = 0;
@@ -36,21 +36,148 @@ let card30 = 0;
 let card10 = 0;
 let card8 = 0;
 let card2 = 0;
-let rUpg1_price = 1 * (1.50^rUpg1);
-let rUpg2_price = 1 * (2.0^rUpg2);
-let rUpg3_price = 1 * (2.50^rUpg3);
-let rUpg4_price = 1 * (4.0^rUpg4);
-let rUpg5_price = 1 * (8.0^rUpg5);
-let rMultiplier = 1 * (1 + rUpg4_price) * (1+ rUpg5_price) * (1 + card8) * (1 + card2);
-let multiplier = 1 * (1 + upg1 * 2 + upg2 * 3 + upg3 * 5 + upg4 * 10 + upg5 * 25) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 + card30 + card10 + card8 + card2);
+let rUpg1_price = 1 * Math.pow(1.5, rUpg1);
+let rUpg2_price = 4 * Math.pow(2.0, rUpg2);
+let rUpg3_price = 8 * Math.pow(3, rUpg3);
+let rUpg4_price = 20 * Math.pow(5, rUpg4);
+let rUpg5_price = 50 * Math.pow(8, rUpg5);
+let rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
+let multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val);
 
 function gameInitiation() {
+    console.log("Game initiated.");
     const dataSet = [upg1, upg2, upg3, upg4, upg5];
-    const up1Button = document.getElementById("up1Button");
-    const up2Button = document.getElementById("up2Button");
-    const up3Button = document.getElementById("up3Button");
-    const up4Button = document.getElementById("up4Button");
-    const up5Button = document.getElementById("up5Button");
+    const up1Button = document.getElementById("firstUpgradeDiv");
+    const up2Button = document.getElementById("secondUpgradeDiv");
+    const up3Button = document.getElementById("thirdUpgradeDiv");
+    const up4Button = document.getElementById("forthUpgradeDiv");
+    const up5Button = document.getElementById("fifthUpgradeDiv");
+    const up1ButtonDiv = document.getElementById("firstUpgradeDivHolder");
+    const up2ButtonDiv = document.getElementById("secondUpgradeDivHolder");
+    const up3ButtonDiv = document.getElementById("thirdUpgradeDivHolder");
+    const up4ButtonDiv = document.getElementById("forthUpgradeDivHolder");
+    const up5ButtonDiv = document.getElementById("fifthUpgradeDivHolder");
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg");
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
+    for (let HDGUpgList=0; HDGUpgList<hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg.length; HDGUpgList++) {
+        hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].addEventListener("click", HDGMUPG => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].classList.remove("clickEvent");
+            }, 250)
+        })
+    }
+    
+    up1Button.textContent = "Multiplier: 10x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
+    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
+    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
+    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
+    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
+    up1ButtonDiv.addEventListener("click", UP1C => {
+        if (currency >= upg1_price) {
+            upg1 += 1;
+            currency -= upg1_price;
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#24bf73";
+            up1Button.style.color = "#24bf73";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
+                up1Button.style.color = "white";
+            }, 400)
+        } else {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#dc4545";
+            up1Button.style.color = "#dc4545";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
+                up1Button.style.color = "white";
+            }, 400)
+        }
+        updateGameScreen();
+
+    })
+    up2ButtonDiv.addEventListener("click", UP2C => {
+        if (currency >= upg2_price) {
+            upg2 += 1;
+            currency -= upg2_price;
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#24bf73";
+            up2Button.style.color = "#24bf73";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
+                up2Button.style.color = "white";
+            }, 400)
+        } else {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#dc4545";
+            up2Button.style.color = "#dc4545";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
+                up2Button.style.color = "white";
+            }, 400)
+        }
+        updateGameScreen();
+
+    })
+    up3ButtonDiv.addEventListener("click", UP3C => {
+        if (currency >= upg3_price) {
+            upg3 += 1;
+            currency -= upg3_price;
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#24bf73";
+            up3Button.style.color = "#24bf73";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
+                up3Button.style.color = "white";
+            }, 400)
+        } else {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#dc4545";
+            up3Button.style.color = "#dc4545";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
+                up3Button.style.color = "white";
+            }, 400)
+        }
+        updateGameScreen();
+
+    })
+    up4ButtonDiv.addEventListener("click", UP4C => {
+        if (currency >= upg4_price) {
+            upg4 += 1;
+            currency -= upg4_price;
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#24bf73";
+            up4Button.style.color = "#24bf73";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
+                up4Button.style.color = "white";
+            }, 400)
+        } else {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#dc4545";
+            up4Button.style.color = "#dc4545";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
+                up4Button.style.color = "white";
+            }, 400)
+        }
+        updateGameScreen();
+
+    })
+    up5ButtonDiv.addEventListener("click", UP5C => {
+        if (currency >= upg5_price) {
+            upg5 += 1;
+            currency -= upg5_price;
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#24bf73";
+            up5Button.style.color = "#24bf73";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
+                up5Button.style.color = "white";
+            }, 400)
+        } else {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#dc4545";
+            up5Button.style.color = "#dc4545";
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
+                up5Button.style.color = "white";
+            }, 400)
+        }
+        updateGameScreen();
+
+    })
     currency = 0;
     upg1 = 0;
     upg2 = 0;
@@ -68,13 +195,51 @@ function gameInitiation() {
     card10 = 0;
     card8 = 0;
     card2 = 0;
-
 }
 
 function gameLogic() {
     currency += multiplier;
 }
 
+function gameEnd() {
+    gameActive = false;
+    initiation = true;
+    valueUpdater = 0;
+    perfLast = performance.now();
+    FPS = 0;
+    avgCounter = 0;
+    avgSum = 0;
+    mainFPS = 60;
+}
+
+function updateGameScreen() { 
+    upg1_price = 10 * Math.pow(1.25, upg1);
+    upg2_price = 100 * Math.pow(1.4, upg2);
+    upg3_price = 500 * Math.pow(1.75, upg3);
+    upg4_price = 5000 * Math.pow(1.9, upg4);
+    upg5_price = 50000 * Math.pow(2.3, upg5);
+    rUpg1_price = 1 * Math.pow(1.5, rUpg1);
+    rUpg2_price = 4 * Math.pow(2.0, rUpg2);
+    rUpg3_price = 8 * Math.pow(3, rUpg3);
+    rUpg4_price = 20 * Math.pow(5, rUpg4);
+    rUpg5_price = 50 * Math.pow(8, rUpg5);
+    rebirthCost = 100000 * Math.pow(3, rebirth);
+    rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
+    multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val);
+
+    const up1Button = document.getElementById("firstUpgradeDiv");
+    const up2Button = document.getElementById("secondUpgradeDiv");
+    const up3Button = document.getElementById("thirdUpgradeDiv");
+    const up4Button = document.getElementById("forthUpgradeDiv");
+    const up5Button = document.getElementById("fifthUpgradeDiv");
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney");
+    up1Button.textContent = "Multiplier: 5x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
+    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
+    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
+    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
+    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
+    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney.textContent = "Money: " + Math.floor(currency) + " (" + multiplier + "/s)";
+}
 
 const questionsUnit1 = {
     1: {"What is the derivative of 5x?": {1: ["5x", "5", "10x^2", "0"]}, 
@@ -170,7 +335,7 @@ function dataTraverser(database, objectStore, keys, callback) {
         dataAccessor(database, objectStore, keys[0], DTDA => {
             if (DTDA != null){
                 let temporaryHolder = JSON.parse(DTDA);
-                for (DTFor=1; DTFor<keys.length; DTFor++) {
+                for (let DTFor=1; DTFor<keys.length; DTFor++) {
                     temporaryHolder = temporaryHolder[keys[DTFor]];
                 }
                 callback(temporaryHolder);
@@ -375,7 +540,7 @@ function keyMapParser(key) {
     if (key.length % 2 == 1) {
         return null
     }
-    for (counter=0; counter<(key.length/2); counter++) {
+    for (let counter=0; counter<(key.length/2); counter++) {
         let currentKey = key.substring(counter*2, (counter+1)*2);
         if (keyMap.hasOwnProperty(currentKey)) {
             KMPS += keyMap[currentKey].toString();
@@ -390,7 +555,7 @@ function keyMapParser(key) {
 function numberParser(number) {
     let NPNS = "";
     let newNum = number.toString();
-    for (NPC=0; NPC<newNum.length; NPC++) {
+    for (let NPC=0; NPC<newNum.length; NPC++) {
         if (keyMapReversed.hasOwnProperty(newNum[NPC])) {
             NPNS = NPNS + keyMapReversed[newNum[NPC]];
         } else {
@@ -400,17 +565,43 @@ function numberParser(number) {
     return NPNS
 }
 
-let gameActive = true;
+let gameActive = false;
 let initiation = true;
-function gameStart(quizData) {
+let valueUpdater = 0;
+let perfLast = performance.now();
+let FPS = 0;
+let avgCounter = 0;
+let avgSum = 0;
+let mainFPS = 60;
+
+function gameStart(perfReq) {
     if (!gameActive) {
         return
     }
     if (initiation) {
         initiation = false;
-        gameInitiation
+        gameInitiation();
     }
-
+    
+    
+    if (avgCounter <= 10) {
+        FPS++;
+        if (perfReq - perfLast >= 1000) {
+            avgCounter++;
+            perfLast = perfReq;
+            avgSum = avgSum + FPS;
+            FPS = 0;
+            
+        }
+    } else {
+        mainFPS = avgSum/avgCounter;
+    }
+    valueUpdater++;
+    if (valueUpdater >= mainFPS) {
+        valueUpdater = 0;
+        gameLogic();
+    }
+    updateGameScreen();
     requestAnimationFrame(gameStart);
 } 
 
@@ -418,7 +609,42 @@ function gameStart(quizData) {
 
 document.addEventListener("DOMContentLoaded", () => {
     if (databaseActive == "true") {
+        
         databaseInitialization(DBI => {
+            questionContainer = [];
+            const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
+            const dataLooperRequest = dataOpener.openCursor();
+            
+            dataLooperRequest.onsuccess = DLR => {
+                if (DLR.target.result) {
+                    const successResults = DLR.target.result;
+                    questionContainer.push(successResults.key);
+                    successResults.continue();
+                } else {
+                    console.log("Data collection complete.")
+                }
+                questionContainer = questionContainer.flat();
+                for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
+                    if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
+                        if (questionContainer[questionAdder].substring(2, 4) != "QW") {
+                            const newChild = document.createElement("div");
+                            newChild.id = questionContainer[questionAdder];
+                            newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
+                            newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
+
+                            const childOfNewChild = document.createElement("div");
+                            childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
+                            childOfNewChild.textContent = "X";
+                            childOfNewChild.addEventListener("click", CONCC => {
+                                childOfNewChild.parentElement.remove();
+                                console.log(childOfNewChild.parentElement.id)
+                                dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                            })
+                            newChild.appendChild(childOfNewChild);
+                            mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
+                        } 
+                }
+            }}
             if (DBI == 2) {
                 const quizzesDataFramework = {
                     1: {"AB":{3:4}},
@@ -445,7 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } */
 
                 console.log(quizzesDataFramework.length);
-                for (QDFDBI=0; QDFDBI<Object.keys(quizzesDataFramework).length; QDFDBI++) {
+                for (let QDFDBI=0; QDFDBI<Object.keys(quizzesDataFramework).length; QDFDBI++) {
                     console.log(Object.keys(quizzesDataFramework));
                     dataAmender(db, "Quizzes", quizzesDataFramework[Object.keys(quizzesDataFramework)[QDFDBI]], false, null);
                 }
@@ -510,21 +736,43 @@ document.addEventListener("DOMContentLoaded", () => {
         const mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder");
         const mainPage = document.getElementById("mainPage-divHolder");
         const gameButton = document.getElementById("gameStartButton");
+        const hiddenGamePage = document.getElementById("hiddenDivGame");
+        const returnButton = document.getElementById("hiddenDivGame_returnButton");
+        returnButton.addEventListener("click", RBC => {
+            gameEnd();
+            mainPage.style.display = "flex";
+            hiddenGamePage.style.display = "none";
+        })
         gameButton.addEventListener("click", GBC => {
             mainPage.style.display = "none";
+            hiddenGamePage.style.display = "flex";
+            gameActive = true;
+            gameStart(60);
+
         })
         dropdownUnitSelector.addEventListener("change", DUSC => {
             const DUSCOptionValue = DUSC.target.value;
+            questionAdderButton.style.pointerEvents = "none";
+            questionAdderButton.style.backgroundColor = "#5abdea"
             if (keyMapParser(DUSCOptionValue) != null) {
+                let lessonCounter = 0;
                 const lessonData = dataMap[keyMapParser(DUSCOptionValue)][2];
                 dropdownLessonSelector.disabled = false;
                 dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option> <option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" value="QW">Every Lesson</option>';
                 for (DUSCLessonCounter=0; DUSCLessonCounter<Object.keys(lessonData).length; DUSCLessonCounter++) {
-                    const DUSCLesson = document.createElement("option");
-                    DUSCLesson.value = numberParser(DUSCLessonCounter + 1);
-                    DUSCLesson.textContent = "Lesson " + (DUSCLessonCounter + 1) + ": " + Object.values(lessonData)[DUSCLessonCounter];
-                    DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
-                    dropdownLessonSelector.appendChild(DUSCLesson);
+                    if (!questionContainer.includes(DUSCOptionValue + numberParser(DUSCLessonCounter + 1))){
+                        const DUSCLesson = document.createElement("option");
+                        DUSCLesson.value = numberParser(DUSCLessonCounter + 1);
+                        DUSCLesson.id = String(keyMapParser(DUSCOptionValue)) + String(DUSCLessonCounter + 1);
+                        DUSCLesson.textContent = "Lesson " + (DUSCLessonCounter + 1) + ": " + Object.values(lessonData)[DUSCLessonCounter];
+                        DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                        dropdownLessonSelector.appendChild(DUSCLesson);
+                    } else {
+                        lessonCounter++;
+                        if (lessonCounter == Object.keys(lessonData).length) {
+                            dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
+                        }
+                    }
                 }
             } else {
                 dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
@@ -542,10 +790,20 @@ document.addEventListener("DOMContentLoaded", () => {
         })
 
         questionAdderButton.addEventListener("click", DABC => {
-                dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, dropdownLessonSelector.value], true, dropdownUnitSelector.value + dropdownLessonSelector.value);
+                if (dropdownLessonSelector.value != "QW") {
+                    dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, dropdownLessonSelector.value], true, dropdownUnitSelector.value + dropdownLessonSelector.value);
+                } else {
+                    let temporaryAllUnits = Object.keys(dataMap[keyMapParser(dropdownUnitSelector.value)][2]);
+                    console.log(temporaryAllUnits)
+                    for (let DDUSAllUnits=0; DDUSAllUnits<temporaryAllUnits.length; DDUSAllUnits++) {
+                        dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, numberParser(temporaryAllUnits[DDUSAllUnits])], true, dropdownUnitSelector.value + numberParser(temporaryAllUnits[DDUSAllUnits]));
+                    }
+                }
                 questionContainer = [];
                 const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
                 const dataLooperRequest = dataOpener.openCursor();
+                questionAdderButton.style.pointerEvents = "none";
+                questionAdderButton.style.backgroundColor = "#5abdea"
                 dataLooperRequest.onsuccess = DLR => {
                     if (DLR.target.result) {
                         const successResults = DLR.target.result;
@@ -555,29 +813,52 @@ document.addEventListener("DOMContentLoaded", () => {
                         console.log("Data collection complete.")
                     }
                     questionContainer = questionContainer.flat();
-                    for (questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
-                        if (document.querySelector("#" + questionContainer[questionAdder]) == null) {
-                            const newChild = document.createElement("div");
-                            newChild.id = questionContainer[questionAdder];
-                            newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
-                            if (questionContainer[questionAdder].substring(2, 4) != "QW"){
-                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
-                            } else {
-                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Every Question";
+                    for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
+                        if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
+                            if (questionContainer[questionAdder].substring(2, 4) != "QW") {
+                                const newChild = document.createElement("div");
+                                newChild.id = questionContainer[questionAdder];
+                                newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
+                                newChild.textContent = "Unit: " + keyMapParser(newChild.id.substring(0, 2)) + ", Lesson: " +  keyMapParser(newChild.id.substring(2, 4)) + " Questions";
+                                const childOfNewChild = document.createElement("div");
+                                childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
+                                childOfNewChild.textContent = "X";
+                                childOfNewChild.addEventListener("click", CONCC => {
+                                    childOfNewChild.parentElement.remove();
+                                    dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                                    console.log(newChild.id)
+                                    if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
+                                        const DUSCLesson = document.createElement("option");
+                                        DUSCLesson.value = newChild.id.substring(2, 4);
+                                        DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
+                                        DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
+                                        DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                                        dropdownLessonSelector.appendChild(DUSCLesson);
+                                        
+                                    }
+                                    let indexOfData = questionContainer.indexOf(newChild.id)
+                                    if (indexOfData > -1) {
+                                        questionContainer.splice(indexOfData, 1)
+                                    }
+                                    
+ 
+                                    
+                                })
+                                newChild.appendChild(childOfNewChild);
+                                mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
                             } 
-                            const childOfNewChild = document.createElement("div");
-                            childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
-                            childOfNewChild.textContent = "X";
-                            childOfNewChild.addEventListener("click", CONCC => {
-                                childOfNewChild.parentElement.remove();
-                                console.log(childOfNewChild.parentElement.id)
-                                dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
-                            })
-                            newChild.appendChild(childOfNewChild);
-                            mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
+                    }
+
+                    if (document.getElementById(String(keyMapParser(dropdownUnitSelector.value)) + String(keyMapParser(dropdownLessonSelector.value))) != null || dropdownLessonSelector.value == "QW") {
+                        if (dropdownLessonSelector.value != "QW") {
+                            document.getElementById(String(keyMapParser(dropdownUnitSelector.value)) + String(keyMapParser(dropdownLessonSelector.value))).remove();
+                        } else {
+                            dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
+                        }
                     }
                 }
             }  
+            
         })
     }
     if (window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
@@ -643,7 +924,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 
                 sidebar.style.width = "20vw";
-                for (t=0; t<homeSideBar_aHolderLeftBorderExpand.length; t++){
+                for (let t=0; t<homeSideBar_aHolderLeftBorderExpand.length; t++){
                     homeSideBar_aHolderLeftBorderExpand[t].style.width = "20vw";
                 }
                 homeSideBar_aHolderLeftBorderExpand[i].style.backgroundColor = "#79cbf0";
@@ -652,7 +933,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             homeSideBar_aHolderLeftBorderExpand[i].addEventListener("mouseleave", () => {
                 homeSideBar_aHolderLeftBorderExpand[i].querySelector(".sideBar_aHolderLeftBorderExpand").style.transform = "scaleY(0)";
-                for (b=0; b<homeSideBar_aHolderLeftBorderExpand.length; b++){
+                for (let b=0; b<homeSideBar_aHolderLeftBorderExpand.length; b++){
                     homeSideBar_aHolderLeftBorderExpand[b].style.width = "5.5vw";
                 }
                 for (let g = 0; g < homeSideBar_aHolderLeftBorderExpand.length; g++) {
