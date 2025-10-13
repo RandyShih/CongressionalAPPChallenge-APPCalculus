@@ -1000,6 +1000,7 @@
 }
 
 #hiddenDivGame_title {
+    transform: translateY(-100%);
     display: flex;
     font-size: 4vmax;
     color: #04afff;
@@ -1009,7 +1010,8 @@
     display: flex;
     height: 12.5%;
     flex-direction: column;
-    width: 100%
+    width: 100%;
+    transition: transform 1s ease-in-out;
 }
 
 
@@ -1032,14 +1034,50 @@
 
 #hiddenDivGame_mainScreen_gameScreen {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #04afff;
     width: 90%;
     height: 94%;
+    transform-origin: bottom;
+    transform: scaleY(100%);
+    /* 115% */
     border-radius: 4px;
+    transition: transform 1s ease-in-out;
 }
+
+
+#hiddenDivGame_mainScreen_gameScreen_title {
+    font-size: 5vmax;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_description {
+    font-size: 1vmax;
+    font-weight: normal;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_startButton {
+    display: flex;
+    cursor: pointer;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    background-color: #98dcf7;
+    margin-top: 1%;
+    border-radius: 4px;
+    width: 10%;
+    height: 7%;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_startButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
+}
+    
 
 #hiddenDivGame_bottomScreen {
     display: flex;
@@ -1060,10 +1098,39 @@
     margin-top: 1%;
     margin-left: 4%;
     background-color: #04afff;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
+
+#hiddenDivGame_returnButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
+}
+#hiddenDivGame_restartButton {
+    cursor: pointer;
+    display: flex;
+    width: 10%;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    border-radius: 4px;
+    margin-top: 1%;
+    margin-left: 72.5%;
+    background-color: #04afff;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
+
+#hiddenDivGame_restartButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
 }
 
 .hiddenDivGame_mainScreen_gameScreen_upgHolder {
-    display: flex;
+    display: none;
     flex-direction: column;
     width: 45%; 
     margin: 2%;
@@ -1115,6 +1182,8 @@
     transition: background-position .7s ease-in-out, transform .7s ease-in-out, box-shadow .7s ease-in-out;
 }
 
+
+
 .hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg:hover {
     box-shadow: 0px 0px 4px grey;
     transform: scale(1.015);
@@ -1122,7 +1191,7 @@
 }
 
 .hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg.clickEvent {
-    transform: scale(.90) !important;
+    transform: scale(.90);
 }
 
 .hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title {
@@ -1142,4 +1211,155 @@
     align-items: center;
     justify-items: center;
     font-size: 1vmax;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirth {
+    background-color: rgb(243, 243, 145);
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-size: 1.25vmax;
+    margin-top: 4%;
+    margin-left: 4%;
+    height: 10%;
+    width: 90%;
+    font-size: 2vmax;
+    color:rgb(255, 187, 0);
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    margin-left: 25%;
+    align-items: center;
+    width: 25%;
+    height: 90%;
+    border-radius: 4px;
+    color: rgb(243, 243, 145);
+    background-color: rgb(255, 187, 0);
+    box-shadow: 0px 0px 0px grey;
+    transform: scale(1);
+    transition: all .75s ease-in-out;
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthAmount {
+    margin-left: 5%;
+    color: rgb(255, 187, 0);
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_divider {
+    background-color:rgb(255, 187, 0);
+    margin-top: 1%;
+    margin-left: 4%;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    width: 90%;
+    
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton:hover {
+    background-color: rgb(247, 212, 116);
+    box-shadow: 0px 0px 9px grey;
+    transform: scale(1.05);
+}
+
+#hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton.clickEventRB {
+    transform: scale(.8);
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg {
+    display: flex;
+    cursor: pointer;
+    margin-left: 4%;
+    border-radius: 4px;
+    margin-top: 4%;
+    background-color:#FFC421;
+    align-items: center;
+    width: 90%;
+    padding: 4%;
+    font-size: 2vmax;
+    height: 10%;
+    background: linear-gradient(160deg,rgb(255, 214, 80) 15%, rgb(248, 219, 123) 21%, rgb(252, 222, 126) 36%, rgba(255, 206, 71, 1) 45%, rgba(255, 209, 84, 1) 55%, rgba(255, 187, 0, 1) 77%);
+    box-shadow: 0px 0px 0px grey;
+    background-size: 200%;
+    background-position: right;
+    transform: scale(1);
+    transition: background-position .7s ease-in-out, transform .7s ease-in-out, box-shadow .7s ease-in-out;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg.clickEventRB {
+    transform: scale(.8);
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg * {
+    color: rgb(243, 243, 145);
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg:hover {
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.015);
+    background-position: left;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle {
+    font-size: 1.25vmax;
+    width: 60%;
+    margin-right: 15%;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost {
+    font-size: 1vmax;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_question {
+    display: flex;
+    background-color: #8dceec;
+    font-size: 1.5vmax;
+    color: white;
+    border-radius: 4px;
+    height: 15%;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    scrollbar-width: thin;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder {
+    display: flex;
+    justify-self: bottom;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 4px;
+    width: 90%;
+    margin-top: 2%;
+    height: 30%;
+}
+
+.hiddenDivGame_mainScreen_gameScreen_answer {
+    display: flex;
+    cursor: pointer;
+    margin-right: 4%;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vmax;
+    background-color: #8dceec;
+    border-radius: 4px;
+    height: 80%;
+    width: 40%;
+    box-shadow: 0px 0px 0px grey;
+    transform: scale(1);
+    transition: all .75s ease-in-out
+}
+
+.hiddenDivGame_mainScreen_gameScreen_answer:hover {
+    background-color: #b7e1f4;
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.05);
 }

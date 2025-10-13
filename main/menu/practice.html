@@ -4,7 +4,8 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <script>
-            MathJax = {
+            window.MathJax = {
+                
                 tex: {
                     inlineMath: [["$", "$"], ["\\(", "\\)"]]
                 },
@@ -13,7 +14,7 @@
                 }
             };
         </script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../imageFiles/logo.png">
         <link rel="stylesheet" href="../mainStyling.css?v=.4">
@@ -122,8 +123,30 @@
             </div>
             <div id="hiddenDivGame_mainScreen">
                 <div id="hiddenDivGame_mainScreen_gameScreen">
+                    <!--
+                    <div class="hiddenDivGame_mainScreen_gameScreen_question">
+                        What is the derivative of &nbsp $$\color{white}{2x^2}$$?
+                    </div>
+                    <div class="hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder">
+                        <div class="hiddenDivGame_mainScreen_gameScreen_answer">$$\color{white}{2x}$$</div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_answer">$$\color{white}{4x}$$</div>
+                    </div>
+                    <div class="hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder">
+                        <div class="hiddenDivGame_mainScreen_gameScreen_answer">$$\color{white}{8x^3}$$</div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_answer">$$\color{white}{0}$$</div>
+                    </div>-->
+                    <div id="hiddenDivGame_mainScreen_gameScreen_title">
+                        Incremental Money Game
+                    </div>
+                    <div id="hiddenDivGame_mainScreen_gameScreen_description">
+                        Accumulate as much wealth as possible!
+                    </div>
+                    <div id="hiddenDivGame_mainScreen_gameScreen_startButton">
+                        Start
+                    </div>
+                    
                     <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder">
-
+                        
                         <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgTitle">
                             Upgrades
                         </div>
@@ -172,8 +195,52 @@
                             </div>  
                         </div>
                     </div>
-                    <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder">
-                        
+                    <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder" id="hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirth">
+                        <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthTitle">Rebirth Upgrades 
+                            <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton">Rebirth</div>
+                        </div>
+                        <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthAmount">Rebirths: 0 (1x multpier) | Rebirth Cost: 100000</div>
+                        <div id="hiddenDivGame_mainScreen_gameScreen_upgHolder_divider"></div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg" id="rUpgDivHolder1">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle" id="rUpgDivTitle1">
+                                Farm Moon's Resources 
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost" id="rUpgDiv1">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg" id="rUpgDivHolder2">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle" id="rUpgDivTitle2">
+                                Farm Mars's Resources 
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost" id="rUpgDiv2">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg" id="rUpgDivHolder3">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle" id="rUpgDivTitle3">
+                                Farm the Solar System
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost" id="rUpgDiv3">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg" id="rUpgDivHolder4">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle" id="rUpgDivTitle4">
+                                Expand to Other Galaxies 
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost" id="rUpgDiv4">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
+                        <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg" id="rUpgDivHolder5">
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rtitle" id="rUpgDivTitle5">
+                                Expand to Other Universes
+                            </div> 
+                            <div class="hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_rCost" id="rUpgDiv5">
+                                Multiplier: 2x | Cost: 100 | Owned: 10
+                            </div> 
+                        </div>
                     </div>
 
                 </div>
@@ -183,7 +250,7 @@
                     Return
                 </div>
                 <div id="hiddenDivGame_restartButton">
-                    
+                    Restart
                 </div>
             </div>
         </div>

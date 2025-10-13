@@ -7,243 +7,9 @@ let databaseActive = localStorage.getItem("databaseActive");
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
 
-/* Game Data */
-let currency = 0;
-let upg1 = 0;
-let upg2 = 0;
-let upg3 = 0;
-let upg4 = 0;
-let upg5 = 0;
-let upg1_price = 10 * Math.pow(1.25, upg1);
-let upg2_price = 100 * Math.pow(1.4, upg2);
-let upg3_price = 500 * Math.pow(1.75, upg3);
-let upg4_price = 5000 * Math.pow(1.9, upg4);
-let upg5_price = 50000 * Math.pow(2.3, upg5);
-let rebirth = 0;
-let rebirthCost = 100000 * Math.pow(3, rebirth);
-let rUpg1 = 0;
-let rUpg2 = 0;
-let rUpg3 = 0;
-let rUpg4 = 0;
-let rUpg5 = 0;
-let card50Val = 2;
-let card30Val = 3;
-let card10Val = 5;
-let card8Val = 10;
-let card2Val = 20;
-let card50 = 0;
-let card30 = 0;
-let card10 = 0;
-let card8 = 0;
-let card2 = 0;
-let rUpg1_price = 1 * Math.pow(1.5, rUpg1);
-let rUpg2_price = 4 * Math.pow(2.0, rUpg2);
-let rUpg3_price = 8 * Math.pow(3, rUpg3);
-let rUpg4_price = 20 * Math.pow(5, rUpg4);
-let rUpg5_price = 50 * Math.pow(8, rUpg5);
-let rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
-let multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val);
-
-function gameInitiation() {
-    console.log("Game initiated.");
-    const dataSet = [upg1, upg2, upg3, upg4, upg5];
-    const up1Button = document.getElementById("firstUpgradeDiv");
-    const up2Button = document.getElementById("secondUpgradeDiv");
-    const up3Button = document.getElementById("thirdUpgradeDiv");
-    const up4Button = document.getElementById("forthUpgradeDiv");
-    const up5Button = document.getElementById("fifthUpgradeDiv");
-    const up1ButtonDiv = document.getElementById("firstUpgradeDivHolder");
-    const up2ButtonDiv = document.getElementById("secondUpgradeDivHolder");
-    const up3ButtonDiv = document.getElementById("thirdUpgradeDivHolder");
-    const up4ButtonDiv = document.getElementById("forthUpgradeDivHolder");
-    const up5ButtonDiv = document.getElementById("fifthUpgradeDivHolder");
-    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg");
-    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
-    for (let HDGUpgList=0; HDGUpgList<hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg.length; HDGUpgList++) {
-        hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].addEventListener("click", HDGMUPG => {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].classList.add("clickEvent");
-            setTimeout(HDGST => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[HDGUpgList].classList.remove("clickEvent");
-            }, 250)
-        })
-    }
-    
-    up1Button.textContent = "Multiplier: 10x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
-    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
-    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
-    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
-    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
-    up1ButtonDiv.addEventListener("click", UP1C => {
-        if (currency >= upg1_price) {
-            upg1 += 1;
-            currency -= upg1_price;
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#24bf73";
-            up1Button.style.color = "#24bf73";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
-                up1Button.style.color = "white";
-            }, 400)
-        } else {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#dc4545";
-            up1Button.style.color = "#dc4545";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
-                up1Button.style.color = "white";
-            }, 400)
-        }
-        updateGameScreen();
-
-    })
-    up2ButtonDiv.addEventListener("click", UP2C => {
-        if (currency >= upg2_price) {
-            upg2 += 1;
-            currency -= upg2_price;
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#24bf73";
-            up2Button.style.color = "#24bf73";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
-                up2Button.style.color = "white";
-            }, 400)
-        } else {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#dc4545";
-            up2Button.style.color = "#dc4545";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
-                up2Button.style.color = "white";
-            }, 400)
-        }
-        updateGameScreen();
-
-    })
-    up3ButtonDiv.addEventListener("click", UP3C => {
-        if (currency >= upg3_price) {
-            upg3 += 1;
-            currency -= upg3_price;
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#24bf73";
-            up3Button.style.color = "#24bf73";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
-                up3Button.style.color = "white";
-            }, 400)
-        } else {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#dc4545";
-            up3Button.style.color = "#dc4545";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
-                up3Button.style.color = "white";
-            }, 400)
-        }
-        updateGameScreen();
-
-    })
-    up4ButtonDiv.addEventListener("click", UP4C => {
-        if (currency >= upg4_price) {
-            upg4 += 1;
-            currency -= upg4_price;
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#24bf73";
-            up4Button.style.color = "#24bf73";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
-                up4Button.style.color = "white";
-            }, 400)
-        } else {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#dc4545";
-            up4Button.style.color = "#dc4545";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
-                up4Button.style.color = "white";
-            }, 400)
-        }
-        updateGameScreen();
-
-    })
-    up5ButtonDiv.addEventListener("click", UP5C => {
-        if (currency >= upg5_price) {
-            upg5 += 1;
-            currency -= upg5_price;
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#24bf73";
-            up5Button.style.color = "#24bf73";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
-                up5Button.style.color = "white";
-            }, 400)
-        } else {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#dc4545";
-            up5Button.style.color = "#dc4545";
-            setTimeout(() => {
-                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
-                up5Button.style.color = "white";
-            }, 400)
-        }
-        updateGameScreen();
-
-    })
-    currency = 0;
-    upg1 = 0;
-    upg2 = 0;
-    upg3 = 0;
-    upg4 = 0;
-    upg5 = 0;
-    rebirth = 0;
-    rUpg1 = 0;
-    rUpg2 = 0;
-    rUpg3 = 0;
-    rUpg4 = 0;
-    rUpg5 = 0;
-    card50 = 0;
-    card30 = 0;
-    card10 = 0;
-    card8 = 0;
-    card2 = 0;
-}
-
-function gameLogic() {
-    currency += multiplier;
-}
-
-function gameEnd() {
-    gameActive = false;
-    initiation = true;
-    valueUpdater = 0;
-    perfLast = performance.now();
-    FPS = 0;
-    avgCounter = 0;
-    avgSum = 0;
-    mainFPS = 60;
-}
-
-function updateGameScreen() { 
-    upg1_price = 10 * Math.pow(1.25, upg1);
-    upg2_price = 100 * Math.pow(1.4, upg2);
-    upg3_price = 500 * Math.pow(1.75, upg3);
-    upg4_price = 5000 * Math.pow(1.9, upg4);
-    upg5_price = 50000 * Math.pow(2.3, upg5);
-    rUpg1_price = 1 * Math.pow(1.5, rUpg1);
-    rUpg2_price = 4 * Math.pow(2.0, rUpg2);
-    rUpg3_price = 8 * Math.pow(3, rUpg3);
-    rUpg4_price = 20 * Math.pow(5, rUpg4);
-    rUpg5_price = 50 * Math.pow(8, rUpg5);
-    rebirthCost = 100000 * Math.pow(3, rebirth);
-    rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
-    multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val);
-
-    const up1Button = document.getElementById("firstUpgradeDiv");
-    const up2Button = document.getElementById("secondUpgradeDiv");
-    const up3Button = document.getElementById("thirdUpgradeDiv");
-    const up4Button = document.getElementById("forthUpgradeDiv");
-    const up5Button = document.getElementById("fifthUpgradeDiv");
-    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney");
-    up1Button.textContent = "Multiplier: 5x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
-    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
-    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
-    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
-    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
-    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney.textContent = "Money: " + Math.floor(currency) + " (" + multiplier + "/s)";
-}
-
 const questionsUnit1 = {
     1: {"What is the derivative of 5x?": {1: ["5x", "5", "10x^2", "0"]}, 
-        2: {"What is the derivative of $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}},
+        "What is the derivative of $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}/*,
     2: {1: {}, 
         2: {}},
     3: {1: {},
@@ -251,9 +17,10 @@ const questionsUnit1 = {
     4: {1: {},
         2: {}},
     5: {1: {}, 
-        2: {}}
+        2: {}}*/
 }
 
+let unitData = [questionsUnit1]
 
 const dataMap = {1: [
     "Unit 1", 
@@ -326,6 +93,234 @@ const keyMapReversed = {
         8: "TY",
         9: "RE",
         0: "QW"
+}
+
+/* Game Data */
+let currency = 0;
+let upg1 = 0;
+let upg2 = 0;
+let upg3 = 0;
+let upg4 = 0;
+let upg5 = 0;
+let upg1_price = 10 * Math.pow(1.25, upg1);
+let upg2_price = 100 * Math.pow(1.4, upg2);
+let upg3_price = 500 * Math.pow(1.75, upg3);
+let upg4_price = 5000 * Math.pow(1.9, upg4);
+let upg5_price = 50000 * Math.pow(2.3, upg5);
+let rebirth = 0;
+let totalRebirth = 0;
+let rebirthCost = 100000 * Math.pow(1.5, totalRebirth);
+let rUpg1 = 0;
+let rUpg2 = 0;
+let rUpg3 = 0;
+let rUpg4 = 0;
+let rUpg5 = 0;
+let card50Val = 2;
+let card30Val = 3;
+let card10Val = 5;
+let card8Val = 10;
+let card2Val = 20;
+let card50 = 0;
+let card30 = 0;
+let card10 = 0;
+let card8 = 0;
+let card2 = 0;
+let rUpg1_price = 1 * Math.pow(1.5, rUpg1);
+let rUpg2_price = 4 * Math.pow(2.0, rUpg2);
+let rUpg3_price = 8 * Math.pow(3, rUpg3);
+let rUpg4_price = 20 * Math.pow(5, rUpg4);
+let rUpg5_price = 50 * Math.pow(8, rUpg5);
+let rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
+let multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val) * (1 + rebirth);
+let gameActive = false;
+let initiation = true;
+let valueUpdater = 0;
+let perfLast = performance.now();
+let FPS = 0;
+let avgCounter = 0;
+let avgSum = 0;
+let mainFPS = 60;
+let questionCounter = 0;
+const rUpgs = [rUpg1, rUpg2, rUpg3, rUpg4, rUpg5];
+const rUpgsPrice = [rUpg1_price, rUpg2_price, rUpg3_price, rUpg4_price, rUpg5_price];
+let questionDivs = []
+
+function requestQuestionGameFrame() {
+    const hiddenDivGame_mainScreen_gameScreen = document.getElementById("hiddenDivGame_mainScreen_gameScreen")
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder");
+    let chosenLesson = questionContainer[Math.floor(Math.random() * questionContainer.length)];
+    let unitObject = "";
+    let lessonObject = "";
+    let chosenQuestion = "";
+    console.log("Chosen Lesson: " + chosenLesson)
+    try {
+        if (unitData[keyMapParser(chosenLesson.substring(0,2)) - 1] != undefined) {
+            unitObject = unitData[keyMapParser(chosenLesson.substring(0,2)) - 1];
+        } else {
+            unitObject = unitData[0];
+        }
+    } catch(error) {
+        unitObject = unitData[0];
+    }
+    try {
+        if (unitObject[keyMapParser(chosenLesson.substring(2,4))] != undefined || Object.keys(unitObject[keyMapParser(chosenLesson.substring(2,4))]).length != 0) {
+            console.log(Object.keys(unitObject[keyMapParser(chosenLesson.substring(2,4))]).length != 0)
+            console.log(Object.keys(unitObject[keyMapParser(chosenLesson.substring(2,4))]).length)
+            console.log(Object.keys(unitObject[keyMapParser(chosenLesson.substring(2,4))]))
+            lessonObject = unitObject[keyMapParser(chosenLesson.substring(2,4))];
+        } else {
+            lessonObject = unitObject[1];
+        }
+    } catch(error) {
+        lessonObject = unitObject[1];
+    }
+    chosenQuestion = lessonObject[Object.keys(lessonObject)[Math.floor(Math.random() * Object.keys(lessonObject).length)]]
+    console.log(chosenQuestion)
+    questionDivs = [];
+    for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+        hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "none";
+    }
+    hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "column";
+    gameActive = false;
+    const questionDiv = document.createElement("div");
+    questionDiv.classList.add("hiddenDivGame_mainScreen_gameScreen_question")
+    const questionDiv2Holder1 = document.createElement("div");
+    questionDiv2Holder1.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
+    const questionDiv2Holder2 = document.createElement("div");
+    questionDiv2Holder2.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
+
+    const possibleChoice1 = document.createElement("div");
+    possibleChoice1.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+
+    const possibleChoice2 = document.createElement("div");
+    possibleChoice2.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+
+    const possibleChoice3 = document.createElement("div");
+    possibleChoice3.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    
+    const possibleChoice4 = document.createElement("div");
+    possibleChoice4.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    possibleChoice4.addEventListener("click", () => {
+        for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
+            questionDivs[GEROGFC].remove();
+        }
+        gameActive = true;
+        gameStart(60);
+        for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+        }
+    })
+    questionDiv2Holder1.appendChild(possibleChoice1);
+    questionDiv2Holder1.appendChild(possibleChoice2);
+    questionDiv2Holder2.appendChild(possibleChoice3);
+    questionDiv2Holder2.appendChild(possibleChoice4);
+    
+    hiddenDivGame_mainScreen_gameScreen.appendChild(questionDiv);
+    hiddenDivGame_mainScreen_gameScreen.appendChild(questionDiv2Holder1);
+    hiddenDivGame_mainScreen_gameScreen.appendChild(questionDiv2Holder2);
+    questionDivs.push(questionDiv2Holder1);
+    questionDivs.push(questionDiv2Holder2);
+    questionDivs.push(possibleChoice1);
+    questionDivs.push(possibleChoice2);
+    questionDivs.push(possibleChoice3);
+    questionDivs.push(possibleChoice4);
+    questionDivs.push(questionDiv);
+    questionDivs = questionDivs.flat();
+    console.log(questionDivs)
+}
+
+function gameInitiation() {
+    const dataSet = [upg1, upg2, upg3, upg4, upg5];
+    const up1Button = document.getElementById("firstUpgradeDiv");
+    const up2Button = document.getElementById("secondUpgradeDiv");
+    const up3Button = document.getElementById("thirdUpgradeDiv");
+    const up4Button = document.getElementById("forthUpgradeDiv");
+    const up5Button = document.getElementById("fifthUpgradeDiv");
+    currency = 0;
+    upg1 = 0;
+    upg2 = 0;
+    upg3 = 0;
+    upg4 = 0;
+    upg5 = 0;
+    rebirth = 0;
+    rUpg1 = 0;
+    rUpg2 = 0;
+    rUpg3 = 0;
+    rUpg4 = 0;
+    rUpg5 = 0;
+    card50 = 0;
+    card30 = 0;
+    card10 = 0;
+    card8 = 0;
+    card2 = 0;
+    totalRebirth = 0;
+    console.log("Game initiated.");
+    console.log("test")
+    up1Button.textContent = "Multiplier: 10x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
+    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
+    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
+    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
+    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
+}
+
+function gameLogic() {
+    currency += multiplier;
+}
+
+function gameEnd() {
+    for (let GE=0; GE<questionDivs.length;GE++) {
+        questionDivs[GE].remove();
+    }
+    gameActive = false;
+    initiation = true;
+    valueUpdater = 0;
+    perfLast = performance.now();
+    FPS = 0;
+    avgCounter = 0;
+    avgSum = 0;
+    mainFPS = 60;
+    questionCounter = 0;
+}
+
+function updateGameScreen() { 
+    upg1_price = 10 * Math.pow(1.25, upg1);
+    upg2_price = 100 * Math.pow(1.4, upg2);
+    upg3_price = 500 * Math.pow(1.75, upg3);
+    upg4_price = 5000 * Math.pow(1.9, upg4);
+    upg5_price = 50000 * Math.pow(2.3, upg5);
+    rUpg1_price = 1 * Math.pow(1.5, rUpg1);
+    rUpg2_price = 4 * Math.pow(2.0, rUpg2);
+    rUpg3_price = 8 * Math.pow(3, rUpg3);
+    rUpg4_price = 20 * Math.pow(5, rUpg4);
+    rUpg5_price = 50 * Math.pow(8, rUpg5);
+    rebirthCost = 100000 * Math.pow(1.5, totalRebirth);
+    rMultiplier = 1 * (1 + rUpg4) * (1 + rUpg5) * (1 + card2 * card2Val) * (1 + card8 * card8Val);
+    multiplier = 1 * (1 + upg1 * 10 + upg2 * 75 + upg3 * 500 + upg4 * 2500 + upg5 * 10000) * (1 + rUpg1 * 2 + rUpg2 * 5 + rUpg3 * 20 + rUpg4 * 50 + rUpg5 * 100) * (1 + card50 * card50Val + card30 * card30Val + card10 * card10Val + card8 * card8Val + card2 * card2Val) * (1 + rebirth);
+    const rUpgDiv1 = document.getElementById("rUpgDiv1");
+    const rUpgDiv2 = document.getElementById("rUpgDiv2");
+    const rUpgDiv3 = document.getElementById("rUpgDiv3");
+    const rUpgDiv4 = document.getElementById("rUpgDiv4");
+    const rUpgDiv5 = document.getElementById("rUpgDiv5");
+    const up1Button = document.getElementById("firstUpgradeDiv");
+    const up2Button = document.getElementById("secondUpgradeDiv");
+    const up3Button = document.getElementById("thirdUpgradeDiv");
+    const up4Button = document.getElementById("forthUpgradeDiv");
+    const up5Button = document.getElementById("fifthUpgradeDiv");
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthAmount = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthAmount");
+    const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney");
+    hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthAmount.textContent = "Rebirths: " + Math.floor(rebirth) + " (" + rMultiplier + "x multpier) | Rebirth Cost: " + Math.floor(rebirthCost);
+    rUpgDiv1.textContent = "Multiplier: 2x | Cost: " + Math.floor(rUpg1_price) + " | Owned: " + Math.floor(rUpg1);
+    rUpgDiv2.textContent = "Multiplier: 5x | Cost: " + Math.floor(rUpg2_price) + " | Owned: " + Math.floor(rUpg2);
+    rUpgDiv3.textContent = "Multiplier: 20x | Cost: " + Math.floor(rUpg3_price) + " | Owned: " + Math.floor(rUpg3);
+    rUpgDiv4.textContent = "Multiplier: 50x | Cost: " + Math.floor(rUpg4_price) + " | Owned: " + Math.floor(rUpg4);
+    rUpgDiv5.textContent = "Multiplier: 100x | Cost: " + Math.floor(rUpg5_price) + " | Owned: " + Math.floor(rUpg5);
+    up1Button.textContent = "Multiplier: 5x | Cost: " + Math.floor(upg1_price) + " | Owned: " + Math.floor(upg1);
+    up2Button.textContent = "Multiplier: 75x | Cost: " + Math.floor(upg2_price) + " | Owned: " + Math.floor(upg2);
+    up3Button.textContent = "Multiplier: 500x | Cost: " + Math.floor(upg3_price) + " | Owned: " + Math.floor(upg3);
+    up4Button.textContent = "Multiplier: 2500x | Cost: " + Math.floor(upg4_price) + " | Owned: " + Math.floor(upg4);
+    up5Button.textContent = "Multiplier: 10000x | Cost: " + Math.floor(upg5_price) + " | Owned: " + Math.floor(upg5);
+    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpgMoney.textContent = "Money: " + Math.floor(currency) + " (" + multiplier + "/s)";
 }
 
 
@@ -565,14 +560,7 @@ function numberParser(number) {
     return NPNS
 }
 
-let gameActive = false;
-let initiation = true;
-let valueUpdater = 0;
-let perfLast = performance.now();
-let FPS = 0;
-let avgCounter = 0;
-let avgSum = 0;
-let mainFPS = 60;
+
 
 function gameStart(perfReq) {
     if (!gameActive) {
@@ -581,6 +569,7 @@ function gameStart(perfReq) {
     if (initiation) {
         initiation = false;
         gameInitiation();
+        console.log("Initiated the game.")
     }
     
     
@@ -598,6 +587,11 @@ function gameStart(perfReq) {
     }
     valueUpdater++;
     if (valueUpdater >= mainFPS) {
+        questionCounter++;
+        if (questionCounter>2) {
+            requestQuestionGameFrame();
+            questionCounter = 0;
+        }
         valueUpdater = 0;
         gameLogic();
     }
@@ -609,7 +603,6 @@ function gameStart(perfReq) {
 
 document.addEventListener("DOMContentLoaded", () => {
     if (databaseActive == "true") {
-        
         databaseInitialization(DBI => {
             questionContainer = [];
             const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
@@ -628,6 +621,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
                         if (questionContainer[questionAdder].substring(2, 4) != "QW") {
                             const newChild = document.createElement("div");
+                            const dropdownUnitSelector = document.getElementById("SUnits");
+                            const dropdownLessonSelector = document.getElementById("OLessons");
                             newChild.id = questionContainer[questionAdder];
                             newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
                             newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
@@ -637,8 +632,21 @@ document.addEventListener("DOMContentLoaded", () => {
                             childOfNewChild.textContent = "X";
                             childOfNewChild.addEventListener("click", CONCC => {
                                 childOfNewChild.parentElement.remove();
-                                console.log(childOfNewChild.parentElement.id)
                                 dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                                if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
+                                        const DUSCLesson = document.createElement("option");
+                                        DUSCLesson.value = newChild.id.substring(2, 4);
+                                        DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
+                                        DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
+                                        DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                                        dropdownLessonSelector.appendChild(DUSCLesson);
+                                        
+                                    }
+                                    let indexOfData = questionContainer.indexOf(newChild.id)
+                                    if (indexOfData > -1) {
+                                        questionContainer.splice(indexOfData, 1)
+                                    }
+                                    
                             })
                             newChild.appendChild(childOfNewChild);
                             mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
@@ -731,25 +739,358 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
         const dropdownUnitSelector = document.getElementById("SUnits");
-        const dropdownLessonSelector = document.getElementById("OLessons")
+        const dropdownLessonSelector = document.getElementById("OLessons");
         const questionAdderButton = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addQuestion");
         const mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder");
         const mainPage = document.getElementById("mainPage-divHolder");
         const gameButton = document.getElementById("gameStartButton");
         const hiddenGamePage = document.getElementById("hiddenDivGame");
         const returnButton = document.getElementById("hiddenDivGame_returnButton");
-        returnButton.addEventListener("click", RBC => {
+        const hiddenDivGame_title = document.getElementById("hiddenDivGame_title");
+        const hiddenDivGame_mainScreen_gameScreen = document.getElementById("hiddenDivGame_mainScreen_gameScreen");
+        const hiddenDivGame_mainScreen_gameScreen_upgHolder = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder");
+        const hiddenDivGame_mainScreen_gameScreen_description = document.getElementById("hiddenDivGame_mainScreen_gameScreen_description")
+        const hiddenDivGame_mainScreen_gameScreen_title = document.getElementById("hiddenDivGame_mainScreen_gameScreen_title");
+        const hiddenDivGame_mainScreen_gameScreen_startButton = document.getElementById("hiddenDivGame_mainScreen_gameScreen_startButton");
+        const hiddenDivGame_restartButton = document.getElementById("hiddenDivGame_restartButton");
+        const up1Button = document.getElementById("firstUpgradeDiv");
+        const up2Button = document.getElementById("secondUpgradeDiv");
+        const up3Button = document.getElementById("thirdUpgradeDiv");
+        const up4Button = document.getElementById("forthUpgradeDiv");
+        const up5Button = document.getElementById("fifthUpgradeDiv");
+        const up1ButtonDiv = document.getElementById("firstUpgradeDivHolder");
+        const up2ButtonDiv = document.getElementById("secondUpgradeDivHolder");
+        const up3ButtonDiv = document.getElementById("thirdUpgradeDivHolder");
+        const up4ButtonDiv = document.getElementById("forthUpgradeDivHolder");
+        const up5ButtonDiv = document.getElementById("fifthUpgradeDivHolder");
+        const rUpgDiv1 = document.getElementById("rUpgDiv1");
+        const rUpgDiv2 = document.getElementById("rUpgDiv2");
+        const rUpgDiv3 = document.getElementById("rUpgDiv3");
+        const rUpgDiv4 = document.getElementById("rUpgDiv4");
+        const rUpgDiv5 = document.getElementById("rUpgDiv5");
+        const rUpgDivHolder1 = document.getElementById("rUpgDivHolder1");
+        const rUpgDivHolder2 = document.getElementById("rUpgDivHolder2");
+        const rUpgDivHolder3 = document.getElementById("rUpgDivHolder3");
+        const rUpgDivHolder4 = document.getElementById("rUpgDivHolder4");
+        const rUpgDivHolder5 = document.getElementById("rUpgDivHolder5");
+        const rUpgDivTitle1 = document.getElementById("rUpgDivTitle1");
+        const rUpgDivTitle2 = document.getElementById("rUpgDivTitle2");
+        const rUpgDivTitle3 = document.getElementById("rUpgDivTitle3");
+        const rUpgDivTitle4 = document.getElementById("rUpgDivTitle4");
+        const rUpgDivTitle5 = document.getElementById("rUpgDivTitle5");
+        const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg");
+        const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
+        const hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton");
+        const hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg");
+        rUpgDivHolder1.addEventListener("click", UP1C => {
+            rUpgDivHolder1.classList.add("clickEventRB");
+            setTimeout(HDGST => {
+                rUpgDivHolder1.classList.remove("clickEventRB");
+            }, 250)
+            if (rebirth >= rUpg1_price) {
+                rUpg1 += 1;
+                rebirth -= rUpg1_price;
+                rUpgDivTitle1.style.color = "#24bf73";
+                rUpgDiv1.style.color = "#24bf73";
+                setTimeout(() => {
+                    rUpgDivTitle1.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv1.style.color = "rgb(243, 243, 145)";
+                }, 100)
+            } else {
+                rUpgDivTitle1.style.color = "#dc4545";
+                rUpgDiv1.style.color = "#dc4545";
+                setTimeout(() => {
+                    rUpgDivTitle1.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv1.style.color = "rgb(243, 243, 145)";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        rUpgDivHolder2.addEventListener("click", UP1C => {
+            rUpgDivHolder2.classList.add("clickEventRB");
+            setTimeout(HDGST => {
+                rUpgDivHolder2.classList.remove("clickEventRB");
+            }, 250)
+            if (rebirth >= rUpg2_price) {
+                rUpg2 += 1;
+                rebirth -= rUpg2_price;
+                rUpgDivTitle2.style.color = "#24bf73";
+                rUpgDiv2.style.color = "#24bf73";
+                setTimeout(() => {
+                    rUpgDivTitle2.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv2.style.color = "rgb(243, 243, 145)";
+                }, 100)
+            } else {
+                rUpgDivTitle2.style.color = "#dc4545";
+                rUpgDiv2.style.color = "#dc4545";
+                setTimeout(() => {
+                    rUpgDivTitle2.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv2.style.color = "rgb(243, 243, 145)";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        rUpgDivHolder3.addEventListener("click", UP1C => {
+            rUpgDivHolder3.classList.add("clickEventRB");
+            setTimeout(HDGST => {
+                rUpgDivHolder3.classList.remove("clickEventRB");
+            }, 250)
+            if (rebirth >= rUpg3_price) {
+                rUpg3 += 1;
+                rebirth -= rUpg3_price;
+                rUpgDivTitle3.style.color = "#24bf73";
+                rUpgDiv3.style.color = "#24bf73";
+                setTimeout(() => {
+                    rUpgDivTitle3.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv3.style.color = "rgb(243, 243, 145)";
+                }, 100)
+            } else {
+                rUpgDivTitle3.style.color = "#dc4545";
+                rUpgDiv3.style.color = "#dc4545";
+                setTimeout(() => {
+                    rUpgDivTitle3.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv3.style.color = "rgb(243, 243, 145)";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        rUpgDivHolder4.addEventListener("click", UP1C => {
+            rUpgDivHolder4.classList.add("clickEventRB");
+            setTimeout(HDGST => {
+                rUpgDivHolder4.classList.remove("clickEventRB");
+            }, 250)
+            if (rebirth >= rUpg4_price) {
+                rUpg4 += 1;
+                rebirth -= rUpg4_price;
+                rUpgDivTitle4.style.color = "#24bf73";
+                rUpgDiv4.style.color = "#24bf73";
+                setTimeout(() => {
+                    rUpgDivTitle4.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv4.style.color = "rgb(243, 243, 145)";
+                }, 100)
+            } else {
+                rUpgDivTitle4.style.color = "#dc4545";
+                rUpgDiv4.style.color = "#dc4545";
+                setTimeout(() => {
+                    rUpgDivTitle4.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv4.style.color = "rgb(243, 243, 145)";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        rUpgDivHolder5.addEventListener("click", UP1C => {
+            rUpgDivHolder5.classList.add("clickEventRB");
+            setTimeout(HDGST => {
+                rUpgDivHolder5.classList.remove("clickEventRB");
+            }, 250)
+            if (rebirth >= rUpg5_price) {
+                rUpg5 += 1;
+                rebirth -= rUpg5_price;
+                rUpgDivTitle5.style.color = "#24bf73";
+                rUpgDiv5.style.color = "#24bf73";
+                setTimeout(() => {
+                    rUpgDivTitle5.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv5.style.color = "rgb(243, 243, 145)";
+                }, 100)
+            } else {
+                rUpgDivTitle5.style.color = "#dc4545";
+                rUpgDiv5.style.color = "#dc4545";
+                setTimeout(() => {
+                    rUpgDivTitle5.style.color = "rgb(243, 243, 145)";
+                    rUpgDiv5.style.color = "rgb(243, 243, 145)";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton.addEventListener("click", HDGRBC => {
+            if (currency >= rebirthCost) {
+                rebirth += 1;
+                totalRebirth += 1;
+                currency -= rebirthCost;
+                updateGameScreen();
+            }
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton.classList.add("clickEventRB");
+            setTimeout(() => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton.classList.remove("clickEventRB");
+            }, 250)
+        })
+        up1ButtonDiv.addEventListener("click", UP1C => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[0].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[0].classList.remove("clickEvent");
+            }, 250)
+            if (currency >= upg1_price) {
+                upg1 += 1;
+                currency -= upg1_price;
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#24bf73";
+                up1Button.style.color = "#24bf73";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
+                    up1Button.style.color = "white";
+                }, 100)
+            } else {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "#dc4545";
+                up1Button.style.color = "#dc4545";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[0].style.color = "white";
+                    up1Button.style.color = "white";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        up2ButtonDiv.addEventListener("click", UP2C => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[1].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[1].classList.remove("clickEvent");
+            }, 250)
+            if (currency >= upg2_price) {
+                upg2 += 1;
+                currency -= upg2_price;
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#24bf73";
+                up2Button.style.color = "#24bf73";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
+                    up2Button.style.color = "white";
+                }, 400)
+            } else {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "#dc4545";
+                up2Button.style.color = "#dc4545";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[1].style.color = "white";
+                    up2Button.style.color = "white";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        up3ButtonDiv.addEventListener("click", UP3C => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[2].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[2].classList.remove("clickEvent");
+            }, 250)
+            if (currency >= upg3_price) {
+                upg3 += 1;
+                currency -= upg3_price;
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#24bf73";
+                up3Button.style.color = "#24bf73";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
+                    up3Button.style.color = "white";
+                }, 400)
+            } else {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "#dc4545";
+                up3Button.style.color = "#dc4545";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[2].style.color = "white";
+                    up3Button.style.color = "white";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        up4ButtonDiv.addEventListener("click", UP4C => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[3].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[3].classList.remove("clickEvent");
+            }, 250)
+            if (currency >= upg4_price) {
+                upg4 += 1;
+                currency -= upg4_price;
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#24bf73";
+                up4Button.style.color = "#24bf73";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
+                    up4Button.style.color = "white";
+                }, 400)
+            } else {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "#dc4545";
+                up4Button.style.color = "#dc4545";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[3].style.color = "white";
+                    up4Button.style.color = "white";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        up5ButtonDiv.addEventListener("click", UP5C => {
+            hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[4].classList.add("clickEvent");
+            setTimeout(HDGST => {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg[4].classList.remove("clickEvent");
+            }, 250)
+            if (currency >= upg5_price) {
+                upg5 += 1;
+                currency -= upg5_price;
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#24bf73";
+                up5Button.style.color = "#24bf73";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
+                    up5Button.style.color = "white";
+                }, 400)
+            } else {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "#dc4545";
+                up5Button.style.color = "#dc4545";
+                setTimeout(() => {
+                    hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title[4].style.color = "white";
+                    up5Button.style.color = "white";
+                }, 400)
+            }
+            updateGameScreen();
+
+        })
+        
+        hiddenDivGame_mainScreen_gameScreen_startButton.addEventListener("click", HDGSBC => {
+            hiddenDivGame_mainScreen_gameScreen_description.style.display = "none";
+            hiddenDivGame_mainScreen_gameScreen_title.style.display = "none";
+            hiddenDivGame_mainScreen_gameScreen_startButton.style.display = "none";
+            hiddenDivGame_mainScreen_gameScreen.style.transform = "scaleY(100%)"
+            hiddenDivGame_title.style.transform = "translateY(0%)";
+            for (let upgElements=0; upgElements<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; upgElements++){
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[upgElements].style.display = "flex";
+            }
+            hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+            gameActive = true;
+            gameStart(60);
+        })
+        hiddenDivGame_restartButton.addEventListener("click", HDGRBC => {
+            hiddenDivGame_mainScreen_gameScreen_description.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen_title.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen_startButton.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen.style.transform = "scaleY(115%)"
+            hiddenDivGame_title.style.transform = "translateY(-100%)";
+            for (let upgElements=0; upgElements<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; upgElements++){
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[upgElements].style.display = "none";
+            }
+            hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "column";
             gameEnd();
+            
+        })
+        returnButton.addEventListener("click", RBC => {
+            hiddenDivGame_mainScreen_gameScreen_description.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen_title.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen_startButton.style.display = "flex";
+            hiddenDivGame_mainScreen_gameScreen.style.transform = "scaleY(115%)"
+            hiddenDivGame_title.style.transform = "translateY(-100%)";
+            for (let upgElements=0; upgElements<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; upgElements++){
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[upgElements].style.display = "none";
+            }
+            hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "column";
             mainPage.style.display = "flex";
             hiddenGamePage.style.display = "none";
+            gameEnd();
+            
         })
         gameButton.addEventListener("click", GBC => {
             mainPage.style.display = "none";
             hiddenGamePage.style.display = "flex";
-            gameActive = true;
-            gameStart(60);
-
         })
+        
         dropdownUnitSelector.addEventListener("change", DUSC => {
             const DUSCOptionValue = DUSC.target.value;
             questionAdderButton.style.pointerEvents = "none";
@@ -826,7 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 childOfNewChild.addEventListener("click", CONCC => {
                                     childOfNewChild.parentElement.remove();
                                     dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
-                                    console.log(newChild.id)
+                                    
                                     if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
                                         const DUSCLesson = document.createElement("option");
                                         DUSCLesson.value = newChild.id.substring(2, 4);
@@ -840,6 +1181,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     if (indexOfData > -1) {
                                         questionContainer.splice(indexOfData, 1)
                                     }
+                                    
                                     
  
                                     
