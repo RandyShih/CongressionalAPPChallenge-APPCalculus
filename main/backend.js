@@ -8,8 +8,8 @@ let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
 
 const questionsUnit1 = {
-    1: {"What is the derivative of 5x?": {1: ["5x", "5", "10x^2", "0"]}, 
-        "What is the derivative of $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}/*,
+    1: {"What is the derivative of \u00A0 $$5x$$?": {1: ["5x", "5", "10x^2", "0"]}, 
+        "What is the derivative of \u00A0 $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}/*,
     2: {1: {}, 
         2: {}},
     3: {1: {},
@@ -143,7 +143,9 @@ let mainFPS = 60;
 let questionCounter = 0;
 const rUpgs = [rUpg1, rUpg2, rUpg3, rUpg4, rUpg5];
 const rUpgsPrice = [rUpg1_price, rUpg2_price, rUpg3_price, rUpg4_price, rUpg5_price];
-let questionDivs = []
+let questionDivs = [];
+let chosenQuestion = "";
+let correctAnswer = "";
 
 function requestQuestionGameFrame() {
     const hiddenDivGame_mainScreen_gameScreen = document.getElementById("hiddenDivGame_mainScreen_gameScreen")
@@ -151,7 +153,13 @@ function requestQuestionGameFrame() {
     let chosenLesson = questionContainer[Math.floor(Math.random() * questionContainer.length)];
     let unitObject = "";
     let lessonObject = "";
-    let chosenQuestion = "";
+    let possibleChoicesArray = [];
+    let tempRandomMath = 0;
+    let actualStringQuestion = "";
+    /* Make animationActive vars for all 4 answers */
+    let animationActve = false;
+    
+    chosenQuestion = "";
     console.log("Chosen Lesson: " + chosenLesson)
     try {
         if (unitData[keyMapParser(chosenLesson.substring(0,2)) - 1] != undefined) {
@@ -174,8 +182,13 @@ function requestQuestionGameFrame() {
     } catch(error) {
         lessonObject = unitObject[1];
     }
-    chosenQuestion = lessonObject[Object.keys(lessonObject)[Math.floor(Math.random() * Object.keys(lessonObject).length)]]
-    console.log(chosenQuestion)
+    tempRandomMath = Math.random();
+    actualStringQuestion = Object.keys(lessonObject)[[Math.floor(tempRandomMath * Object.keys(lessonObject).length)]]
+    chosenQuestion = lessonObject[Object.keys(lessonObject)[Math.floor(tempRandomMath * Object.keys(lessonObject).length)]]
+    possibleChoicesArray = Object.values(chosenQuestion).flat();
+    correctAnswer = possibleChoicesArray[Object.keys(chosenQuestion).flat()[0]];
+    console.log(correctAnswer)
+    console.log(possibleChoicesArray)
     questionDivs = [];
     for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
         hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "none";
@@ -183,38 +196,226 @@ function requestQuestionGameFrame() {
     hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "column";
     gameActive = false;
     const questionDiv = document.createElement("div");
+    questionDiv.textContent = actualStringQuestion;
     questionDiv.classList.add("hiddenDivGame_mainScreen_gameScreen_question")
     const questionDiv2Holder1 = document.createElement("div");
     questionDiv2Holder1.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
     const questionDiv2Holder2 = document.createElement("div");
     questionDiv2Holder2.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
 
+    tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
     const possibleChoice1 = document.createElement("div");
     possibleChoice1.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-
-    const possibleChoice2 = document.createElement("div");
-    possibleChoice2.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-
-    const possibleChoice3 = document.createElement("div");
-    possibleChoice3.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-    
-    const possibleChoice4 = document.createElement("div");
-    possibleChoice4.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-    possibleChoice4.addEventListener("click", () => {
-        for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
-            questionDivs[GEROGFC].remove();
+    possibleChoice1.id = possibleChoicesArray[tempRandomMath];
+    possibleChoice1.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
+    questionDiv2Holder1.appendChild(possibleChoice1);
+    possibleChoice1.addEventListener("mouseenter", () => {
+        if (!animationActve) {
+            possibleChoice1.style.backgroundColor = "#b7e1f4";
+            possibleChoice1.style.transform = "scale(1.05)";
         }
-        gameActive = true;
-        gameStart(60);
-        for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
-            hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
-            hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+        possibleChoice1.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice1.addEventListener("mouseleave", () => {
+        if (!animationActve) {
+            possibleChoice1.style.backgroundColor = "#8dceec";
+            possibleChoice1.style.transform = "scale(1)";
+        }
+        possibleChoice1.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice1.addEventListener("click", () => {
+        if (possibleChoice1.id == correctAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
+                questionDivs[GEROGFC].remove();
+            }
+            gameActive = true;
+            gameStart(60);
+            for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
+                hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+            }
+        } else {
+            animationActve = true;
+            possibleChoice1.style.backgroundColor = "#dc4545";
+            possibleChoice1.style.transform = "translateX(8%)";
+            possibleChoice1.style.pointerEvents = "none";
+            setTimeout(() => {
+                possibleChoice1.style.transform = "translateX(-6%)";
+            }, 500)
+            
+            setTimeout(() => {
+                possibleChoice1.style.backgroundColor = "#8dceec";
+                possibleChoice1.style.pointerEvents = "auto";
+                animationActve = false;
+            }, 1100)
+            setTimeout(() => {
+                possibleChoice1.style.transform = "translateX(0)";
+            }, 1000)
         }
     })
-    questionDiv2Holder1.appendChild(possibleChoice1);
+    MathJax.typesetPromise([possibleChoice1])
+    possibleChoicesArray.splice(tempRandomMath, 1);
+
+    tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
+    const possibleChoice2 = document.createElement("div");
+    possibleChoice2.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    possibleChoice2.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
     questionDiv2Holder1.appendChild(possibleChoice2);
+    possibleChoice2.id = possibleChoicesArray[tempRandomMath];
+    possibleChoice2.addEventListener("mouseenter", () => {
+        if (!animationActve) {
+            possibleChoice2.style.backgroundColor = "#b7e1f4";
+            possibleChoice2.style.transform = "scale(1.05)";
+        }
+        possibleChoice2.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice2.addEventListener("mouseleave", () => {
+        if (!animationActve) {
+            possibleChoice2.style.backgroundColor = "#8dceec";
+            possibleChoice2.style.transform = "scale(1)";
+        }
+        possibleChoice2.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice2.addEventListener("click", () => {
+        if (possibleChoice2.id == correctAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
+                questionDivs[GEROGFC].remove();
+            }
+            gameActive = true;
+            gameStart(60);
+            for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
+                hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+            }
+        } else {
+            animationActve = true;
+            possibleChoice2.style.backgroundColor = "#dc4545";
+            possibleChoice2.style.transform = "translateX(8%)";
+            possibleChoice2.style.pointerEvents = "none";
+            setTimeout(() => {
+                possibleChoice2.style.transform = "translateX(-6%)";
+            }, 500)
+            
+            setTimeout(() => {
+                possibleChoice2.style.backgroundColor = "#8dceec";
+                possibleChoice2.style.pointerEvents = "auto";
+                animationActve = false;
+            }, 1100)
+            setTimeout(() => {
+                possibleChoice2.style.transform = "translateX(0)";
+            }, 1000)
+            
+        }
+    })
+    possibleChoicesArray.splice(tempRandomMath, 1);
+    tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
+    const possibleChoice3 = document.createElement("div");
+    possibleChoice3.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    possibleChoice3.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
     questionDiv2Holder2.appendChild(possibleChoice3);
+    possibleChoice3.id = possibleChoicesArray[tempRandomMath];
+    possibleChoice3.addEventListener("mouseenter", () => {
+        if (!animationActve) {
+            possibleChoice3.style.backgroundColor = "#b7e1f4";
+            possibleChoice3.style.transform = "scale(1.05)";
+        }
+        possibleChoice3.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice3.addEventListener("mouseleave", () => {
+        if (!animationActve) {
+            possibleChoice3.style.backgroundColor = "#8dceec";
+            possibleChoice3.style.transform = "scale(1)";
+        }
+        possibleChoice3.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice3.addEventListener("click", () => {
+        if (possibleChoice3.id == correctAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
+                questionDivs[GEROGFC].remove();
+            }
+            gameActive = true;
+            gameStart(60);
+            for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
+                hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+            }
+        } else {
+            animationActve = true;
+            possibleChoice3.style.backgroundColor = "#dc4545";
+            possibleChoice3.style.transform = "translateX(8%)";
+            possibleChoice3.style.pointerEvents = "none";
+            setTimeout(() => {
+                possibleChoice3.style.transform = "translateX(-6%)";
+            }, 500)
+            
+            setTimeout(() => {
+                possibleChoice3.style.backgroundColor = "#8dceec";
+                possibleChoice3.style.pointerEvents = "auto";
+                animationActve = false;
+            }, 1100)
+            setTimeout(() => {
+                possibleChoice3.style.transform = "translateX(0)";
+            }, 1000)
+            
+        }
+    })
+    possibleChoicesArray.splice(tempRandomMath, 1);
+    console.log(possibleChoicesArray.length)
+    tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
+    const possibleChoice4 = document.createElement("div");
+    possibleChoice4.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    possibleChoice4.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
     questionDiv2Holder2.appendChild(possibleChoice4);
+    possibleChoice4.id = possibleChoicesArray[tempRandomMath];
+    possibleChoice4.addEventListener("mouseenter", () => {
+        if (!animationActve) {
+            possibleChoice4.style.backgroundColor = "#b7e1f4";
+            possibleChoice4.style.transform = "scale(1.05)";
+        }
+        possibleChoice4.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice4.addEventListener("mouseleave", () => {
+        if (!animationActve) {
+            possibleChoice4.style.backgroundColor = "#8dceec";
+            possibleChoice4.style.transform = "scale(1)";
+        }
+        possibleChoice4.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice4.addEventListener("click", () => {
+        if (possibleChoice4.id == correctAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
+                questionDivs[GEROGFC].remove();
+            }
+            gameActive = true;
+            gameStart(60);
+            for (let HDGUH=0; HDGUH<hiddenDivGame_mainScreen_gameScreen_upgHolder.length; HDGUH++) {
+                hiddenDivGame_mainScreen_gameScreen_upgHolder[HDGUH].style.display = "flex";
+                hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
+            }
+        } else {
+            animationActve = true;
+            possibleChoice4.style.backgroundColor = "#dc4545";
+            possibleChoice4.style.transform = "translateX(8%)";
+            possibleChoice4.style.pointerEvents = "none";
+            setTimeout(() => {
+                possibleChoice4.style.transform = "translateX(-6%)";
+            }, 500)
+            
+            setTimeout(() => {
+                possibleChoice4.style.backgroundColor = "#8dceec";
+                possibleChoice4.style.pointerEvents = "auto";
+                animationActve = false;
+            }, 1100)
+            setTimeout(() => {
+                possibleChoice4.style.transform = "translateX(0)";
+            }, 1000)
+        }
+    })
+    possibleChoicesArray.splice(tempRandomMath, 1);
+    MathJax.typesetPromise([possibleChoice2])
+    MathJax.typesetPromise([possibleChoice3])
+    MathJax.typesetPromise([possibleChoice4])
+    MathJax.typesetPromise([questionDiv])
     
     hiddenDivGame_mainScreen_gameScreen.appendChild(questionDiv);
     hiddenDivGame_mainScreen_gameScreen.appendChild(questionDiv2Holder1);
@@ -588,7 +789,7 @@ function gameStart(perfReq) {
     valueUpdater++;
     if (valueUpdater >= mainFPS) {
         questionCounter++;
-        if (questionCounter>2) {
+        if (questionCounter>10) {
             requestQuestionGameFrame();
             questionCounter = 0;
         }
@@ -696,7 +897,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
         const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
-        console.log(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion);
         const lessons_rightSide_lessonDiv_lessons_sublesson = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson");
         for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
             lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].addEventListener("click", event => {
@@ -782,6 +982,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg");
+        
         rUpgDivHolder1.addEventListener("click", UP1C => {
             rUpgDivHolder1.classList.add("clickEventRB");
             setTimeout(HDGST => {
@@ -909,8 +1110,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton.addEventListener("click", HDGRBC => {
             if (currency >= rebirthCost) {
-                rebirth += 1;
-                totalRebirth += 1;
+                rebirth += rMultiplier;
+                totalRebirth += rMultiplier;
                 currency -= rebirthCost;
                 updateGameScreen();
             }
@@ -1221,7 +1422,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         data: [2315, 3232, 23233, 4234, 3223, 23]
                     }]
                 },
-                options: {responsive: false, maintainAspectRatio: false}
+                options: {responsive: false, maintainAspectRatio: true}
             })
             const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv = document.getElementsByClassName("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
             const homePage_rightSide_upperDiv_leftDiv = document.getElementById("homePage_rightSide_upperDiv_leftDiv");

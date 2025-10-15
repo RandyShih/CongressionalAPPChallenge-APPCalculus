@@ -1220,6 +1220,7 @@
 #hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthTitle {
     display: flex;
     justify-content: center;
+    text-wrap: nowrap;
     align-items: center;
     flex-direction: row;
     font-size: 1.25vmax;
@@ -1355,11 +1356,7 @@
     width: 40%;
     box-shadow: 0px 0px 0px grey;
     transform: scale(1);
-    transition: all .75s ease-in-out
+    transition: all .75s ease-in-out;
 }
 
-.hiddenDivGame_mainScreen_gameScreen_answer:hover {
-    background-color: #b7e1f4;
-    box-shadow: 0px 0px 4px grey;
-    transform: scale(1.05);
-}
+
