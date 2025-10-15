@@ -11,7 +11,7 @@ const questionsUnit1 = {
         "What is the derivative of \u00A0 $6x^2?$": {2: ["0", "6x", "12x", "3x"]},
         "What is the derivative of \u00A0 $12x^{-2}$?": {4: ["24x^{-1}", "-24", "24x^{-3}", "-24x^{-3}"]}
     },
-    2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {1: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
+    2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {0: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
     }
     /*,
     3: {1: {},
