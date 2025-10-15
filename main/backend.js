@@ -557,7 +557,7 @@ function deleteDatabase(aDatabase) {
 
 function databaseInitialization(callback) {
     let tempDBIU = false; 
-    const request = window.indexedDB.open("mainDatabase", 3);
+    const request = window.indexedDB.open("mainDatabase", 10);
     request.onerror = (errorEvent) => {
         console.error("mainDatabase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
