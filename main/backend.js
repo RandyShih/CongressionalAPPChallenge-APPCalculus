@@ -6,12 +6,14 @@ if (localStorage.getItem("databaseActive") == null) {
 let databaseActive = localStorage.getItem("databaseActive");
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
-
 const questionsUnit1 = {
-    1: {"What is the derivative of \u00A0 $$5x$$?": {1: ["5x", "5", "10x^2", "0"]}, 
-        "What is the derivative of \u00A0 $$6x^2?$$": {2: ["0", "6x", "12x", "3x"]}}/*,
-    2: {1: {}, 
-        2: {}},
+    1: {"What is the derivative of \u00A0 $5x$?": {1: ["5x", "5", "10x^2", "0"]}, 
+        "What is the derivative of \u00A0 $6x^2?$": {2: ["0", "6x", "12x", "3x"]},
+        "What is the derivative of \u00A0 $12x^{-2}$?": {4: ["24x^{-1}", "-24", "24x^{-3}", "-24x^{-3}"]}
+    },
+    2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {1: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
+    }
+    /*,
     3: {1: {},
         2: {}},
     4: {1: {},
@@ -259,7 +261,7 @@ function requestQuestionGameFrame() {
     tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
     const possibleChoice2 = document.createElement("div");
     possibleChoice2.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-    possibleChoice2.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
+    possibleChoice2.textContent = "$" + possibleChoicesArray[tempRandomMath] + "$";
     questionDiv2Holder1.appendChild(possibleChoice2);
     possibleChoice2.id = possibleChoicesArray[tempRandomMath];
     possibleChoice2.addEventListener("mouseenter", () => {
@@ -311,7 +313,7 @@ function requestQuestionGameFrame() {
     tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
     const possibleChoice3 = document.createElement("div");
     possibleChoice3.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-    possibleChoice3.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
+    possibleChoice3.textContent = "$" + possibleChoicesArray[tempRandomMath] + "$";
     questionDiv2Holder2.appendChild(possibleChoice3);
     possibleChoice3.id = possibleChoicesArray[tempRandomMath];
     possibleChoice3.addEventListener("mouseenter", () => {
@@ -364,7 +366,7 @@ function requestQuestionGameFrame() {
     tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
     const possibleChoice4 = document.createElement("div");
     possibleChoice4.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
-    possibleChoice4.textContent = "$$" + possibleChoicesArray[tempRandomMath] + "$$";
+    possibleChoice4.textContent = "$" + possibleChoicesArray[tempRandomMath] + "$";
     questionDiv2Holder2.appendChild(possibleChoice4);
     possibleChoice4.id = possibleChoicesArray[tempRandomMath];
     possibleChoice4.addEventListener("mouseenter", () => {
@@ -805,55 +807,66 @@ function gameStart(perfReq) {
 document.addEventListener("DOMContentLoaded", () => {
     if (databaseActive == "true") {
         databaseInitialization(DBI => {
-            questionContainer = [];
-            const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
-            const dataLooperRequest = dataOpener.openCursor();
-            
-            dataLooperRequest.onsuccess = DLR => {
-                if (DLR.target.result) {
-                    const successResults = DLR.target.result;
-                    questionContainer.push(successResults.key);
-                    successResults.continue();
-                } else {
-                    console.log("Data collection complete.")
-                }
-                questionContainer = questionContainer.flat();
-                for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
-                    if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
-                        if (questionContainer[questionAdder].substring(2, 4) != "QW") {
-                            const newChild = document.createElement("div");
-                            const dropdownUnitSelector = document.getElementById("SUnits");
-                            const dropdownLessonSelector = document.getElementById("OLessons");
-                            newChild.id = questionContainer[questionAdder];
-                            newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
-                            newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
+                if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
+                questionContainer = [];
+                const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
+                const dataLooperRequest = dataOpener.openCursor();
+                
+                dataLooperRequest.onsuccess = DLR => {
+                    if (DLR.target.result) {
+                        const successResults = DLR.target.result;
+                        questionContainer.push(successResults.key);
+                        successResults.continue();
+                    } else {
+                        console.log("Data collection complete.")
+                    }
+                    questionContainer = questionContainer.flat();
+                    if (questionContainer.length == 0) {
+                        const gameButton = document.getElementById("gameStartButton");
+                        gameButton.style.pointerEvents = "none";
+                        gameButton.style.opacity = ".7";
+                    }
+                    for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
+                        if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
+                            if (questionContainer[questionAdder].substring(2, 4) != "QW") {
+                                const newChild = document.createElement("div");
+                                const dropdownUnitSelector = document.getElementById("SUnits");
+                                const dropdownLessonSelector = document.getElementById("OLessons");
+                                newChild.id = questionContainer[questionAdder];
+                                newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
+                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
 
-                            const childOfNewChild = document.createElement("div");
-                            childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
-                            childOfNewChild.textContent = "X";
-                            childOfNewChild.addEventListener("click", CONCC => {
-                                childOfNewChild.parentElement.remove();
-                                dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
-                                if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
-                                        const DUSCLesson = document.createElement("option");
-                                        DUSCLesson.value = newChild.id.substring(2, 4);
-                                        DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
-                                        DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
-                                        DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
-                                        dropdownLessonSelector.appendChild(DUSCLesson);
-                                        
-                                    }
-                                    let indexOfData = questionContainer.indexOf(newChild.id)
-                                    if (indexOfData > -1) {
-                                        questionContainer.splice(indexOfData, 1)
-                                    }
-                                    
-                            })
-                            newChild.appendChild(childOfNewChild);
-                            mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
-                        } 
-                }
-            }}
+                                const childOfNewChild = document.createElement("div");
+                                childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
+                                childOfNewChild.textContent = "X";
+                                childOfNewChild.addEventListener("click", CONCC => {       
+                                    childOfNewChild.parentElement.remove();
+                                    dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                                    if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
+                                            const DUSCLesson = document.createElement("option");
+                                            DUSCLesson.value = newChild.id.substring(2, 4);
+                                            DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
+                                            DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
+                                            DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                                            dropdownLessonSelector.appendChild(DUSCLesson);
+                                            
+                                        }
+                                        let indexOfData = questionContainer.indexOf(newChild.id)
+                                        if (indexOfData > -1) {
+                                            questionContainer.splice(indexOfData, 1)
+                                        }
+                                        if (questionContainer.length == 0) {
+                                            const gameButton = document.getElementById("gameStartButton");
+                                            gameButton.style.pointerEvents = "none";
+                                            gameButton.style.opacity = ".7";
+                                        }
+                                })
+                                newChild.appendChild(childOfNewChild);
+                                mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
+                            } 
+                    }
+                }}
+            }
             if (DBI == 2) {
                 const quizzesDataFramework = {
                     1: {"AB":{3:4}},
@@ -982,7 +995,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg");
-        
+
+        /* Temporary Code */
+        const adaptiveQuestionAdderButton = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addAdaptiveQuestions");
+        adaptiveQuestionAdderButton.style.pointerEvents = "none";
+        adaptiveQuestionAdderButton.style.backgroundColor = "#5abdea"
+
         rUpgDivHolder1.addEventListener("click", UP1C => {
             rUpgDivHolder1.classList.add("clickEventRB");
             setTimeout(HDGST => {
@@ -1382,6 +1400,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                     if (indexOfData > -1) {
                                         questionContainer.splice(indexOfData, 1)
                                     }
+                                    if (questionContainer.length == 0) {
+                                        const gameButton = document.getElementById("gameStartButton");
+                                        gameButton.style.pointerEvents = "none";
+                                        gameButton.style.opacity = ".7";
+                                    }
                                     
                                     
  
@@ -1399,6 +1422,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
                         }
                     }
+                    
+                }
+                if (questionContainer.length != 0) {
+                    const gameButton = document.getElementById("gameStartButton");
+                    gameButton.style.pointerEvents = "auto";
+                    gameButton.style.opacity = "1";
+                    
                 }
             }  
             
