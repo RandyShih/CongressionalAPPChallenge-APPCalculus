@@ -22,7 +22,14 @@ const questionsUnit1 = {
         2: {}}*/
 }
 
-let unitData = [questionsUnit1]
+let unitData = [questionsUnit1];
+let unitVideoInformation = {
+    1: {1: "www.youtube.com", 2: "www.youtube.com"},
+    2: {1: "www.youtube.com", 2: "www.youtube.com"},
+    3: {1: "www.youtube.com", 2: "www.youtube.com"},
+    4: {1: "www.youtube.com", 2: "www.youtube.com"},
+    5: {1: "www.youtube.com", 2: "www.youtube.com"},
+}
 
 const dataMap = {1: [
     "Unit 1", 
@@ -149,6 +156,8 @@ let questionDivs = [];
 let chosenQuestion = "";
 let correctAnswer = "";
 
+
+
 function requestQuestionGameFrame() {
     const hiddenDivGame_mainScreen_gameScreen = document.getElementById("hiddenDivGame_mainScreen_gameScreen")
     const hiddenDivGame_mainScreen_gameScreen_upgHolder = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder");
@@ -184,6 +193,8 @@ function requestQuestionGameFrame() {
     } catch(error) {
         lessonObject = unitObject[1];
     }
+    console.log(unitObject);
+    console.log(lessonObject)
     tempRandomMath = Math.random();
     actualStringQuestion = Object.keys(lessonObject)[[Math.floor(tempRandomMath * Object.keys(lessonObject).length)]]
     chosenQuestion = lessonObject[Object.keys(lessonObject)[Math.floor(tempRandomMath * Object.keys(lessonObject).length)]]
@@ -431,6 +442,13 @@ function requestQuestionGameFrame() {
     questionDivs.push(questionDiv);
     questionDivs = questionDivs.flat();
     console.log(questionDivs)
+}
+
+function removeAllUnits(dDisplay) {
+    const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
+    for (let RAU=0; RAU<lessons_rightSide_lessonDiv_lessons.length; RAU++) {
+        lessons_rightSide_lessonDiv_lessons[RAU].style.display = dDisplay;
+    }
 }
 
 function gameInitiation() {
@@ -947,8 +965,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             })
-
         }
+
+        
     }
     if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
         const dropdownUnitSelector = document.getElementById("SUnits");
@@ -1434,7 +1453,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
         })
     }
-    if (window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
+    if (window.location.pathname.split("/").pop() == "unit1_lesson1" || window.location.pathname.split("/").pop() == "unit1_lesson1.html" ||window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
         if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
             const mainPageGraph = document.getElementById("mainPage_graph");
             mainPageGraph.style.width = "35vw";
