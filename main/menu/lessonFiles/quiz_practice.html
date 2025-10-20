@@ -4,6 +4,8 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <script>
+            const newUrlData = new URLSearchParams(window.location.search);
+            const unitLessonData = newUrlData.get("id");
             window.MathJax = {
                 
                 tex: {
@@ -58,67 +60,39 @@
             </div>
         </div>
 
-        <div id="lesson_homePage_rightSide">
+        <div id="lesson_homePage_rightSide_quizPractice">
             <div id="homePage_rightSide_titleDiv">
-                <div id="homePage_rightSide_titleDiv_title">Unit 1, Lesson 1: Polynomials
+                <div id="homePage_rightSide_titleDiv_title"> 
+                    <div id="homePage_rightSide_titleDiv_titleContent"></div>
                     <div id="lesson_rightSide_lowerPage_videoDiv_improvementIndex">Loading...</div>
                     <script>
                         setTimeout(function() {
                             const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                            window.dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })
                         }, 500)
                         
                     </script>
-                    <div onclick='window.dataUpdater(db, "ProgressTracker", "11", -10, 0, true, () => {})
+                    <div onclick='window.dataUpdater(db, "ProgressTracker", unitLessonData, -10, 0, true, () => {})
                     const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                            window.dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })' class="lesson_rightSide_lowerPage_videoDiv_adapativeButtonIncrease">I understand this lesson</div>
 
-                    <div onclick='window.dataUpdater(db, "ProgressTracker", "11", 10, 0, true, () => {})
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                    <div onclick='window.dataUpdater(db, "ProgressTracker", unitLessonData, 10, 0, true, () => {})
+                            window.dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })'class="lesson_rightSide_lowerPage_videoDiv_adapativeButtonDecrease">I do not understand this lesson</div>
                 </div>
                 <hr id="homePage_rightSide_titleDiv_divider"></hr>
             </div>
-            <div id="lesson_rightSide_lowerPage">
+            <div id="lesson_rightSide_lowerPage_quizPractice">
                 <!-- Start Here -->
-                <div class="lessons_rightSide_lowerPage_videoDiv">
-                    <div class="lesson_rightSide_lowerPage_videoDiv_title">
-                        Video 
-                    </div>
-                    <div class="lesson_rightSide_lowerPage_videoDiv_divider">
-                        
-                    </div>
-                    <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1128723137"></iframe> 
-                    <div class="lesson_rightSide_lowerPage_buttonHolder">
-                        <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("../lessons.html")' id="lessons_rightSide_lowerPage_buttonReturn">Return</div>
-                        <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("quiz_practice.html?id=11")'  id="lessons_rightSide_lowerPage_buttonNext">Next</div>
-                    </div>
-                    
-                </div>
-                <div class="lessons_rightSide_lowerPage_lowerDivArticle">
-                    <div class="lesson_rightSide_lowerPage_articleTitle">
-                        Short Summary 
-                    </div>
-                    <div class="lesson_rightSide_lowerPage_articleDivider">
-                        
-                    </div>
-                    <div class="lesson_rightSide_lowerPage_articleMainContent">
-                        The derivation of a function is essentially the slope of a line at a certain point, and you find the derivative or slope of a 
-                        function at any point, you must first find the derivative of the initial function. For basic derivation of exponential functions, multiply 
-                        the function by the value of the exponent, and then subtract the value of the exponent by 1. $${\color{#04afff}f(x) = bx^{c} \\ \color{#04afff}c,
-                         b \in \mathbb{R} \\ \color{#04afff}\frac{dx}{dy} = c * bx^{c - 1}}$$ For instance, if you choose a random point in a graph, such as $${\color{#04afff}f(x) = 2x^{3}}$$ then the derivative at any point o
-                          graph will be $${\color{#04afff}\frac{dx}{dy} = 6x^{2}}$$ This results in said random point's derivative being the value of the derivation function with the point plugged into it.
-                        <div class="lesson_rightSide_lowerPage_articleMainDivider"></div>
-                        Finding the derivative of a function with this method is only applicable to the first function presented in this summary, which could also be a 
-                        polynomial function as long as each term abides by the format of the function. We will explore how to derive other functions using other methods
-                        in the next couple of videos.
-                    </div>
-                </div>
+            <div class="lesson_rightSide_lowerPage_quizPage">
+
+            </div>
+            <div class="lesson_rightSide_lowerPage_quizPage_buttonDiv">
 
             </div>
         </div>

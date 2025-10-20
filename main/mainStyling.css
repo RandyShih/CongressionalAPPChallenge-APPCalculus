@@ -359,31 +359,35 @@
     background-color: #42c0fb;
     display: flex;
     width: 42vw;
+    flex-direction: column;
     height: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 10px 20px 20px 20px;
     align-self: center;
+    margin-right: 0%;
+    margin-left: 3%;
     align-items: center;
+    margin-bottom: 2%;
     justify-content: center;
     justify-self: center;
     transition: box-shadow 1s ease;
 }
 
 #homePage_rightSide_upperDiv_rightDiv {
+    display: flex;
+    flex-direction: column;
     background-color: #42c0fb;
-    width: 45vw;
+    width: 47%;
     height: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 0px rgb(71, 66, 66);
-    margin: 10px 40px 20px 20px;
+    margin-bottom: 2%;
+    margin-left: 2%;
     align-self: center;
     align-items: center;
-    justify-items: center;
     justify-self: center;
     transition: box-shadow .8s ease;
-    display: flex;
-    flex-direction: column;
+    
 }
 
 #homePage_rightSide_upperDiv {
@@ -391,7 +395,6 @@
     display: flex;
     flex-direction: row;
     background-color: #dcf4ff;
-    padding-left: 30px;
     width: 94.5vw;
     height: 45vh;
 }
@@ -401,7 +404,7 @@
     position: relative;
     background-color: #dcf4ff;
     width: 94.5vw;
-    height: 40vh;
+    height: 45vh;
 }
 
 #homePage_rightSide_titleDiv {
@@ -425,6 +428,7 @@
 }
 
 #homePage_rightSide_titleDiv_title {
+    display: flex;
     color:#04afff;
     font-weight: bolder;
     font-size: 2vmax;
@@ -435,37 +439,59 @@
     background-color: #04afff;
     border-width: 0px;
     border-radius: 4px;
-    height: 8%;
-    width: 98%;
+    height: 10%;
+    width: 96%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv_divider {
-    margin: 15px 10px 10px 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
     background-color: #dcf4ff;
     border-width: 0px;
     border-radius: 4px;
-    height: 4px;
+    height: 1.25%;
 }
 
 #homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder {
-    width: 38vw;
-    height: 80%;
     display: flex;
+    width: 38vw;
+    height: 85%;
     align-items: center;
     justify-content: center;
     flex-direction: row;
 }
 
-.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv {
-    background-color: #9ddefc;
-    width: 22%;
-    height: 90%;
-    border-radius: 4px;
-    margin: 0px 10px 10px 10px;
-    box-shadow: 0px 0px 0px black;
-    cursor: pointer;
-    transition: box-shadow 1s ease;
+#homePage_rightSide_upperDiv_leftDiv_title {
+    display: flex;
+    color: white;
+    align-items: center;
+    margin-left: 10%;
+    font-size: 1.2vmax;
+    height: 12.5%;
+    width: 100%;
+}
 
+#homePage_rightSide_upperDiv_leftDiv_divider {
+    background-color: white;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    margin-bottom: 1%;
+    width: 90%;
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv {
+    background-color: #d1eaf4;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 95%;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px grey;
+    margin-left: 1%;
+    margin-right: 1%;
+    cursor: pointer;
+    transition: box-shadow .6s ease-in-out;
 }
 
 #mainPage_backgroundBlocker {
@@ -483,16 +509,18 @@
     position: relative;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     background-color: #42c0fb;
+    box-shadow: 0px 0px 0px rgb(71, 66, 66);
     width: 94%;
     height: 90%;
     border-radius: 6px;
     justify-self: center;
+    transition: all .6s ease-in-out;
 }
 
-@keyframes whiteLeftBorderexpandOut {
-    from {transform: scaleY(0);}
-    to {transform: scaleY(1);}
+#homePage_rightSide_lowerDiv_mainDiv:hover {
+    box-shadow: 0px 0px 10px rgb(71, 66, 66);
 }
 
 .lowerPage {
@@ -1367,7 +1395,8 @@
     align-self: center;
     justify-self: center;
     align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: top;
     width: 80%;
     height: 40%;
     margin-bottom: 2%;
@@ -1387,8 +1416,19 @@
     height: 400%;
 }
 
+#lesson_rightSide_lowerPage_quizPractice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
 .lessons_rightSide_lowerPage_lowerDivArticle {
     display: flex;
+    flex-direction: column;
     width: 80%;
     height: 110%;
     margin-bottom: 2%;
@@ -1408,11 +1448,483 @@
     height: 300%;
 }
 
-#lessons_rightSide_lowerPage_videoDiv_videoFrame {
+#lesson_homePage_rightSide_quizPractice {
     display: flex;
-    width: 80%;
+    align-self: right;
+    flex-direction: column;
+    border-radius: 4px;
+    margin-left: 5.5vw;
+    background-color: #dcf4ff;
+    width: 94.5vw;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.lessons_rightSide_lowerPage_videoDiv_videoFrame {
+    display: flex;
+    width: 66.7%;
     height: 70%;
     border: 0px;
     border-radius: 8px;
     background-color: black;
+}
+
+.lesson_rightSide_lowerPage_videoDiv_divider {
+    background-color: #dcf4ff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    margin-bottom: 2%;
+    width: 80%;
+}
+
+.lesson_rightSide_lowerPage_videoDiv_title {
+    display: flex;
+    align-self: left;
+    font-size: 3vmax;
+    margin-bottom: 1%;
+    width: 80%;
+    margin-top: 2%;
+    color: #dcf4ff;
+}
+
+
+.lesson_rightSide_lowerPage_buttonHolder {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 15%;
+    align-items: center;
+}
+
+.lessons_rightSide_lowerPage_button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    font-size: 1vmax;
+    width: 15%;
+    height: 40%;
+    border-radius: 4px;
+    background-color: #dcf4ff;
+    color:#04afff
+}
+
+#lessons_rightSide_lowerPage_buttonReturn {
+    margin-left: 4%;
+}
+
+#lessons_rightSide_lowerPage_buttonNext {
+    margin-left: 62%;
+}
+
+.lesson_rightSide_lowerPage_articleTitle {
+    display: flex;
+    align-self: left;
+    font-size: 3vmax;
+    margin-left: 10%;
+    margin-bottom: 1%;
+    margin-top: 2%;
+    width: 80%;
+    margin-top: 2%;
+    color: #dcf4ff;
+}
+
+.lesson_rightSide_lowerPage_articleDivider {
+    background-color: #dcf4ff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: .5%;
+    margin-bottom: 2%;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.lesson_rightSide_lowerPage_articleMainContent {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    text-wrap: wrap;
+    color:#04afff;
+    font-weight: normal;
+    font-size: 2vmax;
+    padding: 2%;
+    align-self: center;
+    border-radius: 4px;
+    height: 90%;
+    width: 80%;
+    background-color: #dcf4ff;
+}
+
+.lesson_rightSide_lowerPage_articleMainDivider {
+    background-color:#04afff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: .5%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.lesson_rightSide_lowerPage_videoDiv_adapativeButtonIncrease {
+    display: flex;
+    cursor: pointer;
+    background-color: #04afff;
+    color:#dcf4ff;
+    font-size: 1vmax;
+    align-items: center;
+    border: 0px;
+    justify-content: center;
+    align-self: center;
+    margin-left: 2%;
+    border-radius: 4px;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    height: 90%;
+    width: 15%;
+    transition: all .8s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_videoDiv_adapativeButtonIncrease:hover {
+    background-color: #6eccf8;
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.05);
+}
+
+.lesson_rightSide_lowerPage_videoDiv_adapativeButtonDecrease {
+    display: flex;
+    cursor: pointer;
+    background-color: #04afff;
+    color:#dcf4ff;
+    font-size: .8vmax;
+    align-items: center;
+    border: 0px;
+    justify-content: center;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    align-self: center;
+    margin-left: 2%;
+    border-radius: 4px;
+    height: 90%;
+    width: 15%;
+    transition: all .8s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_videoDiv_adapativeButtonDecrease:hover {
+    background-color: #6eccf8;
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.05);
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv {
+    display: flex;
+    flex-direction: column;
+    background-color:#d1ebf7;
+    width: 44%;
+    height: 90%;
+    margin-right: 3%;
+    border-radius: 4px;
+    align-self: center;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_title {
+    display: flex;
+    color: #04afff;
+    width: 100%;
+    height: 10%;
+    font-size: 1.5vmax;
+    margin-left: 8%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+    align-items: center;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_divider {
+    background-color:#04afff;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 2%;
+    margin-bottom: 2%;
+    margin-left: 8%;
+    width: 84%;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8%;
+    align-items: center;
+    background-color: #04afff;
+    width: 84%;
+    height: 72%;
+    border-radius: 4px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #04afff #a8e1fb;
+
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons {
+    display: flex;
+    margin-top: 2%;
+    font-size: 1vmax;
+    align-items: center;
+    padding-left: 2%;
+    color:#04afff;
+    flex-shrink: 0;
+    width: 90%;
+    border-radius: 4px;
+    height: 20%;
+    background-color: #d1eaf4;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex {
+    display: flex;
+    align-items: center;
+    background-color: #04afff;
+    margin-right: 2%;
+    border-radius: 4px;
+    justify-content: center;
+    font-size: .6vmax;
+    width: 30%;
+    height: 70%;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv {
+    display: flex;
+    flex-direction: column;
+    background-color: #d1ebf7;
+    width: 47%;
+    height: 90%;
+    margin-left: 0%;
+    border-radius: 4px;
+    align-self: center;
+}
+
+#homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleInformation {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    width: 20%;
+    color:#d1ebf7;
+    font-size: 1vmax;
+    margin-left: 20%;
+    border-radius: 4px;
+    top: 18%;
+    background-color: #2bb5f6;
+    height: 50%;
+}
+
+#homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleButton {
+    display: flex;
+    cursor: pointer;
+    color:#04afff;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1%;
+    font-size: 1vmax;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #04afff;
+    border-radius: 50%;
+    width: 4%;
+}
+
+.contextOfTextDiv {
+    display: flex;
+    color:#04afff;
+    width: 50%;
+    font-size: .6vmax;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: .6vmax;
+    width: 15%;
+    height: 70%;
+    border-radius: 4px;
+    background-color: #04afff;
+    box-shadow: 0px 0px 0px grey;
+    color:#d1ebf7;
+    transition: all .8s ease-in-out;
+}
+
+#lesson_rightSide_lowerPage_videoDiv_improvementIndex {
+    display: flex;
+    background-color: #04afff;
+    color:#dcf4ff;
+    font-size: .8vmax;
+    align-items: center;
+    border: 0px;
+    justify-content: center;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    align-self: center;
+    margin-left: 2%;
+    border-radius: 4px;
+    height: 90%;
+    width: 12%;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv_title {
+    display: flex;
+    color: #04afff;
+    width: 100%;
+    height: 10%;
+    font-size: 1.5vmax;
+    margin-left: 8%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+    align-items: center;
+}
+
+#homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleButton {
+    display: flex;
+    cursor: pointer;
+    color:#04afff;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1%;
+    font-size: 1vmax;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #04afff;
+    border-radius: 50%;
+    width: 4%;
+}
+
+#homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleInformation {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    width: 20%;
+    color:#d1ebf7;
+    font-size: 1vmax;
+    margin-left: 26%;
+    border-radius: 4px;
+    top: 18%;
+    background-color: #2bb5f6;
+    height: 50%;
+    z-index: 100;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease {
+    display: flex;
+    margin-left: 1%;
+    cursor: pointer;
+    transform: scale(1);
+    background-color: rgb(246, 81, 81);
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1vmax;
+    width: 5%;
+    height: 80%;
+    box-shadow: 0px 0px 0px grey;
+    transition: all .8s ease-in-out;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease:hover {
+    box-shadow: 0px 0px 4px grey;
+    background-color: rgb(250, 164, 164);
+}
+
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase {
+    display: flex;
+    margin-left: 4%;
+    cursor: pointer;
+    background-color: rgb(59, 206, 59);
+    transform: scale(1);
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1vmax;
+    width: 5%;
+    height: 80%;
+    box-shadow: 0px 0px 0px grey;
+    transition: all .8s ease-in-out;
+}
+
+.homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase:hover {
+    box-shadow: 0px 0px 4px grey;
+    background-color: rgb(117, 249, 117);
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonText {
+    display: flex;
+    height: 50%;
+    width: 80%;
+    background-color: #04afff;
+    font-weight: 300;
+    text-align: center;
+    border-radius: 4px;
+    padding-left: 4%;
+    padding-right: 4%;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    font-size: .8vmax;
+    margin-top: 8%;
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_divider {
+    display: flex;
+    background-color: #04afff;
+    margin-top: 10%;
+    margin-bottom: 2%;
+    border-width: 0px;
+    border-radius: 4px;
+    align-self: center;
+    justify-self: center;
+    height: 2%;
+    width: 80%;
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType {
+    display: flex;
+    height: 12.5%;
+    font-weight: 300;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    border-radius: 4px;
+    width: 80%;
+    background-color:#04afff;
+    font-size: .7vmax;
+    margin-top: 6%;
+}
+
+.homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex {
+    display: flex;
+    height: 12.5%;
+    font-weight: 300;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    border-radius: 4px;
+    width: 80%;
+    background-color:#04afff;
+    font-size: .6vmax;
+    margin-top: 6%;
+}
+
+.lesson_rightSide_lowerPage_quizPage {
+    display: flex;
+    height: 80%;
+    width: 90%;
+    border-radius: 4px;
+    background-color: #04afff;
+}
+
+.lesson_rightSide_lowerPage_quizPage_buttonDiv {
+    display: flex;
+    height: 10%;
+    width: 100%;
 }

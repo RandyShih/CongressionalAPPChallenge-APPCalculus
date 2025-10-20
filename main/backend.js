@@ -9,7 +9,7 @@ let objectStoreNames = ["Quizzes", "ProgressTracker"];
 const questionsUnit1 = {
     1: {"What is the derivative of \u00A0 $5x$?": {1: ["5x", "5", "10x^2", "0"]}, 
         "What is the derivative of \u00A0 $6x^2?$": {2: ["0", "6x", "12x", "3x"]},
-        "What is the derivative of \u00A0 $12x^{-2}$?": {4: ["24x^{-1}", "-24", "24x^{-3}", "-24x^{-3}"]}
+        "What is the derivative of \u00A0 $12x^{-2}$?": {3: ["24x^{-1}", "-24", "24x^{-3}", "-24x^{-3}"]}
     },
     2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {0: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
     }
@@ -31,34 +31,49 @@ let unitVideoInformation = {
     5: {1: "www.youtube.com", 2: "www.youtube.com"},
 }
 
+const dataLinkMap = {
+    1: {
+        1: "unit1_lesson1.html",
+        2: "unit1_lesson2.html",
+        3: "unit1_lesson3.html"
+    },
+    2: {
+        1: "unit2_lesson1.html",
+        2: "unit2_lesson2.html",
+    },
+    3: {
+        1: "unit3_lesson1.html",
+        2: "unit3_lesson2.html",
+    },
+    4: {
+        1: "unit4_lesson1.html",
+        2: "unit4_lesson2.html",
+    },
+    5: {
+        1: "unit5_lesson1.html",
+        2: "unit5_lesson2.html",
+    }
+}
+
+
 const dataMap = {1: [
     "Unit 1", 
     "Derivatives", {
         1: "Basic Derivation",
         2: "Product Rule",
         3: "Quotient Rule",
-        4: "Chain Rule",
-        5: "Derivative Relationships"
     }], 
     2: [
     "Unit 2",
     "Graphical Analysis", {
         1: "Interpretations of Functions",
         2: "Interpretations of Derivatives",
-        3: "Interpretations of Double Derivatives",
-        4: "Extreme Value Theorem",
-        5: "Intermediate Value Theorem",
-        6: "Mean Value Theorm",
-        7: "Rolle's Theorem"
     }],
     3: [
     "Unit 3",
     "Integrals", {
         1: "Integral Approximations",
         2: "Antiderivatives",
-        3: "First and Second Theorem of Calculus",
-        4: "Definite Integrals",
-        5: "Indefinite Integrals",
     }
     ],
     4: [
@@ -66,7 +81,6 @@ const dataMap = {1: [
     "Applications of Integrals", {
         1: "Washer Method",
         2: "Disc Method",
-        3: "Cross Sections"
     } 
     ],
     5: [
@@ -602,19 +616,16 @@ function databaseInitialization(callback) {
         db = upgradeEvent.target.result;
         tempDBIU = true
         if (!db.objectStoreNames.contains("Quizzes")) {
-            const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
+            const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: false});
         }
         if (!db.objectStoreNames.contains("RecentLessons")) {
-            const recentLessons = db.createObjectStore("RecentLessons", {autoIncrement: true});
+            const recentLessons = db.createObjectStore("RecentLessons", {autoIncrement: false});
         }
         if (!db.objectStoreNames.contains("ProgressTracker")) {
             const progressTrackerData = db.createObjectStore("ProgressTracker", {autoIncrement: false});
         }
-        if (!db.objectStoreNames.contains("AdaptiveFeedback")) {
-            const adaptiveFeedback = db.createObjectStore("AdaptiveFeedback", {autoIncrement: true});
-        }
-        if (!db.objectStoreNames.contains("temporaryQuestionHolder")) {
-            const temporaryQuestionHolder = db.createObjectStore("temporaryQuestionHolder", {autoIncrement: false});
+        if (!db.objectStoreNames.contains("TemporaryQuestionHolder")) {
+            const TemporaryQuestionHolder = db.createObjectStore("TemporaryQuestionHolder", {autoIncrement: false});
         }
         console.log("Database upgraded.");
     }
@@ -667,7 +678,7 @@ function dataAmender(database, objectID, data, keySpecific, key) {
     
 }
 
-function dataAccessor(database, objectID, key, callback) {
+window.dataAccessor = function(database, objectID, key, callback) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID);
     try {
         if (key != null) {
@@ -677,7 +688,6 @@ function dataAccessor(database, objectID, key, callback) {
             } else {
                 parsedKey = key;
             }
-            console.log(parsedKey)
             const dataAccessorRequest = dataOpener.get(parsedKey);
             dataAccessorRequest.onsuccess = (dbAccessResults) => {
                 callback(JSON.stringify(dbAccessResults.target.result));
@@ -702,8 +712,99 @@ function dataAccessor(database, objectID, key, callback) {
     }
 }
 
-function dataUpdater(database, objectID, key) {
+
+window.getUnitData = function(key) {
+    return dataMap[key];
+}
+
+/* Works under the condition that the object data is a dictionary with its keys being an int or string and its values being an array */
+window.dataUpdater = function(database, objectID, key, data, location, add, callback) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
+    const keyLocationRequest = dataOpener.get(key);
+    keyLocationRequest.onsuccess = (DUS) => {
+        if (DUS.target.result != undefined) {
+            if (DUS.target.result.length < location-1) {
+                console.log("Invalid index.")
+                callback("Invalid index.");
+            }
+            const updatedData = DUS.target.result;
+            if (add) {
+                updatedData.splice(location, 1, data + updatedData[location]);
+            } else {
+                updatedData.splice(location, 1, data);
+            }
+            const dataReplacementRequest = dataOpener.put(updatedData, key);
+            dataReplacementRequest.onsuccess = DUDRS => {
+                console.log("Data updated: " + updatedData + ", objectID: " + objectID + ", key: " + key + ", data: " + data + ", location: " + location + ", add: " + add);
+                callback("Data was successfully updated");
+            }
+            dataReplacementRequest.onerror = DUDRS => {
+                console.log("Data Updater: Data placement error!");
+            }
+        } else {
+            console.log("Key not found.")
+            callback("Key not found.")
+        }
+    }
+    keyLocationRequest.onerror = DUS => {
+        console.error("Data Updater: Failure finding data.")
+    }
+}
     
+
+window.continueDataUpdater = function(database, objectID, key, data, callback) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
+    const keyLocationRequest = dataOpener.get(key);
+    keyLocationRequest.onsuccess = (DUS) => {
+        if (DUS.target.result != undefined) {
+            const updatedData = DUS.target.result;
+            if (!updatedData.includes(data)) {
+                updatedData.splice(0, 0, data);
+                if (updatedData.length == 5) { 
+                    updatedData.splice(4, 1);
+                }
+            } else {
+                updatedData.splice(updatedData.indexOf(data), 1);
+                updatedData.splice(0, 0, data);
+            }
+            
+            const dataReplacementRequest = dataOpener.put(updatedData, key);
+            dataReplacementRequest.onsuccess = DUDRS => {
+                callback("Data was successfully updated");
+            }
+            dataReplacementRequest.onerror = DUDRS => {
+                console.log("Data Updater: Data placement error!");
+            }
+        } else {
+            callback("Key not found.")
+        }
+    }
+    keyLocationRequest.onerror = DUS => {
+        console.error("Data Updater: Failure finding data.")
+    }
+}
+
+window.dataUpdaterAmender = function(database, objectID, key, data, callback) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
+    const keyLocationRequest = dataOpener.get(key);
+    keyLocationRequest.onsuccess = (DUS) => {
+        if (DUS.target.result != undefined) {
+            const updatedData = DUS.target.result;
+            updatedData.push(data);
+            const dataReplacementRequest = dataOpener.put(updatedData, key);
+            dataReplacementRequest.onsuccess = DUDRS => {
+                callback("Data was successfully updated");
+            }
+            dataReplacementRequest.onerror = DUDRS => {
+                console.log("Data Updater: Data placement error!");
+            }
+        } else {
+            callback("Key not found.")
+        }
+    }
+    keyLocationRequest.onerror = DUS => {
+        console.error("Data Updater: Failure finding data.")
+    }
 }
 
 function dataRemover(database, objectID, keyroute) {
@@ -826,95 +927,89 @@ document.addEventListener("DOMContentLoaded", () => {
     if (databaseActive == "true") {
         databaseInitialization(DBI => {
                 if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
-                questionContainer = [];
-                const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
-                const dataLooperRequest = dataOpener.openCursor();
-                
-                dataLooperRequest.onsuccess = DLR => {
-                    if (DLR.target.result) {
-                        const successResults = DLR.target.result;
-                        questionContainer.push(successResults.key);
-                        successResults.continue();
-                    } else {
-                        console.log("Data collection complete.")
-                    }
-                    questionContainer = questionContainer.flat();
-                    if (questionContainer.length == 0) {
-                        const gameButton = document.getElementById("gameStartButton");
-                        gameButton.style.pointerEvents = "none";
-                        gameButton.style.opacity = ".7";
-                    }
-                    for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
-                        if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
-                            if (questionContainer[questionAdder].substring(2, 4) != "QW") {
-                                const newChild = document.createElement("div");
-                                const dropdownUnitSelector = document.getElementById("SUnits");
-                                const dropdownLessonSelector = document.getElementById("OLessons");
-                                newChild.id = questionContainer[questionAdder];
-                                newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
-                                newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
+                    questionContainer = [];
+                    const dataOpener = db.transaction("TemporaryQuestionHolder", "readwrite").objectStore("TemporaryQuestionHolder");
+                    const dataLooperRequest = dataOpener.openCursor();
+                    
+                    dataLooperRequest.onsuccess = DLR => {
+                        if (DLR.target.result) {
+                            const successResults = DLR.target.result;
+                            questionContainer.push(successResults.key);
+                            successResults.continue();
+                        } else {
+                            console.log("Data collection complete.")
+                        }
+                        questionContainer = questionContainer.flat();
+                        if (questionContainer.length == 0) {
+                            const gameButton = document.getElementById("gameStartButton");
+                            gameButton.style.pointerEvents = "none";
+                            gameButton.style.opacity = ".7";
+                        }
+                        for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
+                            if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
+                                if (questionContainer[questionAdder].substring(2, 4) != "QW") {
+                                    const newChild = document.createElement("div");
+                                    const dropdownUnitSelector = document.getElementById("SUnits");
+                                    const dropdownLessonSelector = document.getElementById("OLessons");
+                                    newChild.id = questionContainer[questionAdder];
+                                    newChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question");
+                                    newChild.textContent = "Unit: " + keyMapParser(questionContainer[questionAdder].substring(0, 2)) + ", Lesson: " +  keyMapParser(questionContainer[questionAdder].substring(2, 4)) + " Questions";
 
-                                const childOfNewChild = document.createElement("div");
-                                childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
-                                childOfNewChild.textContent = "X";
-                                childOfNewChild.addEventListener("click", CONCC => {       
-                                    childOfNewChild.parentElement.remove();
-                                    dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
-                                    if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
-                                            const DUSCLesson = document.createElement("option");
-                                            DUSCLesson.value = newChild.id.substring(2, 4);
-                                            DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
-                                            DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
-                                            DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
-                                            dropdownLessonSelector.appendChild(DUSCLesson);
-                                            
-                                        }
-                                        let indexOfData = questionContainer.indexOf(newChild.id)
-                                        if (indexOfData > -1) {
-                                            questionContainer.splice(indexOfData, 1)
-                                        }
-                                        if (questionContainer.length == 0) {
-                                            const gameButton = document.getElementById("gameStartButton");
-                                            gameButton.style.pointerEvents = "none";
-                                            gameButton.style.opacity = ".7";
-                                        }
-                                })
-                                newChild.appendChild(childOfNewChild);
-                                mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
-                            } 
-                    }
-                }}
-            }
+                                    const childOfNewChild = document.createElement("div");
+                                    childOfNewChild.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder_question_removalDiv")
+                                    childOfNewChild.textContent = "X";
+                                    childOfNewChild.addEventListener("click", CONCC => {       
+                                        childOfNewChild.parentElement.remove();
+                                        dataRemover(db, "TemporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                                        if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
+                                                const DUSCLesson = document.createElement("option");
+                                                DUSCLesson.value = newChild.id.substring(2, 4);
+                                                DUSCLesson.id = String(keyMapParser(newChild.id.substring(0, 2))) + String(keyMapParser(newChild.id.substring(2, 4)));
+                                                DUSCLesson.textContent = "Lesson " + (keyMapParser(newChild.id.substring(2, 4))) + ": " + dataMap[keyMapParser(newChild.id.substring(0, 2))][2][keyMapParser(newChild.id.substring(2, 4))];
+                                                DUSCLesson.classList.add("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options");
+                                                dropdownLessonSelector.appendChild(DUSCLesson);
+                                                
+                                            }
+                                            let indexOfData = questionContainer.indexOf(newChild.id)
+                                            if (indexOfData > -1) {
+                                                questionContainer.splice(indexOfData, 1)
+                                            }
+                                            if (questionContainer.length == 0) {
+                                                const gameButton = document.getElementById("gameStartButton");
+                                                gameButton.style.pointerEvents = "none";
+                                                gameButton.style.opacity = ".7";
+                                            }
+                                    })
+                                    newChild.appendChild(childOfNewChild);
+                                    mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
+                                } 
+                            }
+                        }}
+                }
             if (DBI == 2) {
-                const quizzesDataFramework = {
-                    1: {"AB":{3:4}},
-                    2: {3:{"AB":5}},
-                    3: {4:{"BC":6}},
-                    4: {5:{6:7}},
-                    5: {6:{7:8}}
-                }
+                const quizzesDataFramework = []
 
-                const recentLessonsDataFramework = {
-                    1: [0],
-                    2: [0],
-                    3: [0],
-                    4: [0]
-                }
-                
-                /* Keep data in dictionaries 
+                const recentLessonsDataFramework = ["L11"];
+                /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
                 const progressTrackerdataFramework = {
-                    1: [[1], [2], [3], [4], [5]],
-                    2: [[1], [2], [3], [4], [5], [6], [7]],
-                    3: [[1], [2], [3], [4], [5]],
-                    4: [[1], [2], [3]],
-                    5: [[1], [2]]
-                } */
+                   11: [4, 0, 1, 0],
+                   12: [0, 0, 1, 0],
+                   13: [3, 1, 0, 0],
+                   21: [0, 0, 0, 0],
+                   22: [66, 0, 0, 0],
+                   31: [11, 0, 1, 0],
+                   32: [0, 1, 0, 0],
+                   41: [0, 0, 0, 0],
+                   42: [0, 0, 0, 0],
+                   51: [0, 1, 1, 1],
+                   52: [22, 0, 0, 1]
+                } 
 
-                console.log(quizzesDataFramework.length);
-                for (let QDFDBI=0; QDFDBI<Object.keys(quizzesDataFramework).length; QDFDBI++) {
-                    console.log(Object.keys(quizzesDataFramework));
-                    dataAmender(db, "Quizzes", quizzesDataFramework[Object.keys(quizzesDataFramework)[QDFDBI]], false, null);
+                for (let QDFDBI=0; QDFDBI<Object.keys(progressTrackerdataFramework).length; QDFDBI++) {
+                    dataAmender(db, "ProgressTracker", progressTrackerdataFramework[Object.keys(progressTrackerdataFramework)[QDFDBI]], true, Object.keys(progressTrackerdataFramework)[QDFDBI]);
                 }
+                dataAmender(db, "RecentLessons", recentLessonsDataFramework, true, 1);
+                dataAmender(db, "Quizzes", recentLessonsDataFramework, true, 1);
             } else if (DBI == 4) {
                 console.error("Undocumented error. (error code: 4)");
                 alert("Error Code 4: Try refreshing your webpage, and if that does not work, delete your webpage data. (On Google, click on the lock button on the top left, site settings, and press on delete data)");
@@ -923,17 +1018,357 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error("Unknown error.")
             }
-    }
-    )}
-    if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
-        const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");
-        const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
-        const lessons_rightSide_lessonDiv_lessons_sublesson = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson");
-        for (let lessonCompButton=0; lessonCompButton<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; lessonCompButton++) {
-            lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].addEventListener("click", event => {
-                lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[lessonCompButton].classList.toggle("lessonCompButtonActive");                
-            })
+            if (window.location.pathname.split("/").pop() == "quiz_practice.html" || window.location.pathname.split("/").pop() == "quiz_practice") {
+                const newUrlData = new URLSearchParams(window.location.search);
+                const unitLessonData = newUrlData.get("id");
+                const homePage_rightSide_titleDiv_title = document.getElementById("homePage_rightSide_titleDiv_title");
+                const homePage_rightSide_titleDiv_titleText = document.getElementById("homePage_rightSide_titleDiv_titleContent");
+                homePage_rightSide_titleDiv_titleText.textContent = "Unit " + unitLessonData[0] + ", Lesson " + unitLessonData[1] + ": " + dataMap[unitLessonData[0]][2][unitLessonData[1]] + " Quiz";
+                homePage_rightSide_titleDiv_titleText.style.color = "#04afff"
+                document.addEventListener("DOMContentLoaded", () => {
+                    const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
+                    console.log(lesson_rightSide_lowerPage_videoDiv_improvementIndex)
+                    dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
+                        lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
+                })
+                })  
+            }
+            if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
+                const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
+                dataAccessor(db, "ProgressTracker", null, LCDATA => {
+                    let mainData = JSON.parse(LCDATA);
+                    const progressTrackerdataFramework = {
+                        11: [4, 0, 1, 0],
+                        12: [0, 0, 1, 0],
+                        13: [3, 1, 0, 0],
+                        21: [0, 0, 0, 0],
+                        22: [66, 0, 0, 0],
+                        31: [11, 0, 1, 0],
+                        32: [0, 1, 0, 0],
+                        41: [0, 0, 0, 0],
+                        42: [0, 0, 0, 0],
+                        51: [0, 1, 1, 1],
+                        52: [22, 0, 0, 1]
+                    } 
+                    for (let LC=0; LC<lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion.length; LC++) {
+                        let dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
+                        let mainElement = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC];
+                        let elementIDKey = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6);
+                        let elementIDIndex = Object.keys(progressTrackerdataFramework).indexOf(elementIDKey);
+                        if (lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id[2] == "W") {
+                            dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
+                            mainElement = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC];
+                            elementIDKey = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6);
+                            elementIDIndex = Object.keys(progressTrackerdataFramework).indexOf(elementIDKey);
+                            if (dataSet[1] == 1 && dataSet[2] == 1 && dataSet[3] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                            } else if (dataSet[2] == 1 && dataSet[3] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");  
+                                dataUpdater(db, "ProgressTracker", elementIDKey, 1, 1, false, () => {}) 
+                                
+                                mainData[elementIDIndex].splice(1, 1, 1); 
+                            } else {
+                                console.log(mainData) 
+                                dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {})   
+                                mainData[elementIDIndex].splice(1, 1, 0); 
+                            }    
+                            mainElement.addEventListener("click", event => {
+                                event.stopPropagation();
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                                console.log(dataSet[1])
+                                const lLesson = document.getElementById("LCL" + elementIDKey);
+                                const qLesson = document.getElementById("LCQ" + elementIDKey);
+                                if (dataSet[1] == 1) {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {});
+                                    if (dataSet[2] == 1) {
+                                        lLesson.classList.toggle("lessonCompButtonActive");
+                                        dataUpdater(db, "ProgressTracker", elementIDKey, 0, 2, false, () => {});
+                                        mainData[elementIDIndex].splice(2, 1, 0);
+                                    }
+                                    if (dataSet[3] == 1) {
+                                        qLesson.classList.toggle("lessonCompButtonActive");
+                                        dataUpdater(db, "ProgressTracker", elementIDKey, 0, 3, false, () => {});
+                                        mainData[elementIDIndex].splice(3, 1, 0);
+                                    }
+                                    mainData[elementIDIndex].splice(1, 1, 0);                
+                                } else {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 1, 1, false, () => {});
+                                    if (dataSet[2] == 0) {
+                                        lLesson.classList.toggle("lessonCompButtonActive");
+                                        dataUpdater(db, "ProgressTracker", elementIDKey, 1, 2, false, () => {});
+                                        mainData[elementIDIndex].splice(2, 1, 1);
+                                    }
+                                    if (dataSet[3] == 0) {
+                                        qLesson.classList.toggle("lessonCompButtonActive");
+                                        dataUpdater(db, "ProgressTracker", elementIDKey, 1, 3, false, () => {});
+                                        mainData[elementIDIndex].splice(3, 1, 1);
+                                    }
+                                    mainData[elementIDIndex].splice(1, 1, 1);              
+                                }
+                            })
+                        } else if (lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id[2] == "L") {
+                            dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
+                            mainElement = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC];
+                            elementIDKey = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6);
+                            elementIDIndex = Object.keys(progressTrackerdataFramework).indexOf(elementIDKey);
+                            if (dataSet[2] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                            }  else if (dataSet[1] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                                dataUpdater(db, "ProgressTracker", elementIDKey, 1, 2, false, () => {});
+                                mainData[elementIDIndex].splice(2, 1, 1);               
+                            }
+                            mainElement.addEventListener("click", event => {
+                                event.stopPropagation();
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                                if (dataSet[2] == 1) {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 0, 2, false, () => {});
+                                    mainData[elementIDIndex].splice(2, 1, 0);               
+                                } else {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 1, 2, false, () => {});
+                                    mainData[elementIDIndex].splice(2, 1, 1);              
+                                }
+                                if (dataSet[2] == 1 && dataSet[3] == 1) {
+                                    let wLesson = document.getElementById("LCW" + elementIDKey);
+                                    wLesson.classList.toggle("lessonCompButtonActive");
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 1, 1, false, () => {});
+                                    mainData[elementIDIndex].splice(1, 1, 1); 
+                                } else if ((dataSet[2] != 1 || dataSet[3] != 1) && dataSet[1] == 1) {
+                                    let wLesson = document.getElementById("LCW" + elementIDKey);
+                                    wLesson.classList.toggle("lessonCompButtonActive");
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {});
+                                    mainData[elementIDIndex].splice(1, 1, 0); 
+                                }
+                            })
+                        } else if (lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id[2] == "Q") {
+                            dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
+                            mainElement = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC];
+                            elementIDKey = lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6);
+                            elementIDIndex = Object.keys(progressTrackerdataFramework).indexOf(elementIDKey);
+                            if (dataSet[3] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                            } else if (dataSet[1] == 1) {
+                                mainElement.classList.toggle("lessonCompButtonActive");  
+                                dataUpdater(db, "ProgressTracker", elementIDKey, 1, 3, false, () => {});
+                                mainData[elementIDIndex].splice(3, 1, 1); 
+                            }
+                            mainElement.addEventListener("click", event => {
+                                event.stopPropagation();
+                                mainElement.classList.toggle("lessonCompButtonActive");
+                                if (dataSet[3] == 1) {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 0, 3, false, () => {});
+                                    mainData[elementIDIndex].splice(3, 1, 0);                 
+                                } else {
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 1, 3, false, () => {});
+                                    mainData[elementIDIndex].splice(3, 1, 1);                 
+                                }
+                                if (dataSet[2] == 1 && dataSet[3] == 1) {
+                                    let wID = "LCW" + elementIDKey;
+                                    const wLesson = document.getElementById(wID);
+                                    wLesson.classList.toggle("lessonCompButtonActive");
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 1, 1, false, () => {});
+                                    mainData[elementIDIndex].splice(1, 1, 1); 
+                                } else if ((dataSet[2] != 1 || dataSet[3] != 1) && dataSet[1] == 1) {
+                                    let wLesson = document.getElementById("LCW" + elementIDKey);
+                                    wLesson.classList.toggle("lessonCompButtonActive");
+                                    dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {});
+                                    mainData[elementIDIndex].splice(1, 1, 0); 
+                                }
+                            })
+                        } else {}
+                    }
+                })
+            } 
+            if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
+                const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder = document.getElementById("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder");
+                dataAccessor(db, "RecentLessons", 1, DAHOMEC => {
+                    const mainData = JSON.parse(DAHOMEC);
+                    for (let DAHOMECC=0; DAHOMECC<mainData.length; DAHOMECC++) {
+                        const continueDiv = document.createElement("div");
+                        continueDiv.classList.add("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
+                        const continueDivText = document.createElement("div");
+                        continueDivText.classList.add("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonText");
+                        continueDivText.textContent = "Unit " + mainData[DAHOMECC][1] + ": " + dataMap[mainData[DAHOMECC][1]][1] + ", Lesson: " + mainData[DAHOMECC][2] + ": " +  dataMap[mainData[DAHOMECC][1]][2][mainData[DAHOMECC][2]];
+                        const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_divider = document.createElement("div");
+                        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_divider.classList.add("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_divider");
+                        const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType = document.createElement("div");
+                        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.classList.add("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType");
+                        const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex = document.createElement("div");
+                        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex.classList.add("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex");
+                        dataAccessor(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), DAHOMEII => {
+                            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(DAHOMEII)[0];
+                        })
+                        continueDiv.addEventListener("mouseenter", () => {
+                            continueDiv.style.boxShadow = "0px 0px 4px grey";
+                        })      
+                        continueDiv.addEventListener("mouseleave", () => {
+                            continueDiv.style.boxShadow = "0px 0px 0px grey";
+                        })                
+                        if (mainData[DAHOMECC][0] == "L") {
+                            continueDiv.addEventListener("click", () => {
+                                pageRedirect("lessonFiles/" + dataLinkMap[mainData[DAHOMECC][1]][mainData[DAHOMECC][2]]);
+                                continueDataUpdater(db, "RecentLessons", 1, mainData[DAHOMECC], () => {});
+                                dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), -5, 0, true, () => {})
+                            })
+                            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.textContent = "Video and Article";
+                        } else {
+                            continueDiv.addEventListener("click", () => {
+                                pageRedirect("lessonFiles/" + dataLinkMapQ[mainData[DAHOMECC][1]][mainData[DAHOMECC][2]]);
+                                continueDataUpdater(db, "RecentLessons", 1, mainData[DAHOMECC], () => {});
+                                dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), -5, 0, true, () => {})
+                            })
+                            homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.textContent = "Quiz Practice";
+                        }
+                        continueDiv.appendChild(continueDivText);
+                        continueDiv.appendChild(homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_divider);
+                        continueDiv.appendChild(homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType);
+                        continueDiv.appendChild(homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_improvementIndex);
+                        homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder.appendChild(continueDiv);
+                    }
+                })
+                const mainPageGraph = document.getElementById("mainPage_graph");
+                let mainGraphLabels = [];
+                let mainGraphData = []
+                dataAccessor(db, "Quizzes", 1, DAGRAPH => {
+                    mainGraphData = JSON.parse(DAGRAPH);
+                    for (let DALGRAPH=0; DALGRAPH<mainGraphData.length; DALGRAPH++) {
+                        mainGraphLabels.push(DALGRAPH+1);
+                    }
+                    mainPageGraph.style.width = "90%";
+                    mainPageGraph.style.height = "80%";
+                    mainPageGraph.style.color = "black";
+                    const mainPage_graphCreation = new Chart(mainPageGraph, {
+                        type: "line",
+                        data: {
+                            labels: mainGraphLabels,
+                            datasets: [{
+                                label: "Scores of Quizzes Taken",
+                                data: mainGraphData
+                            }]
+                        },
+                        options: {responsive: false, maintainAspectRatio: true}
+                    })
+                })
+                
+                dataAccessor(db, "ProgressTracker", null, DARLC => {
+                    const progressTrackerdataFramework = {
+                        11: [0, 0, 0, 0],
+                        12: [0, 0, 0, 0],
+                        13: [0, 0, 0, 0],
+                        21: [0, 0, 0, 0],
+                        22: [0, 0, 0, 0],
+                        31: [0, 0, 0, 0],
+                        32: [0, 0, 0, 0],
+                        41: [0, 0, 0, 0],
+                        42: [0, 0, 0, 0],
+                        51: [0, 0, 0, 0],
+                        52: [0, 0, 0, 0]
+                    } 
+                    const unitLessons = [];
+                    for (let PTDF=0; PTDF<Object.keys(progressTrackerdataFramework).length; PTDF++) {
+                        unitLessons.push(Object.keys(progressTrackerdataFramework)[PTDF]);
+                    } 
+                    const homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent = document.getElementsByClassName("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent")[0];
+                    const homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent = document.getElementsByClassName("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent")[1];
+                    dataAccessor(db, "ProgressTracker", null, mainData => {
+                        const mainDataJSON = JSON.parse(mainData);
+                        for (let DALS=0; DALS<mainDataJSON.length; DALS++) {
+                            const contextOfTextDiv = document.createElement("div");
+                            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease.classList.add("homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease.textContent = "-";
+                            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase.classList.add("homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase.textContent = "+";
+                            contextOfTextDiv.classList.add("contextOfTextDiv");
+                            let contentOfText = "Unit " + unitLessons[DALS][0] + ": " + dataMap[unitLessons[DALS][0]][1] + ", Lesson " + unitLessons[DALS][1] + ": " + dataMap[unitLessons[DALS][0]][2][unitLessons[DALS][1]];
+                            contextOfTextDiv.textContent = contentOfText;
+                            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons");
+                            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex");
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex.textContent = "Improvement Index: " + mainDataJSON[DALS][0];
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase.addEventListener("click", () => {
+                                homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase.style.transform = "scale(1.2)"
+                                setTimeout(() => {
+                                    homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase.style.transform = "scale(1)"
+                                }, 400);
+                                dataUpdater(db, "ProgressTracker", unitLessons[DALS], 10, 0, true, () => {
+                                    dataAccessor(db, "ProgressTracker", null, newMainData => {
+                                        homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex.textContent = "Improvement Index: " + JSON.parse(newMainData)[DALS][0];
+                                    })
+                                })
+                            })
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease.addEventListener("click", () => {
+                                homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease.style.transform = "scale(1.2)"
+                                setTimeout(() => {
+                                    homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease.style.transform = "scale(1)"
+                                }, 400);
+                                dataUpdater(db, "ProgressTracker", unitLessons[DALS], -10, 0, true, () => {
+                                    dataAccessor(db, "ProgressTracker", null, newMainData => {
+                                        homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex.textContent = "Improvement Index: " + JSON.parse(newMainData)[DALS][0];
+                                    })
+
+                                })
+                            })
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons.appendChild(homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessonsImprovementIndex);
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons.appendChild(contextOfTextDiv);
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons.appendChild(homePage_rightSide_lowerDiv_mainDiv_rightDiv_increase);
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons.appendChild(homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease);
+                            homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent.appendChild(homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent_lessons);
+                        }
+                    })
+                    console.log(unitLessons)
+                    const improvementIndexArray = [];
+                    const mainData = JSON.parse(DARLC);
+                    for (let DAII=0; DAII<mainData.length; DAII++) {
+                        improvementIndexArray.push(mainData[DAII][0]);
+                    }
+                    const unchangeableImproveIndexArray = improvementIndexArray.slice();
+                    const sortedImprovementIndexArray = improvementIndexArray.sort((a,b) => b - a);
+                    for (let sortedImprovementIndexArrayCounter=0; sortedImprovementIndexArrayCounter<sortedImprovementIndexArray.length; sortedImprovementIndexArrayCounter++) {
+                        if (sortedImprovementIndexArray[sortedImprovementIndexArrayCounter] > 0) {
+                            let contentOfText = "Unit " + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0] + ": " + dataMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][1] + ", Lesson " + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1] + ": " + dataMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][2][unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1]];
+                            const contextOfTextDiv = document.createElement("div");
+                            contextOfTextDiv.classList.add("contextOfTextDiv");
+                            contextOfTextDiv.textContent = contentOfText;
+                            const homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons");
+                            const homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex");
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex.textContent = "Improvement Index: " + sortedImprovementIndexArray[sortedImprovementIndexArrayCounter];
+                            const homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start = document.createElement("div");
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.textContent = "Start Lesson";
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start");
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.addEventListener("click", HPLS => {
+                                continueDataUpdater(db, "RecentLessons", 1, "L" + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])], () =>{})
+                                console.log(unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1])
+                                pageRedirect("lessonFiles/" + dataLinkMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1]]);
+                                dataUpdater(db, "ProgressTracker", unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])], -5, 0, true, DULS => {
+                                })
+                            })
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.addEventListener("mouseenter", () => {
+                                homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.style.backgroundColor = "#64cbfb";
+                                homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.style.boxShadow = "0px 0px 4px grey";
+                            })
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.addEventListener("mouseleave", () => {
+                                homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.style.backgroundColor = "#04afff";
+                                homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.style.boxShadow = "0px 0px 0px grey";
+                            })
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons.appendChild(homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessonsImprovementIndex);
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons.appendChild(contextOfTextDiv);
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons.appendChild(homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start);
+                            homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent.appendChild(homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons);
+                        }
+                    }
+                })
+            }
         }
+    )}
+    
+    if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {        
+        const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");        
+        const lessons_rightSide_lessonDiv_lessons_sublesson = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson");
         for (let lesson=0; lesson<lessons_rightSide_lessonDiv_lessons.length; lesson++) {
             lessons_rightSide_lessonDiv_lessons[lesson].addEventListener("mouseenter", event => {
                 lessons_rightSide_lessonDiv_lessons[lesson].style.boxShadow = "0px 0px 10px rgb(71, 66, 66)";
@@ -1370,16 +1805,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         questionAdderButton.addEventListener("click", DABC => {
                 if (dropdownLessonSelector.value != "QW") {
-                    dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, dropdownLessonSelector.value], true, dropdownUnitSelector.value + dropdownLessonSelector.value);
+                    dataAmender(db, "TemporaryQuestionHolder", [dropdownUnitSelector.value, dropdownLessonSelector.value], true, dropdownUnitSelector.value + dropdownLessonSelector.value);
                 } else {
                     let temporaryAllUnits = Object.keys(dataMap[keyMapParser(dropdownUnitSelector.value)][2]);
                     console.log(temporaryAllUnits)
                     for (let DDUSAllUnits=0; DDUSAllUnits<temporaryAllUnits.length; DDUSAllUnits++) {
-                        dataAmender(db, "temporaryQuestionHolder", [dropdownUnitSelector.value, numberParser(temporaryAllUnits[DDUSAllUnits])], true, dropdownUnitSelector.value + numberParser(temporaryAllUnits[DDUSAllUnits]));
+                        dataAmender(db, "TemporaryQuestionHolder", [dropdownUnitSelector.value, numberParser(temporaryAllUnits[DDUSAllUnits])], true, dropdownUnitSelector.value + numberParser(temporaryAllUnits[DDUSAllUnits]));
                     }
                 }
                 questionContainer = [];
-                const dataOpener = db.transaction("temporaryQuestionHolder", "readwrite").objectStore("temporaryQuestionHolder");
+                const dataOpener = db.transaction("TemporaryQuestionHolder", "readwrite").objectStore("TemporaryQuestionHolder");
                 const dataLooperRequest = dataOpener.openCursor();
                 questionAdderButton.style.pointerEvents = "none";
                 questionAdderButton.style.backgroundColor = "#5abdea"
@@ -1404,7 +1839,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 childOfNewChild.textContent = "X";
                                 childOfNewChild.addEventListener("click", CONCC => {
                                     childOfNewChild.parentElement.remove();
-                                    dataRemover(db, "temporaryQuestionHolder", [childOfNewChild.parentElement.id]);
+                                    dataRemover(db, "TemporaryQuestionHolder", [childOfNewChild.parentElement.id]);
                                     
                                     if (dropdownUnitSelector.value == newChild.id.substring(0, 2)) {
                                         const DUSCLesson = document.createElement("option");
@@ -1440,7 +1875,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         } else {
                             dropdownLessonSelector.innerHTML = '<option class="mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_options" selected="selected" value="none">-- Select a Lesson --</option>';
                         }
-                    }
+                    } 
                     
                 }
                 if (questionContainer.length != 0) {
@@ -1453,26 +1888,25 @@ document.addEventListener("DOMContentLoaded", () => {
             
         })
     }
-    if (window.location.pathname.split("/").pop() == "unit1_lesson1" || window.location.pathname.split("/").pop() == "unit1_lesson1.html" ||window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
+    if (window.location.pathname.split("/").pop() == "quiz_practice" || window.location.pathname.split("/").pop() == "quiz_practice.html" || window.location.pathname.split("/").pop() == "unit5_lesson2" || window.location.pathname.split("/").pop() == "unit5_lesson2.html" || window.location.pathname.split("/").pop() == "unit5_lesson1" || window.location.pathname.split("/").pop() == "unit5_lesson1.html" ||window.location.pathname.split("/").pop() == "unit4_lesson2" || window.location.pathname.split("/").pop() == "unit4_lesson2.html" ||window.location.pathname.split("/").pop() == "unit4_lesson1" || window.location.pathname.split("/").pop() == "unit4_lesson1.html" ||window.location.pathname.split("/").pop() == "unit3_lesson2" || window.location.pathname.split("/").pop() == "unit3_lesson2.html" ||window.location.pathname.split("/").pop() == "unit3_lesson1" || window.location.pathname.split("/").pop() == "unit3_lesson1.html" ||window.location.pathname.split("/").pop() == "unit2_lesson2" || window.location.pathname.split("/").pop() == "unit2_lesson2.html" ||window.location.pathname.split("/").pop() == "unit2_lesson1" || window.location.pathname.split("/").pop() == "unit2_lesson1.html" ||window.location.pathname.split("/").pop() == "unit1_lesson3" || window.location.pathname.split("/").pop() == "unit1_lesson3.html" ||window.location.pathname.split("/").pop() == "unit1_lesson2" || window.location.pathname.split("/").pop() == "unit1_lesson2.html" ||window.location.pathname.split("/").pop() == "unit1_lesson1" || window.location.pathname.split("/").pop() == "unit1_lesson1.html" ||window.location.pathname.split("/").pop() == "home" || window.location.pathname.split("/").pop() == "lessons" || window.location.pathname.split("/").pop() == "vocabulary" || window.location.pathname.split("/").pop() == "settings" || window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "settings.html" || window.location.pathname.split("/").pop() == "practice.html") {
         if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
-            const mainPageGraph = document.getElementById("mainPage_graph");
-            mainPageGraph.style.width = "35vw";
-            mainPageGraph.style.height = "35vh";
-            mainPageGraph.style.color = "black";
-            const mainPage_graphCreation = new Chart(mainPageGraph, {
-                type: "line",
-                data: {
-                    labels: [1, 2, 3, 4, 5, 6],
-                    datasets: [{
-                        label: "Amount of Quizzes completed",
-                        data: [215, 232, 2323, 424, 323, "<img src=x onerror=alert(1)>"]
-                    }, {
-                        label: "Amount of Tests completed",
-                        data: [2315, 3232, 23233, 4234, 3223, 23]
-                    }]
-                },
-                options: {responsive: false, maintainAspectRatio: true}
-            })
+            const homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleButton = document.getElementById("homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleButton");
+            const homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleInformation = document.getElementById("homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleInformation");
+            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleInformation = document.getElementById("homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleInformation");
+            const homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleButton = document.getElementById("homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleButton");
+            homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleButton.addEventListener("mouseenter", HPTBH => {
+                homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleInformation.style.display = "flex";
+            });
+            homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleButton.addEventListener("mouseleave", HPTBH => {
+                homePage_rightSide_lowerDiv_mainDiv_rightDiv_titleInformation.style.display = "none";
+            });  
+            homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleButton.addEventListener("mouseenter", HPTBH => {
+                homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleInformation.style.display = "flex";
+            });
+            homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleButton.addEventListener("mouseleave", HPTBH => {
+                homePage_rightSide_lowerDiv_mainDiv_leftDiv_titleInformation.style.display = "none";
+            });
+            
             const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv = document.getElementsByClassName("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv");
             const homePage_rightSide_upperDiv_leftDiv = document.getElementById("homePage_rightSide_upperDiv_leftDiv");
             const homePage_rightSide_upperDiv_rightDiv = document.getElementById("homePage_rightSide_upperDiv_rightDiv");
