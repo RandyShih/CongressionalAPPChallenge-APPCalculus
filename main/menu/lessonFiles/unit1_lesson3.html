@@ -60,25 +60,25 @@
 
         <div id="lesson_homePage_rightSide">
             <div id="homePage_rightSide_titleDiv">
-                <div id="homePage_rightSide_titleDiv_title">Unit 1, Lesson 1: Polynomials
+                <div id="homePage_rightSide_titleDiv_title">Unit 1, Lesson 3: Finding Zeros
                     <div id="lesson_rightSide_lowerPage_videoDiv_improvementIndex">Loading...</div>
                     <script>
                         setTimeout(function() {
                             const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                            window.dataAccessor(db, "ProgressTracker", "13", foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })
                         }, 500)
                         
                     </script>
-                    <div onclick='window.dataUpdater(db, "ProgressTracker", "11", -10, 0, true, () => {})
+                    <div onclick='window.dataUpdater(db, "ProgressTracker", "13", -10, 0, true, () => {})
                     const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                            window.dataAccessor(db, "ProgressTracker", "13", foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })' class="lesson_rightSide_lowerPage_videoDiv_adapativeButtonIncrease">I understand this lesson</div>
 
-                    <div onclick='window.dataUpdater(db, "ProgressTracker", "11", 10, 0, true, () => {})
-                            window.dataAccessor(db, "ProgressTracker", "11", foundData => {
+                    <div onclick='window.dataUpdater(db, "ProgressTracker", "13", 10, 0, true, () => {})
+                            window.dataAccessor(db, "ProgressTracker", "13", foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })'class="lesson_rightSide_lowerPage_videoDiv_adapativeButtonDecrease">I do not understand this lesson</div>
                 </div>
@@ -95,8 +95,8 @@
                     </div>
                     <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1128723137"></iframe> 
                     <div class="lesson_rightSide_lowerPage_buttonHolder">
-                        <div class="lessons_rightSide_lowerPage_button" id="lessons_rightSide_lowerPage_buttonReturn">Return</div>
-                        <div class="lessons_rightSide_lowerPage_button" id="lessons_rightSide_lowerPage_buttonNext">Next</div>
+                        <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("../lessons.html")' id="lessons_rightSide_lowerPage_buttonReturn">Return</div>
+                        <div class="lessons_rightSide_lowerPage_button "onclick='pageRedirect("quiz_practice.html?id=13"); dataUpdater(db, "ProgressTracker", "13", 1, 3, false, () => {}); continueDataUpdater(db, "RecentLessons", 1, "Q13", () => {})' id="lessons_rightSide_lowerPage_buttonNext">Next</div>
                     </div>
                     
                 </div>

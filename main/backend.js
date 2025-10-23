@@ -254,7 +254,7 @@ let correctQuestionTracker = [];
 let temporaryQuestionBlockerArray = [];
 let RQQFTemporaryQuestionArray = [];
 let totalCorrectQuestions = 0;
-let timeWaitT = 5000;
+let timeWaitT = 4000;
 let RQQCounterMax = 5;
 let quizGameDivTracker = []
 
@@ -352,7 +352,6 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
     let questionDictionary = entireDataset[actualQuestion];
     let possibleAnswers = Object.values(questionDictionary)[0];
     RQQFTemporaryQuestionArray = possibleAnswers.slice();
-    console.log(RQQFTemporaryQuestionArray)
     let actualAnswer = possibleAnswers[Object.keys(questionDictionary)[0]];
 
     randomAnswer = Math.floor((Math.random() * RQQFTemporaryQuestionArray.length))
@@ -379,7 +378,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
             for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
                 questionDivHolder[GEROGFC].remove();
             }
-            if (RQQCounter != RQQCounterMax) {
+            if (RQQCounter < RQQCounterMax) {
                     requestQuestionQuizFrame(quizData, chosenDivName);
                     questionTrackerScore.push(answerCorrect);
                     const temporaryQuizCover = document.createElement("div");
@@ -466,7 +465,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
             for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
                 questionDivHolder[GEROGFC].remove();
             }
-            if (RQQCounter != RQQCounterMax) {
+            if (RQQCounter < RQQCounterMax) {
                 temporaryQuestionBlockerArray = []
                 correctQuestionTracker.push(true);
                 requestQuestionQuizFrame(quizData, chosenDivName);
@@ -556,7 +555,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
             for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
                 questionDivHolder[GEROGFC].remove();
             }
-            if (RQQCounter != RQQCounterMax) {
+            if (RQQCounter < RQQCounterMax) {
                 requestQuestionQuizFrame(quizData, chosenDivName);
                 const temporaryQuizCover = document.createElement("div");
                 temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
@@ -642,7 +641,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
             for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
                 questionDivHolder[GEROGFC].remove();
             }
-            if (RQQCounter != RQQCounterMax) {
+            if (RQQCounter < RQQCounterMax) {
                 requestQuestionQuizFrame(quizData, chosenDivName);
                 const temporaryQuizCover = document.createElement("div");
                 temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
@@ -791,7 +790,6 @@ function requestQuestionGameFrame() {
     questionDiv2Holder1.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
     const questionDiv2Holder2 = document.createElement("div");
     questionDiv2Holder2.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
-
     tempRandomMath = Math.floor(Math.random() * (possibleChoicesArray.length-1));
     const possibleChoice1 = document.createElement("div");
     possibleChoice1.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
@@ -814,6 +812,7 @@ function requestQuestionGameFrame() {
     })
     possibleChoice1.addEventListener("click", () => {
         if (possibleChoice1.id == correctAnswer) {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), -10, 0, true, () => {});
             for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
                 questionDivs[GEROGFC].remove();
             }
@@ -825,6 +824,7 @@ function requestQuestionGameFrame() {
             }
         } else {
             animationActve = true;
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), 5, 0, true, () => {});
             possibleChoice1.style.backgroundColor = "#dc4545";
             possibleChoice1.style.transform = "translateX(8%)";
             possibleChoice1.style.pointerEvents = "none";
@@ -867,6 +867,7 @@ function requestQuestionGameFrame() {
     })
     possibleChoice2.addEventListener("click", () => {
         if (possibleChoice2.id == correctAnswer) {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), -10, 0, true, () => {});
             for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
                 questionDivs[GEROGFC].remove();
             }
@@ -877,6 +878,7 @@ function requestQuestionGameFrame() {
                 hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
             }
         } else {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), 5, 0, true, () => {});
             animationActve = true;
             possibleChoice2.style.backgroundColor = "#dc4545";
             possibleChoice2.style.transform = "translateX(8%)";
@@ -919,6 +921,7 @@ function requestQuestionGameFrame() {
     })
     possibleChoice3.addEventListener("click", () => {
         if (possibleChoice3.id == correctAnswer) {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), -10, 0, true, () => {});
             for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
                 questionDivs[GEROGFC].remove();
             }
@@ -929,6 +932,7 @@ function requestQuestionGameFrame() {
                 hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
             }
         } else {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), 5, 0, true, () => {});
             animationActve = true;
             possibleChoice3.style.backgroundColor = "#dc4545";
             possibleChoice3.style.transform = "translateX(8%)";
@@ -972,6 +976,7 @@ function requestQuestionGameFrame() {
     })
     possibleChoice4.addEventListener("click", () => {
         if (possibleChoice4.id == correctAnswer) {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), -10, 0, true, () => {});
             for (let GEROGFC=0; GEROGFC<questionDivs.length;GEROGFC++) {
                 questionDivs[GEROGFC].remove();
             }
@@ -982,6 +987,7 @@ function requestQuestionGameFrame() {
                 hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "row";
             }
         } else {
+            dataUpdater(db, "ProgressTracker", keyMapParser(chosenLesson).toString(), 5, 0, true, () => {});
             animationActve = true;
             possibleChoice4.style.backgroundColor = "#dc4545";
             possibleChoice4.style.transform = "translateX(8%)";
@@ -1151,7 +1157,7 @@ function deleteDatabase(aDatabase) {
 
 function databaseInitialization(callback) {
     let tempDBIU = false; 
-    const request = window.indexedDB.open("mainDatabase", 10);
+    const request = window.indexedDB.open("mainDatabase", 1);
     request.onerror = (errorEvent) => {
         console.error("mainDatabase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
@@ -1602,17 +1608,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 const recentLessonsDataFramework = ["L11"];
                 /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
                 const progressTrackerdataFramework = {
-                   11: [4, 0, 1, 0],
-                   12: [0, 0, 1, 0],
-                   13: [3, 1, 0, 0],
+                   11: [1, 0, 0, 0],
+                   12: [0, 0, 0, 0],
+                   13: [0, 0, 0, 0],
                    21: [0, 0, 0, 0],
-                   22: [66, 0, 0, 0],
-                   31: [11, 0, 1, 0],
-                   32: [0, 1, 0, 0],
+                   22: [0, 0, 0, 0],
+                   31: [0, 0, 0, 0],
+                   32: [0, 0, 0, 0],
                    41: [0, 0, 0, 0],
                    42: [0, 0, 0, 0],
-                   51: [0, 1, 1, 1],
-                   52: [22, 0, 0, 1]
+                   51: [0, 0, 0, 0],
+                   52: [0, 0, 0, 0]
                 } 
 
                 for (let QDFDBI=0; QDFDBI<Object.keys(progressTrackerdataFramework).length; QDFDBI++) {
@@ -1639,8 +1645,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 lesson_rightSide_lowerPage_quizPage_nextButton.addEventListener("click", () => {
                     if (dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1] != undefined) {
                         pageRedirect(dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1]);
+                        dataUpdater(db, "ProgressTracker", unitLessonData[0] + (1 + parseInt(unitLessonData[1])).toString(), 1, 2, false, () => {});
+                        dataUpdater(db, "ProgressTracker", unitLessonData[0] + (1 + parseInt(unitLessonData[1])).toString(), -10, 0, true, () => {});
+                        continueDataUpdater(db, "RecentLessons", 1, "L" + unitLessonData[0] + (1 + parseInt(unitLessonData[1])).toString(), () => {});
                     } else {
                         pageRedirect(dataLinkMap[parseInt(unitLessonData[0]) + 1][1]);
+                        dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", 1, 2, false, () => {});
+                        dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", -10, 0, true, () => {});
+                        continueDataUpdater(db, "RecentLessons", 1, "L" +(parseInt(unitLessonData[0]) + 1).toString() + "1", () => {});
                     }
                 })
                 homePage_rightSide_titleDiv_titleText.textContent = "Unit " + unitLessonData[0] + ", Lesson " + unitLessonData[1] + ": " + dataMap[unitLessonData[0]][2][unitLessonData[1]] + " Quiz";
@@ -1857,12 +1869,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                 pageRedirect("lessonFiles/" + dataLinkMap[mainData[DAHOMECC][1]][mainData[DAHOMECC][2]]);
                                 continueDataUpdater(db, "RecentLessons", 1, mainData[DAHOMECC], () => {});
                                 dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), -5, 0, true, () => {})
+                                dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), 1, 2, false, () => {})
+
                             })
                             homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.textContent = "Video and Article";
                         } else {
                             continueDiv.addEventListener("click", () => {
                                 pageRedirect("lessonFiles/quiz_practice.html?id=" + mainData[DAHOMECC].substring(1, 3));
                                 continueDataUpdater(db, "RecentLessons", 1, mainData[DAHOMECC], () => {});
+                                dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), 1, 3, false, () => {})
                                 dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), -5, 0, true, () => {})
                             })
                             homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.textContent = "Quiz Practice";
@@ -2016,6 +2031,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "vocabulary") {   
         const homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array = document.getElementsByClassName("homePage_rightSide_vocabularyDivHolder_unitDivSeparator");
         const homePage_rightSide_vocabularySearch = document.getElementById("homePage_rightSide_vocabularySearch");
+        /* Fix this soon */
+        const mainPage_backgroundBlocker = document.getElementById("mainPage_backgroundBlocker");
+        mainPage_backgroundBlocker.style.display = "none";
         let vocabularyHolder = [];
         for (let LUL=0; LUL<homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array.length; LUL++) {
             let questionDict = unitVocabularyWordsReferenceArray[LUL];
@@ -2097,8 +2115,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             })
-        }
-
+        } 
         
     }
     if (window.location.pathname.split("/").pop() == "practice" || window.location.pathname.split("/").pop() == "practice.html") {
