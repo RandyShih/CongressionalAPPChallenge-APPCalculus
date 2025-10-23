@@ -83,10 +83,13 @@
 }
 
 .divDropdownHolder .dropdownSelectionSetUp {
+    display: flex;
     font-weight: bold;
     position: relative;
     background-color: rgb(40, 174, 236);
-    width: 120px;
+    align-items: center;
+    font-size: 1.25vmax;
+    width: 10vw;
     height: 50px;
     padding: 10px;
     font-weight: lighter;
@@ -116,7 +119,7 @@
     position: absolute;
     z-index: -100;
     width: 100%;
-    height: 92vh;
+    height: 160vh;
     filter: blur(2px);
 
 }
@@ -127,7 +130,7 @@
     align-items: flex-end;
     flex-direction: column;
     width: 100%;
-    height: 110vh;
+    height: 200vh;
     animation: mainPageInitAnimation 1s forwards;
     z-index: -5;
 }
@@ -138,16 +141,130 @@
 }
 
 #mainPage_lowerDiv {
-    background-color: #dcf4ff;
     display: flex;
     flex-direction: column;
-    color :#04afff;
     height: 80vh;
     width: 100vw;
-    border-radius: 10px;
     z-index: 10;
-    font-size: 30px;
+}
 
+#mainPage_lowerDiv_mainContentDiv {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-self: center;
+    align-self: center;
+    border-radius: 4px;
+}
+
+#mainPage_lowerDiv_leftDivTitle {
+    display: flex;
+    font-size: 5vmax;
+    color:#dcf4ff;
+}
+
+#mainPage_lowerDiv_leftDivMainContext {
+    display: flex;
+    font-weight: 500;
+    font-size: 2vmax;
+}
+
+#mainPage_lowerDiv_leftDiv {
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    height: 100%;
+    width: 50%;
+    background-color:#04afff;
+}
+
+#mainPage_lowerDiv_rightDiv {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    background-color:#04afff;
+}
+
+#mainPage_lowerDiv_rightDiv_topDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+}
+
+#mainPage_lowerDiv_rightDiv_bottomDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+}
+
+.mainPage_lowerDiv_rightDiv_card {
+    display: flex;
+    height: 80%;
+    width: 40%;
+    border-radius: 8px;
+    /*background: linear-gradient(327deg,rgb(182, 227, 244) 4%, rgba(84, 201, 255, 1) 15%, rgb(170, 219, 241) 32%, rgb(155, 218, 246) 34%, rgba(120, 209, 250, 1) 49%, rgba(120, 209, 250, 1) 55%, rgb(173, 227, 252) 76%); */
+    box-shadow: 0px 0px 0px grey;
+    flex-direction: column;
+    transform: scale(1);
+    background-color: #7dcef4;
+    background-size: 600%;
+    background-position: right;
+    transition: all 1s ease-in-out;
+}
+
+.mainPage_lowerDiv_rightDiv_cardTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5vmax;
+    text-align: center;
+    margin-top: 8%;
+    width: 100%;
+    height: 20%;
+}
+
+.mainPage_lowerDiv_rightDiv_cardContent {
+    display: flex;
+    padding: 4%;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5vmax;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    height: 60%;
+}
+
+.mainPage_lowerDiv_rightDiv_card:hover {
+    transform: scale(1.05);
+    background-position: center;
+    box-shadow: 0px 2px 6px grey;
+}
+
+#mainPage_lowerDiv_rightDiv_cardTL {
+    margin-right: 8%;
+}
+
+#mainPage_lowerDiv_rightDiv_cardBL {
+    margin-right: 8%;
+}
+
+#mainPage_lowerDiv_leftDivDivider {
+    background-color: #dcf4ff;
+    border-width: 0px;
+    border-radius: 4px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    height: 1%;
+    align-self: center;
+    width: 100%;
 }
 
 #mainPage_centeredDiv {
@@ -159,6 +276,18 @@
     height: 80vh;
 
 }
+
+#mainPage_lowerDiv_leftDivCopyright {
+    display: flex;
+    width: 40vw;
+    font-size: 1vmax;
+    height: 10%;
+    align-self: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5%;
+}
+
 
 #mainPage_centeredDiv_title {
     font-size: 3.5vmax;
@@ -175,6 +304,7 @@
 }
 
 #mainPage_centeredDiv_purposeSummary {
+    font-size: 1.5vmax;
     padding: 5px 0px 15px 0px; 
     font-weight: lighter;
 }
@@ -182,8 +312,6 @@
 #mainPage_centeredDiv_button:hover {
     background-color: #93d8f8;
 }
-
-
 
 /*#mainScreenDescriptorSiteDetailsButton {
     position: relative;
@@ -521,6 +649,29 @@
     transition: all .6s ease-in-out;
 }
 
+#mainPage_lowerDiv_aboutUsText {
+    display: flex;
+    height: 5%;
+    width: 100%;
+    margin-top: 2%;
+    color:#dcf4ff;
+    margin-bottom: 1%;
+    font-size: 4vmax;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#mainPage_lowerDiv_divider {
+    background-color:#dcf4ff;
+    margin: 1% 0%;
+    align-self: center;
+    border-width: 0px;
+    border-radius: 4px;
+    height: 1%;
+    width: 70%;
+}
+
 #homePage_rightSide_lowerDiv_mainDiv:hover {
     box-shadow: 0px 0px 10px rgb(71, 66, 66);
 }
@@ -541,6 +692,7 @@
 .lesson_rightSide_lessonDiv {
     height: 45%;
     width: 92vw;
+    margin-left: .6%;
     display: flex;
     background-color: #dcf4ff;
     flex-direction: row;
@@ -682,23 +834,23 @@
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit1 {
-    width: 100%;
+    width: 0%;
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit2 {
-    width: 15%
+    width: 0%
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit3 {
-    width: 42%;
+    width: 0%;
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit4 {
-    width: 72%;
+    width: 0%;
 }
 
 #lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit5 {
-    width: 90%;
+    width: 0%;
 }
 
 .lessons_rightSide_lessonDiv_lessons_sublesson_content_subLessonContent.syncAnimationLRLLSCS {

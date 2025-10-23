@@ -13,41 +13,24 @@
           <img src="imageFiles/logo.png" id="logoImage"></img>
           <div id="navTitle">APPCalculus</div>
           <div id="redirectButtonsCategory">
-            <div class="divDropdownHolder">
-              Lessons
+            <div class="divDropdownHolder" onclick='pageRedirect("menu/home.html")'>
+              Home
+            </div>
+            <div class="divDropdownHolder" >
+              <div style="font-weight: lighter;" onclick='pageRedirect("menu/lessons.html")'>Lessons</div>
               <div class="mainDropdownMenu">
-                <a class="dropdownSelectionSetUp">Unit 1</a>
-                <a class="dropdownSelectionSetUp">Unit 2</a>
-                <a class="dropdownSelectionSetUp">Unit 3</a>
-                <a class="dropdownSelectionSetUp">Unit 4</a>
+                <a class="dropdownSelectionSetUp" onclick='pageRedirect("menu/lessonFiles/unit1_lesson1.html")'>Unit 1</a>
+                <a class="dropdownSelectionSetUp" onclick='pageRedirect("menu/lessonFiles/unit2_lesson1.html")'>Unit 2</a>
+                <a class="dropdownSelectionSetUp" onclick='pageRedirect("menu/lessonFiles/unit3_lesson1.html")'>Unit 3</a>
+                <a class="dropdownSelectionSetUp" onclick='pageRedirect("menu/lessonFiles/unit4_lesson1.html")'>Unit 4</a>
+                <a class="dropdownSelectionSetUp" onclick='pageRedirect("menu/lessonFiles/unit5_lesson1.html")'>Unit 5</a>
               </div>
             </div>
-            <div class="divDropdownHolder">
+            <div class="divDropdownHolder" onclick='pageRedirect("menu/vocabulary.html")'>
               Vocabulary
-                <div class="mainDropdownMenu">
-                <a class="dropdownSelectionSetUp">Unit 1</a>
-                <a class="dropdownSelectionSetUp">Unit 2</a>
-                <a class="dropdownSelectionSetUp">Unit 3</a>
-                <a class="dropdownSelectionSetUp">Unit 4</a>
-              </div>
             </div>
-            <div class="divDropdownHolder">
+            <div class="divDropdownHolder" onclick='pageRedirect("menu/practice.html")'>
               Practice
-                <div class="mainDropdownMenu">
-                <a class="dropdownSelectionSetUp">Unit 1</a>
-                <a class="dropdownSelectionSetUp">Unit 2</a>
-                <a class="dropdownSelectionSetUp">Unit 3</a>
-                <a class="dropdownSelectionSetUp">Unit 4</a>
-              </div>
-            </div>
-            <div class="divDropdownHolder">
-              Practice Questions
-                <div class="mainDropdownMenu">
-                <a class="dropdownSelectionSetUp">Unit 1</a>
-                <a class="dropdownSelectionSetUp">Unit 2</a>
-                <a class="dropdownSelectionSetUp">Unit 3</a>
-                <a class="dropdownSelectionSetUp">Unit 4</a>
-              </div>
             </div>
           </div>
           <button onclick="siteRedirect();" id="contactButtonDesign">Contact</button>
@@ -62,11 +45,42 @@
       <!--Upper text and button div-->
       <div id="mainPage_centeredDiv">
         <h1 id="mainPage_centeredDiv_title">Additional Practice for the Preview of Calculus</h1>
-        <h2 id="mainPage_centeredDiv_purposeSummary">Videos, articles, and interactive games to learn calculus!</h2>
+        <h2 id="mainPage_centeredDiv_purposeSummary">Videos, articles, and interactive games to learn precalculus!</h2>
         <button onclick="pageRedirect('menu/home.html');" id="mainPage_centeredDiv_button">Learn now</button>
       </div>
       <!--Lower text div-->
       <div id="mainPage_lowerDiv">
+        <div id="mainPage_lowerDiv_mainContentDiv">
+          <div id="mainPage_lowerDiv_leftDiv">
+            <div id="mainPage_lowerDiv_leftDivTitle">About Us</div>
+            <div id="mainPage_lowerDiv_leftDivDivider"></div>
+            <div id="mainPage_lowerDiv_leftDivMainContext">We, the developers, are firm believers of the fact that prerequisite mathematical subjects, such as precalculus, are essential for students to succeed in higher levels of math. Many significant, high paying jobs require higher levels of math, especially those pertaining to computer science, physics, engineering, and more. To encourage the learning process, we have decided to make this website not only interactive and convenient, but also capable of providing feedback on what the user should concentrate on.</div>
+            <div id="mainPage_lowerDiv_leftDivCopyright"><a href="https://www.appcalculus.org">APPCalculus</a> © 2025 by <a href="https://github.com/RandyShih/CongressionalAPPChallenge-APPCalculus">Randy Shih</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">hr</div>
+          </div>
+
+          <div id="mainPage_lowerDiv_rightDiv">
+            <div id="mainPage_lowerDiv_rightDiv_topDiv">
+              <div class="mainPage_lowerDiv_rightDiv_card" id="mainPage_lowerDiv_rightDiv_cardTL">
+                <div class="mainPage_lowerDiv_rightDiv_cardTitle">Improvement Index</div>
+                <div class="mainPage_lowerDiv_rightDiv_cardContent">An adaptive index that determines the amount of improvement needed in a lesson, which updates after every lesson and question.</div>
+              </div>
+              <div class="mainPage_lowerDiv_rightDiv_card">
+                <div class="mainPage_lowerDiv_rightDiv_cardTitle">No Sign Up Needed</div>
+                <div class="mainPage_lowerDiv_rightDiv_cardContent">Data is stored in a local storage (indexedDB), where no one, not even the developers, but the user can or will access.</div>
+              </div>
+            </div>
+            <div id="mainPage_lowerDiv_rightDiv_bottomDiv">
+              <div class="mainPage_lowerDiv_rightDiv_card" id="mainPage_lowerDiv_rightDiv_cardBL">
+                <div class="mainPage_lowerDiv_rightDiv_cardTitle">Contributing to Precalculus</div>
+                <div class="mainPage_lowerDiv_rightDiv_cardContent">In comparison to other mathematical studies, precalculus has relatively less content available for students to study.</div>
+              </div>
+              <div class="mainPage_lowerDiv_rightDiv_card">
+                <div class="mainPage_lowerDiv_rightDiv_cardTitle">Interactivity and Retention</div>
+                <div class="mainPage_lowerDiv_rightDiv_cardContent">We offer practice quizzes and a practice game to solidify concepts after condensed, yet effective lessons.</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
