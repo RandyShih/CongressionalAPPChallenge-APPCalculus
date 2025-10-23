@@ -262,6 +262,7 @@
     border-radius: 4px;
     margin-top: 2vh;
     margin-bottom: 2vh;
+    min-height: 1%;
     height: 1%;
     align-self: center;
     width: 100%;
@@ -304,6 +305,7 @@
 }
 
 #mainPage_centeredDiv_purposeSummary {
+    margin-top: 5%;
     font-size: 1.5vmax;
     padding: 5px 0px 15px 0px; 
     font-weight: lighter;
