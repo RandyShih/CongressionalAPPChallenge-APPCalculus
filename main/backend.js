@@ -13,14 +13,92 @@ const questionsUnit1 = {
     },
     2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {0: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
     }
-    /*,
-    3: {1: {},
-        2: {}},
-    4: {1: {},
-        2: {}},
-    5: {1: {}, 
-        2: {}}*/
 }
+
+let questionExplanationObject = {
+    "5": "This is the correct answer due to the fact This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
+    "12x": "This is the answer choice, which is 12x.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
+    "-24x^{-3}": "This is the answer choice, which is -24x^{-3}.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
+    "2(4x+2) + 4(2x-1)": "This is the answer choice, which is 2(4x+2) + 4(2x-1).This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t"
+}
+
+const unitReferenceHolder = ["placeholder",
+    questionsUnit1
+]
+
+const unit1VocabularyWords = {
+    "1placeholder": "definition",
+    "2placfeholder": "definition",
+    "3placehodlfder": "definition",
+    "2placeholdfer": "definition",
+    "3placeholdefr": "definition",
+    "2placeholderf": "definition",
+    "1placehowlderf": "definition",
+    "3placehodlderf": "definition",
+    "1placedholderf": "definition",
+    
+}
+
+const unit2VocabularyWords = {
+    "1placeaholder": "definition",
+    "2plaaceholder": "definition",
+    "1placaeholader": "definition",
+    "1money": "definition",
+    "2placehbolder": "definition",
+    "2placeahcolder": "definition",
+    "2placeholxder": "definition",
+    "2placeholdzer": "definition",
+    "2placeholdeccr": "definition",
+    "1placeholdecr": "definition",
+    
+}
+
+const unit3VocabularyWords = {
+    "1placeholder": "definition",
+    "1placejholder": "definition",
+    "1placehjolder": "definition",
+    "1placehohdflder": "definition",
+    "1placeholdedr": "definition",
+    "1placeholddsaer": "definition",
+    "2power": "definition",
+    "1placehdwadolder": "definition",
+    "1placehdwaolder": "definition",
+    "2placehdwadolder": "definition",
+    
+}
+
+const unit4VocabularyWords = {
+    "1placewadholder": "definition",
+    "2placehodwadlder": "definition",
+    "1placehdwadaolder": "definition",
+    "1placehdwadolder": "definition",
+    "1placehdwadaolder": "definition",
+    "1placedwadawholder": "definition",
+    "2placeholdawdcccder": "definition",
+    "2moni": "definition",
+    "2placeholwadcder": "definition",
+    
+}
+
+const unit5VocabularyWords = {
+    "2placehoczcslder": "definition",
+    "2placeholcwacacder": "definition",
+    "2placeholcsddawder": "definition",
+    "2placeholdwzcer": "definition",
+    "2placeholwdadcder": "definition",
+    "2placehocwzclder": "definition",
+    "2mower": "definition",
+    "1zcwzcwcwz": "definition",
+    "2placeholder": "definition",
+    "2placedwdahczcoldcwzczer": "definition",
+    "2placehdwadadvolder": "definition",
+    "2placehodawdwadwadlder": "definition",
+    "2placehcawcawcwawcolder": "definition",
+}
+
+const unitVocabularyWordsReferenceArray = [
+    unit1VocabularyWords, unit2VocabularyWords, unit3VocabularyWords, unit4VocabularyWords, unit5VocabularyWords
+]
 
 let unitData = [questionsUnit1];
 let unitVideoInformation = {
@@ -169,6 +247,490 @@ const rUpgsPrice = [rUpg1_price, rUpg2_price, rUpg3_price, rUpg4_price, rUpg5_pr
 let questionDivs = [];
 let chosenQuestion = "";
 let correctAnswer = "";
+let RQQFC = 0;
+let RQQCounter = 0;
+let RQQInit = true;
+let correctQuestionTracker = [];
+let temporaryQuestionBlockerArray = [];
+let RQQFTemporaryQuestionArray = [];
+let totalCorrectQuestions = 0;
+let timeWaitT = 5000;
+let RQQCounterMax = 5;
+let quizGameDivTracker = []
+
+function createEndCardScreen(quizAccurracyData, quizData, chosenDivName) {
+    let chosenDiv = null;
+    if (document.getElementsByClassName(chosenDivName)[0] != undefined) {
+        chosenDiv = document.getElementsByClassName(chosenDivName)[0];
+    } else {
+        chosenDiv = document.getElementById(chosenDivName);
+    }
+    const lesson_rightSide_lowerPage_quizPage_endCardTitle = document.createElement("div");
+    lesson_rightSide_lowerPage_quizPage_endCardTitle.classList.add("lesson_rightSide_lowerPage_quizPage_endCardTitle");
+    lesson_rightSide_lowerPage_quizPage_endCardTitle.textContent = "Good job! You have completed the quiz!";
+    const lesson_rightSide_lowerPage_quizPage_disclaimer = document.createElement("div");
+    lesson_rightSide_lowerPage_quizPage_disclaimer.classList.add("lesson_rightSide_lowerPage_quizPage_disclaimer");
+    lesson_rightSide_lowerPage_quizPage_disclaimer.textContent = "Score has been recorded, check your dashboard for the graphed results.";
+    const lesson_rightSide_lowerPage_quizPage_quizAccuracy = document.createElement("div");
+    lesson_rightSide_lowerPage_quizPage_quizAccuracy.classList.add("lesson_rightSide_lowerPage_quizPage_quizAccuracy");
+    lesson_rightSide_lowerPage_quizPage_quizAccuracy.textContent = "Accuracy: " + quizAccurracyData + "%";
+    const lesson_rightSide_lowerPage_quizPage_endRestartButton = document.createElement("div");
+    lesson_rightSide_lowerPage_quizPage_endRestartButton.classList.add("lesson_rightSide_lowerPage_quizPage_endRestartButton");
+    lesson_rightSide_lowerPage_quizPage_endRestartButton.textContent = "Restart";
+    lesson_rightSide_lowerPage_quizPage_endRestartButton.addEventListener("mouseenter", () => {
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.backgroundColor = "#86cded";
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.transform = "scale(1.05)";
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.boxShadow = "0px 0px 4px grey";
+    })
+    lesson_rightSide_lowerPage_quizPage_endRestartButton.addEventListener("mouseleave", () => {
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.backgroundColor = "#dcf4ff";
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.transform = "scale(1)";
+        lesson_rightSide_lowerPage_quizPage_endRestartButton.style.boxShadow = "0px 0px 0px grey";
+    })
+    const endCardElements = [lesson_rightSide_lowerPage_quizPage_endCardTitle, lesson_rightSide_lowerPage_quizPage_disclaimer, lesson_rightSide_lowerPage_quizPage_quizAccuracy, lesson_rightSide_lowerPage_quizPage_endRestartButton];
+    for (let CECSCA=0; CECSCA<endCardElements.length; CECSCA++) {
+            chosenDiv.appendChild(endCardElements[CECSCA]);
+        }
+    lesson_rightSide_lowerPage_quizPage_endRestartButton.addEventListener("click", () => {
+        for (let CECSC=0; CECSC<endCardElements.length; CECSC++) {
+            endCardElements[CECSC].remove();
+        }
+        RQQInit = true;
+        requestQuestionQuizFrame(quizData, chosenDivName);
+    })
+} 
+
+function requestQuestionQuizFrame(quizData, chosenDivName) {
+    if (RQQInit) {
+        RQQCounter = 0;
+        RQQInit = false;
+        totalCorrectQuestions = 0;
+        correctQuestionTracker = [];
+        temporaryQuestionBlockerArray = [];
+    }
+    let questionDivHolder = [];
+    let questionTrackerScore = [];
+    let answerCorrect = true;
+    let animationActve1 = false;
+    let animationActve2 = false;
+    let animationActve3 = false;
+    let animationActve4 = false;
+    let quizGameDiv = false;
+    let randomAnswer = 0;
+    let appendedDiv = null;
+    const randomizedQuestionIndex = Math.floor(Object.keys(unitReferenceHolder[quizData[0]][quizData[1]]).length * Math.random());
+    if (document.getElementsByClassName(chosenDivName)[0] != undefined) {
+        appendedDiv = document.getElementsByClassName(chosenDivName)[0];
+    } else {
+        appendedDiv = document.getElementById(chosenDivName);
+        quizGameDiv = true;
+    }
+    for (let RQQCHDEL=0; RQQCHDEL<appendedDiv.children.length; RQQCHDEL++) {
+        if (appendedDiv.children[RQQCHDEL].id != "DND") {
+            appendedDiv.children[RQQCHDEL].style.display = "none";
+        }
+    }
+    for (let RAQQ=0; RAQQ<appendedDiv.length; RAQQ++) {
+        appendedDiv[RAQQ].style.display = "none";
+    }
+
+    const questionDiv = document.createElement("div");
+    questionDiv.textContent = Object.keys(unitReferenceHolder[quizData[0]][quizData[1]])[randomizedQuestionIndex];
+    questionDiv.classList.add("hiddenDivGame_mainScreen_gameScreen_question");
+    questionDiv.style.marginRight = "1%";
+
+    const questionDiv2Holder1 = document.createElement("div");
+    questionDiv2Holder1.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
+
+    const questionDiv2Holder2 = document.createElement("div");
+    questionDiv2Holder2.classList.add("hiddenDivGame_mainScreen_gameScreen_twoQuestionHolder")
+
+    const possibleChoice1 = document.createElement("div");
+    possibleChoice1.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    let actualQuestion = Object.keys(unitReferenceHolder[quizData[0]][quizData[1]])[randomizedQuestionIndex];
+    let entireDataset = unitReferenceHolder[quizData[0]][quizData[1]];
+    let questionDictionary = entireDataset[actualQuestion];
+    let possibleAnswers = Object.values(questionDictionary)[0];
+    RQQFTemporaryQuestionArray = possibleAnswers.slice();
+    console.log(RQQFTemporaryQuestionArray)
+    let actualAnswer = possibleAnswers[Object.keys(questionDictionary)[0]];
+
+    randomAnswer = Math.floor((Math.random() * RQQFTemporaryQuestionArray.length))
+    possibleChoice1.id = RQQFTemporaryQuestionArray[randomAnswer];
+    possibleChoice1.textContent = "$$" + RQQFTemporaryQuestionArray[randomAnswer] + "$$";
+    RQQFTemporaryQuestionArray.splice(randomAnswer, 1);
+    questionDiv2Holder1.appendChild(possibleChoice1);
+    possibleChoice1.addEventListener("mouseenter", () => {
+        if (!animationActve1) {
+            possibleChoice1.style.backgroundColor = "#a3d6eeff";
+            possibleChoice1.style.transform = "scale(1.05)";
+        }
+        possibleChoice1.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice1.addEventListener("mouseleave", () => {
+        if (!animationActve1) {
+            possibleChoice1.style.backgroundColor = "#8dceec";
+            possibleChoice1.style.transform = "scale(1)";
+        }
+        possibleChoice1.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice1.addEventListener("click", () => {
+        if (possibleChoice1.id == actualAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
+                questionDivHolder[GEROGFC].remove();
+            }
+            if (RQQCounter != RQQCounterMax) {
+                    requestQuestionQuizFrame(quizData, chosenDivName);
+                    questionTrackerScore.push(answerCorrect);
+                    const temporaryQuizCover = document.createElement("div");
+                    temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
+                    if (quizGameDiv) {
+                        temporaryQuizCover.style.height = "90%";
+                    }
+                    const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent = document.createElement("div");
+                    lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent");
+                    lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.textContent = "Correct Answer!";
+                    const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation = document.createElement("div");
+                    lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation");
+                    lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.textContent = questionExplanationObject[actualAnswer];
+
+                    temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                    temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                    temporaryQuestionBlockerArray.push(temporaryQuizCover);
+                    temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                    temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                    appendedDiv.appendChild(temporaryQuizCover);
+                    setTimeout(() => {
+                        for (let TQC=0; TQC<temporaryQuestionBlockerArray.length; TQC++) {
+                            temporaryQuestionBlockerArray[TQC].remove();
+                        }
+                    }, timeWaitT);
+                    correctQuestionTracker.push(true);
+                    RQQCounter++
+            } else {
+                for (let CQT=0; CQT<correctQuestionTracker.length; CQT++) {
+                    if (correctQuestionTracker[CQT] == true) {
+                        totalCorrectQuestions++;
+                    }
+                }
+                quizzesTrackerDataUpdater(db, "Quizzes", 1, ((totalCorrectQuestions/correctQuestionTracker.length)*100), () => {});
+                createEndCardScreen(Math.floor(((totalCorrectQuestions/correctQuestionTracker.length)*100)), quizData, chosenDivName);
+            }
+            dataUpdater(db, "ProgressTracker", quizData, -10, 0, true, () => {})
+        } else {
+            correctQuestionTracker.push(false);
+            dataUpdater(db, "ProgressTracker", quizData, 5, 0, true, () => {})
+            if (animationActve1 == false) {
+                animationActve1 = true;
+                possibleChoice1.style.backgroundColor = "#dc4545";
+                possibleChoice1.style.transform = "translateX(8%)";
+                possibleChoice1.style.pointerEvents = "none";
+                setTimeout(() => {
+                    possibleChoice1.style.transform = "translateX(-6%)";
+                }, 500)
+                setTimeout(() => {
+                    possibleChoice1.style.backgroundColor = "#8dceec";
+                    possibleChoice1.style.pointerEvents = "auto";
+                    animationActve1 = false;
+                }, 1100)
+                setTimeout(() => {
+                    possibleChoice1.style.transform = "translateX(0)";
+                }, 1000)
+            }
+        }
+    })
+    
+    const possibleChoice2 = document.createElement("div");
+    possibleChoice2.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    randomAnswer = Math.floor((Math.random() * RQQFTemporaryQuestionArray.length))
+    possibleChoice2.id = RQQFTemporaryQuestionArray[randomAnswer];
+    possibleChoice2.textContent = "$$" + RQQFTemporaryQuestionArray[randomAnswer] + "$$";
+    RQQFTemporaryQuestionArray.splice(randomAnswer, 1);
+    questionDiv2Holder1.appendChild(possibleChoice2);
+    possibleChoice2.addEventListener("mouseenter", () => {
+        if (!animationActve2) {
+            possibleChoice2.style.backgroundColor = "#a3d6eeff";
+            possibleChoice2.style.transform = "scale(1.05)";
+        }
+        possibleChoice2.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice2.addEventListener("mouseleave", () => {
+        if (!animationActve2) {
+            possibleChoice2.style.backgroundColor = "#8dceec";
+            possibleChoice2.style.transform = "scale(1)";
+        }
+        possibleChoice2.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice2.addEventListener("click", () => {
+        if (possibleChoice2.id == actualAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
+                questionDivHolder[GEROGFC].remove();
+            }
+            if (RQQCounter != RQQCounterMax) {
+                temporaryQuestionBlockerArray = []
+                correctQuestionTracker.push(true);
+                requestQuestionQuizFrame(quizData, chosenDivName);
+                /* Main Correct Answer Manager */
+                const temporaryQuizCover = document.createElement("div");
+                temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
+                if (quizGameDiv) {
+                        temporaryQuizCover.style.height = "90%";
+                }
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.textContent = "Correct Answer!";
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.textContent = questionExplanationObject[actualAnswer];
+
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                temporaryQuestionBlockerArray.push(temporaryQuizCover);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                appendedDiv.appendChild(temporaryQuizCover);
+
+                setTimeout(() => {
+                    for (let TQC=0; TQC<temporaryQuestionBlockerArray.length; TQC++) {
+                        temporaryQuestionBlockerArray[TQC].remove();
+                    }
+                }, timeWaitT);
+                RQQCounter++;
+            } else {
+                for (let CQT=0; CQT<correctQuestionTracker.length; CQT++) {
+                    if (correctQuestionTracker[CQT] == true) {
+                        totalCorrectQuestions++;
+                    }
+                }
+                quizzesTrackerDataUpdater(db, "Quizzes", 1, ((totalCorrectQuestions/correctQuestionTracker.length)*100), () => {});
+                createEndCardScreen(Math.floor(((totalCorrectQuestions/correctQuestionTracker.length)*100)), quizData, chosenDivName);
+            }
+            dataUpdater(db, "ProgressTracker", quizData, -10, 0, true, () => {});
+        } else {
+            correctQuestionTracker.push(false);
+            dataUpdater(db, "ProgressTracker", quizData, 5, 0, true, () => {});
+            if (animationActve2 == false) {
+                animationActve2 = true;
+                possibleChoice2.style.backgroundColor = "#dc4545";
+                possibleChoice2.style.transform = "translateX(8%)";
+                possibleChoice2.style.pointerEvents = "none";
+                setTimeout(() => {
+                    possibleChoice2.style.transform = "translateX(-6%)";
+                }, 500)
+                
+                setTimeout(() => {
+                    possibleChoice2.style.backgroundColor = "#8dceec";
+                    possibleChoice2.style.pointerEvents = "auto";
+                    animationActve2 = false;
+                }, 1100)
+                setTimeout(() => {
+                    possibleChoice2.style.transform = "translateX(0)";
+                }, 1000)
+            }
+        }
+    })
+
+    const possibleChoice3 = document.createElement("div");
+    possibleChoice3.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    randomAnswer = Math.floor((Math.random() * RQQFTemporaryQuestionArray.length))
+    possibleChoice3.id = RQQFTemporaryQuestionArray[randomAnswer];
+    possibleChoice3.textContent = "$$" + RQQFTemporaryQuestionArray[randomAnswer] + "$$";
+    RQQFTemporaryQuestionArray.splice(randomAnswer, 1);
+    questionDiv2Holder2.appendChild(possibleChoice3);
+    possibleChoice3.addEventListener("mouseenter", () => {
+        if (!animationActve3) {
+            possibleChoice3.style.backgroundColor = "#a3d6eeff";
+            possibleChoice3.style.transform = "scale(1.05)";
+        }
+        possibleChoice3.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice3.addEventListener("mouseleave", () => {
+        if (!animationActve3) {
+            possibleChoice3.style.backgroundColor = "#8dceec";
+            possibleChoice3.style.transform = "scale(1)";
+        }
+        possibleChoice3.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice3.addEventListener("click", () => {
+        if (possibleChoice3.id == actualAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
+                questionDivHolder[GEROGFC].remove();
+            }
+            if (RQQCounter != RQQCounterMax) {
+                requestQuestionQuizFrame(quizData, chosenDivName);
+                const temporaryQuizCover = document.createElement("div");
+                temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
+                if (quizGameDiv) {
+                        temporaryQuizCover.style.height = "90%";
+                }
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.textContent = "Correct Answer!";
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.textContent = questionExplanationObject[actualAnswer];
+
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                temporaryQuestionBlockerArray.push(temporaryQuizCover);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                appendedDiv.appendChild(temporaryQuizCover);
+                    setTimeout(() => {
+                        for (let TQC=0; TQC<temporaryQuestionBlockerArray.length; TQC++) {
+                            temporaryQuestionBlockerArray[TQC].remove();
+                        }
+                    }, timeWaitT);
+                RQQCounter++;
+                correctQuestionTracker.push(true);
+            } else {
+                for (let CQT=0; CQT<correctQuestionTracker.length; CQT++) {
+                    if (correctQuestionTracker[CQT] == true) {
+                        totalCorrectQuestions++;
+                    }
+                }
+                quizzesTrackerDataUpdater(db, "Quizzes", 1, ((totalCorrectQuestions/correctQuestionTracker.length)*100), () => {});
+                createEndCardScreen(Math.floor(((totalCorrectQuestions/correctQuestionTracker.length)*100)), quizData, chosenDivName);
+            }
+            dataUpdater(db, "ProgressTracker", quizData, -10, 0, true, () => {})
+        } else {
+            correctQuestionTracker.push(false);
+            dataUpdater(db, "ProgressTracker", quizData, 5, 0, true, () => {})
+            if (animationActve3 == false) {
+                animationActve3 = true;
+                possibleChoice3.style.backgroundColor = "#dc4545";
+                possibleChoice3.style.transform = "translateX(8%)";
+                possibleChoice3.style.pointerEvents = "none";
+                setTimeout(() => {
+                    possibleChoice3.style.transform = "translateX(-6%)";
+                }, 500)
+                setTimeout(() => {
+                    possibleChoice3.style.backgroundColor = "#8dceec";
+                    possibleChoice3.style.pointerEvents = "auto";
+                    animationActve3 = false;
+                }, 1100)
+                setTimeout(() => {
+                    possibleChoice3.style.transform = "translateX(0)";
+                }, 1000)
+            }
+        }
+    })
+
+    const possibleChoice4 = document.createElement("div");
+    possibleChoice4.classList.add("hiddenDivGame_mainScreen_gameScreen_answer");
+    randomAnswer = Math.floor((Math.random() * RQQFTemporaryQuestionArray.length))
+    possibleChoice4.id = RQQFTemporaryQuestionArray[randomAnswer];
+    possibleChoice4.textContent = "$$" + RQQFTemporaryQuestionArray[randomAnswer] + "$$";
+    RQQFTemporaryQuestionArray.splice(randomAnswer, 1);
+    questionDiv2Holder2.appendChild(possibleChoice4);
+    possibleChoice4.addEventListener("mouseenter", () => {
+        if (!animationActve4) {
+            possibleChoice4.style.backgroundColor = "#a3d6eeff";
+            possibleChoice4.style.transform = "scale(1.05)";
+        }
+        possibleChoice4.style.boxShadow = "0px 0px 4px grey";
+    })
+    possibleChoice4.addEventListener("mouseleave", () => {
+        if (!animationActve4) {
+            possibleChoice4.style.backgroundColor = "#8dceec";
+            possibleChoice4.style.transform = "scale(1)";
+        }
+        possibleChoice4.style.boxShadow = "0px 0px 0px grey";
+    })
+    possibleChoice4.addEventListener("click", () => {
+        if (possibleChoice4.id == actualAnswer) {
+            for (let GEROGFC=0; GEROGFC<questionDivHolder.length;GEROGFC++) {
+                questionDivHolder[GEROGFC].remove();
+            }
+            if (RQQCounter != RQQCounterMax) {
+                requestQuestionQuizFrame(quizData, chosenDivName);
+                const temporaryQuizCover = document.createElement("div");
+                temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
+                if (quizGameDiv) {
+                        temporaryQuizCover.style.height = "90%";
+                }
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent.textContent = "Correct Answer!";
+                const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation = document.createElement("div");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation");
+                lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.textContent = questionExplanationObject[actualAnswer];
+
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                temporaryQuestionBlockerArray.push(temporaryQuizCover);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
+                temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                appendedDiv.appendChild(temporaryQuizCover);
+                setTimeout(() => {
+                    for (let TQC=0; TQC<temporaryQuestionBlockerArray.length; TQC++) {
+                        temporaryQuestionBlockerArray[TQC].remove();
+                    }
+                }, timeWaitT);
+                correctQuestionTracker.push(true);
+                RQQCounter++;
+            } else {
+                for (let CQT=0; CQT<correctQuestionTracker.length; CQT++) {
+                    if (correctQuestionTracker[CQT] == true) {
+                        totalCorrectQuestions++;
+                    }
+                }
+                quizzesTrackerDataUpdater(db, "Quizzes", 1, ((totalCorrectQuestions/correctQuestionTracker.length)*100), () => {});
+                createEndCardScreen(Math.floor(((totalCorrectQuestions/correctQuestionTracker.length)*100)), quizData, chosenDivName);
+            }
+            dataUpdater(db, "ProgressTracker", quizData, -10, 0, true, () => {})
+        } else {
+            correctQuestionTracker.push(false);
+            dataUpdater(db, "ProgressTracker", quizData, 5, 0, true, () => {})
+            if (animationActve4 == false) {
+                animationActve4 = true;
+                possibleChoice4.style.backgroundColor = "#dc4545";
+                possibleChoice4.style.transform = "translateX(8%)";
+                possibleChoice4.style.pointerEvents = "none";
+                setTimeout(() => {
+                    possibleChoice4.style.transform = "translateX(-6%)";
+                }, 500)
+                
+                setTimeout(() => {
+                    possibleChoice4.style.backgroundColor = "#8dceec";
+                    possibleChoice4.style.pointerEvents = "auto";
+                    animationActve4 = false;
+                }, 1100)
+                setTimeout(() => {
+                    possibleChoice4.style.transform = "translateX(0)";
+                }, 1000)
+            }            
+        }
+    })
+
+
+    MathJax.typesetPromise([possibleChoice1])
+    MathJax.typesetPromise([possibleChoice2])
+    MathJax.typesetPromise([possibleChoice3])
+    MathJax.typesetPromise([possibleChoice4])
+    MathJax.typesetPromise([questionDiv])
+    appendedDiv.appendChild(questionDiv);
+    appendedDiv.appendChild(questionDiv2Holder1);
+    appendedDiv.appendChild(questionDiv2Holder2);  
+
+    quizGameDivTracker.push(questionDiv2Holder1);
+    quizGameDivTracker.push(questionDiv2Holder2);
+    quizGameDivTracker.push(possibleChoice1);
+    quizGameDivTracker.push(possibleChoice2);
+    quizGameDivTracker.push(possibleChoice3);
+    quizGameDivTracker.push(possibleChoice4);
+    quizGameDivTracker.push(questionDiv);
+
+    questionDivHolder.push(questionDiv2Holder1);
+    questionDivHolder.push(questionDiv2Holder2);
+    questionDivHolder.push(possibleChoice1);
+    questionDivHolder.push(possibleChoice2);
+    questionDivHolder.push(possibleChoice3);
+    questionDivHolder.push(possibleChoice4);
+    questionDivHolder.push(questionDiv);
+    questionDivHolder = questionDivHolder.flat();
+}
+
 
 
 
@@ -616,7 +1178,7 @@ function databaseInitialization(callback) {
         db = upgradeEvent.target.result;
         tempDBIU = true
         if (!db.objectStoreNames.contains("Quizzes")) {
-            const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: false});
+            const quizzesDone = db.createObjectStore("Quizzes", {autoIncrement: true});
         }
         if (!db.objectStoreNames.contains("RecentLessons")) {
             const recentLessons = db.createObjectStore("RecentLessons", {autoIncrement: false});
@@ -649,7 +1211,6 @@ function databaseInitialization(callback) {
         }
     }
 }
-
 
 function dataAmender(database, objectID, data, keySpecific, key) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
@@ -712,6 +1273,27 @@ window.dataAccessor = function(database, objectID, key, callback) {
     }
 }
 
+async function updateProgressBar() {
+    const lesson_rightSide_lessonDiv_lessons_title_progressBarPercentage = [document.getElementById("lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit1"), document.getElementById("lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit2"), document.getElementById("lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit3"), document.getElementById("lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit4"), document.getElementById("lesson_rightSide_lessonDiv_lessons_title_progressBar_innerProgressBar_unit5")];
+    const lesson_rightSide_lessonDiv_lessons_title_progressBarPercentageText = document.getElementsByClassName("lesson_rightSide_lessonDiv_lessons_title_progressBarPercentage");
+    let totalActive = 0;
+    let total = 0;
+    let mData = null;
+    for (let UPB=0; UPB<lesson_rightSide_lessonDiv_lessons_title_progressBarPercentage.length; UPB++) {
+        totalActive = 0;
+        total = 0;
+        for (let UPBL=0; UPBL<Object.keys(dataMap[UPB+1][2]).length; UPBL++) {
+            mData = await new Promise(resolve => {dataAccessor(db, "ProgressTracker", (UPB + 1).toString() + (UPBL + 1).toString(), data => {resolve(data)})});
+            mData = JSON.parse(mData);
+            totalActive += + mData[2] + mData[3];
+            total += 2;
+          
+        }
+        lesson_rightSide_lessonDiv_lessons_title_progressBarPercentageText[UPB].textContent = Math.ceil((totalActive/total)*100).toString() + "%";
+        lesson_rightSide_lessonDiv_lessons_title_progressBarPercentage[UPB].style.width = Math.ceil((totalActive/total)*100).toString() + "%";
+    }
+    
+}
 
 window.getUnitData = function(key) {
     return dataMap[key];
@@ -751,6 +1333,28 @@ window.dataUpdater = function(database, objectID, key, data, location, add, call
     }
 }
     
+window.quizzesTrackerDataUpdater = function(database, objectID, key, data, callback) {
+    const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
+    const keyLocationRequest = dataOpener.get(key);
+    keyLocationRequest.onsuccess = (DUS) => {
+        if (DUS.target.result != undefined) {
+            const updatedData = DUS.target.result;
+            updatedData.push(data);
+            const dataReplacementRequest = dataOpener.put(updatedData, key);
+            dataReplacementRequest.onsuccess = DUDRS => {
+                callback("Data was successfully updated");
+            }
+            dataReplacementRequest.onerror = DUDRS => {
+                console.log("Data Updater: Data placement error!");
+            }
+        } else {
+            callback("Key not found.")
+        }
+    }
+    keyLocationRequest.onerror = DUS => {
+        console.error("Data Updater: Failure finding data.")
+    }
+}
 
 window.continueDataUpdater = function(database, objectID, key, data, callback) {
     const dataOpener = database.transaction(objectID, "readwrite").objectStore(objectID); 
@@ -942,8 +1546,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         questionContainer = questionContainer.flat();
                         if (questionContainer.length == 0) {
                             const gameButton = document.getElementById("gameStartButton");
+                            const quizStartButton = document.getElementById("quizStartButton");
                             gameButton.style.pointerEvents = "none";
                             gameButton.style.opacity = ".7";
+                            quizStartButton.style.pointerEvents = "none";
+                            quizStartButton.style.opacity = ".7";
                         }
                         for (let questionAdder=0; questionAdder<questionContainer.length; questionAdder++) {
                             if (document.querySelector("#" + questionContainer[questionAdder]) == null) {               
@@ -976,8 +1583,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                             }
                                             if (questionContainer.length == 0) {
                                                 const gameButton = document.getElementById("gameStartButton");
+                                                const quizStartButton = document.getElementById("quizStartButton");
                                                 gameButton.style.pointerEvents = "none";
                                                 gameButton.style.opacity = ".7";
+                                                quizStartButton.style.pointerEvents = "none";
+                                                quizStartButton.style.opacity = ".7";
                                             }
                                     })
                                     newChild.appendChild(childOfNewChild);
@@ -1018,22 +1628,56 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error("Unknown error.")
             }
+            
             if (window.location.pathname.split("/").pop() == "quiz_practice.html" || window.location.pathname.split("/").pop() == "quiz_practice") {
                 const newUrlData = new URLSearchParams(window.location.search);
                 const unitLessonData = newUrlData.get("id");
                 const homePage_rightSide_titleDiv_title = document.getElementById("homePage_rightSide_titleDiv_title");
                 const homePage_rightSide_titleDiv_titleText = document.getElementById("homePage_rightSide_titleDiv_titleContent");
+                const lesson_rightSide_lowerPage_quizPage_nextButton = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_nextButton")[0];
+                const lesson_rightSide_lowerPage_quizPage_returnButton = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_returnButton")[0];
+                lesson_rightSide_lowerPage_quizPage_nextButton.addEventListener("click", () => {
+                    if (dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1] != undefined) {
+                        pageRedirect(dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1]);
+                    } else {
+                        pageRedirect(dataLinkMap[parseInt(unitLessonData[0]) + 1][1]);
+                    }
+                })
                 homePage_rightSide_titleDiv_titleText.textContent = "Unit " + unitLessonData[0] + ", Lesson " + unitLessonData[1] + ": " + dataMap[unitLessonData[0]][2][unitLessonData[1]] + " Quiz";
+                homePage_rightSide_titleDiv_titleText.style.fontSize = "1.5vmax";
                 homePage_rightSide_titleDiv_titleText.style.color = "#04afff"
                 document.addEventListener("DOMContentLoaded", () => {
                     const lesson_rightSide_lowerPage_videoDiv_improvementIndex = document.getElementById("lesson_rightSide_lowerPage_videoDiv_improvementIndex");
-                    console.log(lesson_rightSide_lowerPage_videoDiv_improvementIndex)
                     dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
                         lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                 })
-                })  
+                });
+                const lesson_rightSide_lowerPage_quizPage_quizStartButton = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_quizStartButton")[0];
+                const lesson_rightSide_lowerPage_quizPage_extraInformation = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_extraInformation")[0];
+                const lesson_rightSide_lowerPage_quizPage_title = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_extraInformation")[0];
+                const lesson_rightSide_lowerPage_quizPage_improvementIndexDiv = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_improvementIndexDiv")[0];
+                const lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation")[0];
+                const hideDivArray = [];
+                lesson_rightSide_lowerPage_quizPage_quizStartButton.addEventListener("mouseenter", () => {
+                    lesson_rightSide_lowerPage_quizPage_quizStartButton.style.boxShadow = "0px 0px 4px grey";
+                    lesson_rightSide_lowerPage_quizPage_quizStartButton.style.backgroundColor = "#a9daefff"
+                })
+                lesson_rightSide_lowerPage_quizPage_quizStartButton.addEventListener("mouseleave", () => {
+                    lesson_rightSide_lowerPage_quizPage_quizStartButton.style.boxShadow = "0px 0px 0px grey";
+                    lesson_rightSide_lowerPage_quizPage_quizStartButton.style.backgroundColor = "#dcf4ff";
+                })
+                lesson_rightSide_lowerPage_quizPage_quizStartButton.addEventListener("click", () => {
+                    requestQuestionQuizFrame(unitLessonData, "lesson_rightSide_lowerPage_quizPage");
+                })
+                lesson_rightSide_lowerPage_quizPage_improvementIndexDiv.addEventListener("mouseenter", () => {
+                    lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation.style.display = "flex";
+                });
+                lesson_rightSide_lowerPage_quizPage_improvementIndexDiv.addEventListener("mouseleave", () => {
+                    lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation.style.display = "none";
+                })
             }
             if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {
+                updateProgressBar();
                 const lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion");
                 dataAccessor(db, "ProgressTracker", null, LCDATA => {
                     let mainData = JSON.parse(LCDATA);
@@ -1105,6 +1749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     }
                                     mainData[elementIDIndex].splice(1, 1, 1);              
                                 }
+                                updateProgressBar();
                             })
                         } else if (lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id[2] == "L") {
                             dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
@@ -1139,6 +1784,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {});
                                     mainData[elementIDIndex].splice(1, 1, 0); 
                                 }
+                                updateProgressBar();
                             })
                         } else if (lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id[2] == "Q") {
                             dataSet = mainData[Object.keys(progressTrackerdataFramework).indexOf(lessons_rightSide_lessonDiv_lessons_sublesson_content_lessonCompletion[LC].id.substring(3, 6))];
@@ -1174,6 +1820,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     dataUpdater(db, "ProgressTracker", elementIDKey, 0, 1, false, () => {});
                                     mainData[elementIDIndex].splice(1, 1, 0); 
                                 }
+                                updateProgressBar();
                             })
                         } else {}
                     }
@@ -1204,6 +1851,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         continueDiv.addEventListener("mouseleave", () => {
                             continueDiv.style.boxShadow = "0px 0px 0px grey";
                         })                
+                        console.log(mainData)
                         if (mainData[DAHOMECC][0] == "L") {
                             continueDiv.addEventListener("click", () => {
                                 pageRedirect("lessonFiles/" + dataLinkMap[mainData[DAHOMECC][1]][mainData[DAHOMECC][2]]);
@@ -1213,7 +1861,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder_continueDiv_lessonType.textContent = "Video and Article";
                         } else {
                             continueDiv.addEventListener("click", () => {
-                                pageRedirect("lessonFiles/" + dataLinkMapQ[mainData[DAHOMECC][1]][mainData[DAHOMECC][2]]);
+                                pageRedirect("lessonFiles/quiz_practice.html?id=" + mainData[DAHOMECC].substring(1, 3));
                                 continueDataUpdater(db, "RecentLessons", 1, mainData[DAHOMECC], () => {});
                                 dataUpdater(db, "ProgressTracker", mainData[DAHOMECC].substring(1, 3), -5, 0, true, () => {})
                             })
@@ -1230,8 +1878,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let mainGraphLabels = [];
                 let mainGraphData = []
                 dataAccessor(db, "Quizzes", 1, DAGRAPH => {
-                    mainGraphData = JSON.parse(DAGRAPH);
-                    for (let DALGRAPH=0; DALGRAPH<mainGraphData.length; DALGRAPH++) {
+                    mainGraphData = JSON.parse(DAGRAPH).slice(1);
+                    for (let DALGRAPH=1; DALGRAPH<mainGraphData.length; DALGRAPH++) {
                         mainGraphLabels.push(DALGRAPH+1);
                     }
                     mainPageGraph.style.width = "90%";
@@ -1242,7 +1890,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         data: {
                             labels: mainGraphLabels,
                             datasets: [{
-                                label: "Scores of Quizzes Taken",
+                                label: "Score of Quizzes Taken",
                                 data: mainGraphData
                             }]
                         },
@@ -1365,7 +2013,56 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     )}
-    
+    if (window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "vocabulary") {   
+        const homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array = document.getElementsByClassName("homePage_rightSide_vocabularyDivHolder_unitDivSeparator");
+        const homePage_rightSide_vocabularySearch = document.getElementById("homePage_rightSide_vocabularySearch");
+        let vocabularyHolder = [];
+        for (let LUL=0; LUL<homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array.length; LUL++) {
+            let questionDict = unitVocabularyWordsReferenceArray[LUL];
+            console.log(questionDict)
+            for (let QRA=0; QRA<Object.keys(questionDict).length; QRA++) {
+                const homePage_rightSide_vocabularyDetail = document.createElement("details");
+                homePage_rightSide_vocabularyDetail.classList.add("homePage_rightSide_vocabularyDetail");
+                homePage_rightSide_vocabularyDetail.id = Object.keys(questionDict)[QRA].substring(1);
+                vocabularyHolder.push(homePage_rightSide_vocabularyDetail);
+
+                const homePage_rightSide_vocabularySummary = document.createElement("summary");
+                homePage_rightSide_vocabularySummary.classList.add("homePage_rightSide_vocabularySummary");
+
+                const homePage_rightSide_vocabularyText = document.createElement("div");
+                homePage_rightSide_vocabularyText.classList.add("homePage_rightSide_vocabularyText");
+                homePage_rightSide_vocabularyText.textContent = Object.keys(questionDict)[QRA].substring(1);
+                const homePage_rightSide_vocabularyUnit = document.createElement("div");
+                homePage_rightSide_vocabularyUnit.classList.add("homePage_rightSide_vocabularyUnit");
+                homePage_rightSide_vocabularyUnit.textContent = "Unit " + (LUL + 1) + ": " + dataMap[LUL + 1][1];
+                const homePage_rightSide_vocabularyLesson = document.createElement("div");
+                homePage_rightSide_vocabularyLesson.classList.add("homePage_rightSide_vocabularyLesson");
+                homePage_rightSide_vocabularyLesson.textContent = "Lesson " + Object.keys(questionDict)[QRA].substring(0, 1) + ": " + dataMap[LUL + 1][2][Object.keys(questionDict)[QRA].substring(0, 1)]; 
+
+                const homePage_rightSide_vocabularyDefintion = document.createElement("div");
+                homePage_rightSide_vocabularyDefintion.classList.add("homePage_rightSide_vocabularyDefintion");
+                homePage_rightSide_vocabularyDefintion.textContent = Object.values(questionDict)[QRA];
+
+                homePage_rightSide_vocabularyDetail.appendChild(homePage_rightSide_vocabularySummary);
+                homePage_rightSide_vocabularySummary.appendChild(homePage_rightSide_vocabularyText);
+                homePage_rightSide_vocabularySummary.appendChild(homePage_rightSide_vocabularyUnit);
+                homePage_rightSide_vocabularySummary.appendChild(homePage_rightSide_vocabularyLesson);
+                homePage_rightSide_vocabularyDetail.appendChild(homePage_rightSide_vocabularyDefintion);
+                homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array[LUL].appendChild(homePage_rightSide_vocabularyDetail);
+
+            }
+        }
+        homePage_rightSide_vocabularySearch.addEventListener("input", () => {
+            for (let HRSVS=0; HRSVS<vocabularyHolder.length; HRSVS++) {
+                if (vocabularyHolder[HRSVS].id.indexOf(homePage_rightSide_vocabularySearch.value) >= 0) {
+                    vocabularyHolder[HRSVS].style.display = "flex";
+                } else {
+                    vocabularyHolder[HRSVS].style.display = "none";
+                }
+            }
+        })
+    }
+
     if (window.location.pathname.split("/").pop() == "lessons.html" || window.location.pathname.split("/").pop() == "lessons") {        
         const lessons_rightSide_lessonDiv_lessons = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons");        
         const lessons_rightSide_lessonDiv_lessons_sublesson = document.getElementsByClassName("lessons_rightSide_lessonDiv_lessons_sublesson");
@@ -1742,8 +2439,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             hiddenDivGame_mainScreen_gameScreen.style.flexDirection = "column";
             gameEnd();
-            
         })
+
         returnButton.addEventListener("click", RBC => {
             hiddenDivGame_mainScreen_gameScreen_description.style.display = "flex";
             hiddenDivGame_mainScreen_gameScreen_title.style.display = "flex";
@@ -1763,6 +2460,67 @@ document.addEventListener("DOMContentLoaded", () => {
             mainPage.style.display = "none";
             hiddenGamePage.style.display = "flex";
         })
+
+        const hiddenQuiz = document.getElementById("hiddenQuiz");
+        const hiddenQuiz_mainScreen = document.getElementById("hiddenQuiz_mainScreen");
+        const quizStartButton = document.getElementById("quizStartButton");
+        const hiddenQuiz_mainScreen_gameScreen_startButton = document.getElementById("hiddenQuiz_mainScreen_gameScreen_startButton");
+        const hiddenQuiz_mainScreen_gameScreen_description = document.getElementById("hiddenQuiz_mainScreen_gameScreen_description");
+        const hiddenQuiz_mainScreen_gameScreen_title = document.getElementById("hiddenQuiz_mainScreen_gameScreen_title");
+        const hiddenQuiz_mainScreen_gameScreen = document.getElementById("hiddenQuiz_mainScreen_gameScreen");
+        const hiddenQuiz_title = document.getElementById("hiddenQuiz_title");
+        const hiddenQuiz_restartButton = document.getElementById("hiddenQuiz_restartButton");
+        const quizReturnButton = document.getElementById("hiddenQuiz_returnButton");
+        let quizGameQuestionList = [];
+        let quizChosenQuestion = null;
+        let chosenQuestionData = null;
+
+        quizReturnButton.addEventListener("click", () => {
+            for (let QRB=0; QRB<quizGameDivTracker.length; QRB++) {
+                quizGameDivTracker[QRB].remove();
+            }    
+            hiddenQuiz_mainScreen_gameScreen_description.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen_title.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen_startButton.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen.style.transform = "scaleY(115%)"
+            hiddenQuiz_mainScreen_gameScreen.style.flexDirection = "column";
+            hiddenQuiz_title.style.transform = "translateY(-100%)";
+            mainPage.style.display = "flex";
+            hiddenQuiz.style.display = "none";
+            RQQInit = true;
+        })
+
+        hiddenQuiz_restartButton.addEventListener("click", () => {
+            hiddenQuiz_mainScreen_gameScreen_description.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen_title.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen_startButton.style.display = "flex";
+            hiddenQuiz_mainScreen_gameScreen.style.transform = "scaleY(115%)"
+            hiddenQuiz_title.style.transform = "translateY(-100%)";
+            for (let QRB=0; QRB<quizGameDivTracker.length; QRB++) {
+                quizGameDivTracker[QRB].remove();
+            }   
+            hiddenQuiz_mainScreen_gameScreen.style.flexDirection = "column";
+            RQQInit = true;
+        })
+
+        hiddenQuiz_mainScreen_gameScreen_startButton.addEventListener("click", () => {
+            hiddenQuiz_mainScreen_gameScreen_description.style.display = "none";
+            hiddenQuiz_mainScreen_gameScreen_title.style.display = "none";
+            hiddenQuiz_mainScreen_gameScreen_startButton.style.display = "none";
+            hiddenQuiz_mainScreen_gameScreen.style.transform = "scaleY(100%)"
+            hiddenQuiz_title.style.transform = "translateY(0%)";
+            dataAccessor(db, "TemporaryQuestionHolder", null, data => {
+                quizGameQuestionList = JSON.parse(data).slice();
+                chosenQuestionData = quizGameQuestionList[Math.floor(Math.random() * quizGameQuestionList.length)];
+                quizChosenQuestion = keyMapParser(chosenQuestionData[0]).toString() + keyMapParser(chosenQuestionData[1]).toString();
+                requestQuestionQuizFrame(quizChosenQuestion, "hiddenQuiz_mainScreen_gameScreen");
+            })
+        })
+        quizStartButton.addEventListener("click", () => {
+            mainPage.style.display = "none";
+            hiddenQuiz.style.display = "flex";
+        })
+
         
         dropdownUnitSelector.addEventListener("change", DUSC => {
             const DUSCOptionValue = DUSC.target.value;
@@ -1856,8 +2614,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                     }
                                     if (questionContainer.length == 0) {
                                         const gameButton = document.getElementById("gameStartButton");
+                                        const quizStartButton = document.getElementById("quizStartButton");
                                         gameButton.style.pointerEvents = "none";
                                         gameButton.style.opacity = ".7";
+                                        quizStartButton.style.pointerEvents = "none";
+                                        quizStartButton.style.opacity = ".7";
                                     }
                                     
                                     
@@ -1880,8 +2641,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (questionContainer.length != 0) {
                     const gameButton = document.getElementById("gameStartButton");
+                    const quizStartButton = document.getElementById("quizStartButton");
                     gameButton.style.pointerEvents = "auto";
                     gameButton.style.opacity = "1";
+                    quizStartButton.style.pointerEvents = "auto";
+                    quizStartButton.style.opacity = "1";
                     
                 }
             }  

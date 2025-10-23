@@ -209,6 +209,7 @@
     display: flex;
     flex-direction: row;
     position: absolute;
+    overflow-x: hidden;
     background-color: #dcf4ff;
     width: 100vw;
     height: 100vh;
@@ -223,7 +224,7 @@
     flex-direction: column;
     align-items: center;
     transition: width 1s ease;
-    z-index: 100;
+    z-index: 105;
     
 }
 
@@ -413,6 +414,7 @@
     display: flex;
     flex-direction: column;
     width: 94.5vw;
+    min-height: 12vh;
     height: 12%;
 }
 
@@ -502,7 +504,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 1s ease;
-    z-index: 10;
+    z-index: 101;
 }
 
 #homePage_rightSide_lowerDiv_mainDiv {
@@ -610,6 +612,7 @@
     border-radius: 4px;
     height: 100%;
     background-color: rgb(20, 188, 255);
+    transition: all .8s ease-in-out;
 }
 
 .lessons_rightSide_lessonDiv_lessons_title {
@@ -741,7 +744,7 @@
 #mainBackgroundDiv_leftDiv {
     display: flex;
     flex-direction: row;
-    justify-items: center;
+    justify-content: center;
     width: 50%;
     height: 100%;
 }
@@ -749,6 +752,7 @@
 #mainBackgroundDiv_rightDiv {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     width: 50%;
     height: 100%;
 }
@@ -1027,6 +1031,29 @@
     height: 100%;
 }
 
+#hiddenQuiz {
+    display: none;
+    flex-direction: column;
+    margin-left: 5.5vw;
+    width: 100%;
+    height: 100%;
+}
+
+#hiddenQuiz_title {
+    transform: translateY(-100%);
+    display: flex;
+    font-size: 4vmax;
+    color: #04afff;
+    padding-top: 1%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 12.5%;
+    flex-direction: column;
+    width: 100%;
+    transition: transform 1s ease-in-out;
+}
+
 #hiddenDivGame_title {
     transform: translateY(-100%);
     display: flex;
@@ -1042,6 +1069,23 @@
     transition: transform 1s ease-in-out;
 }
 
+#hiddenQuiz_title_divider {
+    background-color: #04afff;
+    border-width: 0px;
+    border-radius: 4px;
+    margin-top: 1%;
+    height: 8%;
+    width: 70%;
+    z-index: 100;
+}
+
+#hiddenQuiz_mainScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 75%;
+}
 
 #hiddenDivGame_mainScreen {
     display: flex;
@@ -1060,6 +1104,21 @@
     z-index: 100;
 }
 
+#hiddenQuiz_mainScreen_gameScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #04afff;
+    width: 90%;
+    height: 94%;
+    transform-origin: bottom;
+    transform: scaleY(115%);
+    /* 115% */
+    border-radius: 4px;
+    transition: transform 1s ease-in-out;
+}
+
 #hiddenDivGame_mainScreen_gameScreen {
     display: flex;
     flex-direction: column;
@@ -1076,8 +1135,38 @@
 }
 
 
+#hiddenQuiz_mainScreen_gameScreen_title {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 5vmax;
+    margin-bottom: 1%;
+}
+
 #hiddenDivGame_mainScreen_gameScreen_title {
     font-size: 5vmax;
+}
+
+#hiddenQuiz_mainScreen_gameScreen_description {
+    font-size: 1vmax;
+    font-weight: normal;
+}
+
+#hiddenQuiz_mainScreen_gameScreen_startButton {
+    display: flex;
+    cursor: pointer;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    background-color: #98dcf7;
+    margin-top: 1%;
+    border-radius: 4px;
+    width: 10%;
+    height: 7%;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
 }
 
 #hiddenDivGame_mainScreen_gameScreen_description {
@@ -1101,11 +1190,39 @@
     transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
 }
 
+#hiddenQuiz_mainScreen_gameScreen_startButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
+}
+
 #hiddenDivGame_mainScreen_gameScreen_startButton:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 4px grey;;
 }
     
+#hiddenQuiz_bottomScreen {
+    display: flex;
+    flex-direction: row;
+    height: 12%;
+    width: 100%;
+}
+
+#hiddenQuiz_returnButton {
+    cursor: pointer;
+    display: flex;
+    width: 10%;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    border-radius: 4px;
+    margin-top: 1%;
+    margin-left: 4%;
+    background-color: #04afff;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
 
 #hiddenDivGame_bottomScreen {
     display: flex;
@@ -1129,6 +1246,32 @@
     transform: scale(1);
     box-shadow: 0px 0px 0px grey;
     transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
+
+#hiddenQuiz_returnButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
+}
+#hiddenQuiz_restartButton {
+    cursor: pointer;
+    display: flex;
+    width: 10%;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    border-radius: 4px;
+    margin-top: 1%;
+    margin-left: 72.5%;
+    background-color: #04afff;
+    transform: scale(1);
+    box-shadow: 0px 0px 0px grey;
+    transition: box-shadow .75s ease-in-out, transform .75s ease-in-out;
+}
+
+#hiddenQuiz_restartButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px grey;;
 }
 
 #hiddenDivGame_returnButton:hover {
@@ -1917,6 +2060,9 @@
 
 .lesson_rightSide_lowerPage_quizPage {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 80%;
     width: 90%;
     border-radius: 4px;
@@ -1925,6 +2071,392 @@
 
 .lesson_rightSide_lowerPage_quizPage_buttonDiv {
     display: flex;
-    height: 10%;
+    height: 15%;
     width: 100%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_title {
+    display: flex;
+    font-size: 7vmax;
+}
+
+.lesson_rightSide_lowerPage_quizPage_extraInformation {
+    display: flex;
+    font-size: 1.5vmax;
+    text-align: center;
+    align-items: center;
+    margin-left: 2.5%;
+    justify-content: center;
+    align-items: center;
+    font-weight: 300;
+}
+
+.lesson_rightSide_lowerPage_quizPage_quizStartButton {
+    display: flex;
+    color: #04afff;
+    background-color: #dcf4ff;
+    cursor: pointer;
+    margin-top: 1%;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px grey;
+    justify-content: center;
+    font-size: 1.25vmax;
+    width: 12.5%;
+    height: 6%;
+    transition: all 1s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_quizPage_improvementIndexDiv {
+    display: flex;
+    cursor: pointer;
+    color: #dcf4ff;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+    font-size: 1.25vmax;
+    aspect-ratio: 1 / 1;
+    max-height: 70%;
+    border: 2px solid #dcf4ff;
+    border-radius: 50%;
+    width: 3%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    width: 20%;
+    color:#dcf4ff;
+    font-size: 1.4vmax;
+    font-weight: 300;
+    margin-left: 18%;
+    border-radius: 4px;
+    bottom: 16%;
+    background-color:#37baf6;
+    height: 25%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_extraInformationText {
+    display: flex;
+    width: 60%;
+    font-size: 1.5vmax;
+    font-weight: 300;
+}
+
+#homePage_rightSide_titleDiv_titleQ {
+    display: flex;
+    justify-items: center;
+    height: 40%;
+    margin-top: 1%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #04afff;
+    width: 85%;
+    height: 71.4%;
+    border-radius: 4px;
+}
+
+.lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent {
+    display: flex;
+    color:#dcf4ff;
+    font-size: 7vmax;
+    text-wrap: nowrap;
+    padding-top: 2.5%;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 1%;
+    width: 45%;
+    height: 25%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation {
+    display: flex;
+    color:#dcf4ff;
+    text-align: center;
+    font-size: 1.25vmax;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    height: 15%;
+    margin-bottom: 6%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_endCardTitle {
+    display: flex;
+    font-size: 4vmax;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: center;
+    width: 50%;
+    height: 30%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_quizAccuracy {
+    display: flex;
+    background-color:#dcf4ff;
+    color: #04afff;
+    font-weight: 600;
+    margin-bottom: 2%;
+    border-radius: 4px;
+    margin-top: 1%;
+    font-size: 1vmax;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 15%;
+    height: 5%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_disclaimer {
+    display: flex;
+    margin-top: 1%;
+    font-size: 1vmax;
+    font-weight: 100;
+    text-align: center;
+    align-items: flex-start;
+    justify-content: center;
+    width: 50%;
+    height: 5%;
+}
+
+.lesson_rightSide_lowerPage_quizPage_endRestartButton {
+    display: flex;
+    cursor: pointer;
+    width: 20%;
+    background-color: #dcf4ff;
+    color: #04afff;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 2vmax;
+    transform: scale(1);
+    height: 10%;
+    margin-bottom: 3%;
+    box-shadow: 0px 0px 0px grey;
+    transition: all .8s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_quizPage_returnButton {
+    display: flex;
+    background-color: #04afff;
+    align-items: center;
+    align-self: center;
+    border-radius: 4px;
+    justify-content: center;
+    color: #dcf4ff;
+    width: 8%;
+    height: 40%;
+}
+
+
+.lesson_rightSide_lowerPage_quizPage_returnButton {
+    display: flex;
+    background-color: #04afff;
+    align-items: center;
+    cursor: pointer;
+    align-self: center;
+    border-radius: 4px;
+    justify-content: center;
+    color: #dcf4ff;
+    width: 8%;
+    height: 40%;
+    margin-left: 3%;
+    box-shadow: 0px 0px 0px grey;
+    transform: scale(1);
+    transition: all .8s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_quizPage_returnButton:hover {
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.05);
+    background-color: #5ec5f5;
+}
+
+.lesson_rightSide_lowerPage_quizPage_nextButton {
+    display: flex;
+    background-color: #04afff;
+    cursor: pointer;
+    align-items: center;
+    align-self: center;
+    margin-left: 77.5%;
+    border-radius: 4px;
+    justify-content: center;
+    color: #dcf4ff;
+    width: 8%;
+    height: 40%;
+    box-shadow: 0px 0px 0px grey;
+    transform: scale(1);
+    transition: all .8s ease-in-out;
+}
+
+.lesson_rightSide_lowerPage_quizPage_nextButton:hover {
+    box-shadow: 0px 0px 4px grey;
+    transform: scale(1.05);
+    background-color: #5ec5f5;
+}
+
+#homePage_rightSide_vocabularySearch {
+    display: flex;
+    align-self: center;
+    background: url(imageFiles/magnifyingGlass.png);
+    background-position: .2%;
+    background-repeat: no-repeat;
+    background-size: 4%;
+    border-radius: 4px;
+    min-height: 5vh;
+    font-weight: 500;
+    border-color: #dcf4ff;
+    padding-left: 3%;
+    border: 0px;
+    color:#dcf4ff;
+    outline-color:#98d5f1;
+    outline-width: 4px;
+    background-color: #04afff;
+    width: 70%;
+    height: 5%;
+}
+
+#homePage_rightSide_vocabularySearch::placeholder {
+    color: #ace5fa;
+}
+
+.homePage_rightSide_vocabularyDetail {
+    display: flex;
+    cursor: pointer;
+    margin-top: 2%;
+    width: 95%;
+    padding-bottom: 2%;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #04afff;
+    border-radius: 4px;
+    align-self: center;
+    justify-self: center;
+    transition: all 1s ease-in-out;
+}
+
+
+.homePage_rightSide_vocabularyText {
+    display: flex;
+    text-wrap: nowrap;
+    font-size: 2vmax;
+    margin-left: 2%;
+    margin-right: 2%;
+    height: 100%;
+    width: auto;
+}
+
+.homePage_rightSide_vocabularyUnit {
+    display: flex;
+    color:#04afff;
+    margin-left: 2%;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2%;
+    font-size: .8vmax;
+    border-radius: 4px;
+    padding: 0% 2%;
+    height: 100%;
+    background-color:#d1eaf4;
+    width: auto;
+}
+
+.homePage_rightSide_vocabularyLesson {
+    display: flex;
+    color:#04afff;
+    margin-left: 2%;
+    font-size: .8vmax;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    padding: 0% 2%;
+    margin-right: 2%;
+    height: 100%;
+    background-color:#d1eaf4;
+    width: auto;
+}
+
+.homePage_rightSide_vocabularySummary {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    margin-top: 2%;
+    height: 70%;
+}
+
+.homePage_rightSide_vocabularyDefintion {
+    display: flex;
+    background-color: #d1eaf4;
+    font-weight: 500;
+    font-size: 1vmax;
+    border-radius: 4px;
+    color:#04afff;
+    padding: 1%;
+    width: 67.8vw;
+    margin-left: 3%;
+    margin-top: 2%;
+    height: 80%;
+    margin-bottom: 5%;
+    transition: all 1s ease-in-out;
+}
+
+#homePage_rightSide_vocabularyDivHolder {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.homePage_rightSide_vocabularyDivHolder_unitDivSeparator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#9ddefc;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    align-self: center;
+    justify-self: center;
+    border-radius: 4px;
+    width: 80%;
+    height: auto;
+    padding-bottom: 2%;
+}
+
+.homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    padding-top: 1%;
+    width: 100%;
+    height: 14vh;
+}
+
+.homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent {
+    display: flex;
+    color:#04afff;
+    margin-top: 2%;
+    margin-left: 4%;
+    font-size: 3vmax;
+}
+
+.homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider {
+    background-color:#04afff;
+    margin: 1% 0%;
+    border-width: 0px;
+    border-radius: 4px;
+    margin-left: 4%;
+    height: 1vh;
+    width: 90%;
 }

@@ -62,7 +62,7 @@
 
         <div id="lesson_homePage_rightSide_quizPractice">
             <div id="homePage_rightSide_titleDiv">
-                <div id="homePage_rightSide_titleDiv_title"> 
+                <div id="homePage_rightSide_titleDiv_titleQ"> 
                     <div id="homePage_rightSide_titleDiv_titleContent"></div>
                     <div id="lesson_rightSide_lowerPage_videoDiv_improvementIndex">Loading...</div>
                     <script>
@@ -71,7 +71,7 @@
                             window.dataAccessor(db, "ProgressTracker", unitLessonData, foundData => {
                                 lesson_rightSide_lowerPage_videoDiv_improvementIndex.textContent = "Improvement Index: " + JSON.parse(foundData)[0];
                             })
-                        }, 500)
+                        }, 1000)
                         
                     </script>
                     <div onclick='window.dataUpdater(db, "ProgressTracker", unitLessonData, -10, 0, true, () => {})
@@ -90,10 +90,17 @@
             <div id="lesson_rightSide_lowerPage_quizPractice">
                 <!-- Start Here -->
             <div class="lesson_rightSide_lowerPage_quizPage">
-
+                <div class="lesson_rightSide_lowerPage_quizPage_title">
+                    Practice Quiz
+                </div>
+                <div class="lesson_rightSide_lowerPage_quizPage_extraInformation">
+                    <div class="lesson_rightSide_lowerPage_quizPage_extraInformationText">Incorrect and correct answer choices will go towards your improvement index! Score will be saved and visible in your dashboard. </div><div class="lesson_rightSide_lowerPage_quizPage_improvementIndexDiv">?<div class="lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation">Improvement Index: A value that tracks the need for improvement in a lesson, with a higher number indicating a higher need for improvement.</div></div>
+                </div>
+                <div class="lesson_rightSide_lowerPage_quizPage_quizStartButton">Start</div>
             </div>
             <div class="lesson_rightSide_lowerPage_quizPage_buttonDiv">
-
+                <div class="lesson_rightSide_lowerPage_quizPage_returnButton">Return</div>
+                <div class="lesson_rightSide_lowerPage_quizPage_nextButton">Next</div>
             </div>
         </div>
         <div id="mainPage_backgroundBlocker"></div> 
