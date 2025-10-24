@@ -20,7 +20,7 @@ let questionExplanationObject = {
     "12x": "This is the answer choice, which is 12x.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
     "-24x^{-3}": "This is the answer choice, which is -24x^{-3}.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
     "2(4x+2) + 4(2x-1)": "This is the answer choice, which is 2(4x+2) + 4(2x-1).This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t"
-}
+}                                                           
 
 const unitReferenceHolder = ["placeholder",
     questionsUnit1
@@ -1195,6 +1195,9 @@ function databaseInitialization(callback) {
         if (!db.objectStoreNames.contains("TemporaryQuestionHolder")) {
             const TemporaryQuestionHolder = db.createObjectStore("TemporaryQuestionHolder", {autoIncrement: false});
         }
+        if (!db.objectStoreNames.contains("ImprovementIndexTracker")) {
+            const ImprovementIndexTracker = db.createObjectStore("ImprovementIndexTracker", {autoIncrement: true});
+        }
         console.log("Database upgraded.");
     }
 
@@ -1317,6 +1320,13 @@ window.dataUpdater = function(database, objectID, key, data, location, add, call
             }
             const updatedData = DUS.target.result;
             if (add) {
+                dataAccessor(db, "ProgressTracker", null, improvementIndexData => {
+                    let improvementIndexValue = 0;
+                    for (let IITD=0; IITD<JSON.parse(improvementIndexData).length; IITD++) {
+                        improvementIndexValue += JSON.parse(improvementIndexData)[IITD][0];
+                    }
+                    quizzesTrackerDataUpdater(database, "ImprovementIndexTracker", 1, improvementIndexValue, () => {})
+                })
                 updatedData.splice(location, 1, data + updatedData[location]);
             } else {
                 updatedData.splice(location, 1, data);
@@ -1603,8 +1613,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         }}
                 }
             if (DBI == 2) {
-                const quizzesDataFramework = []
-
+                const quizzesDataFramework = ["L11"]
+                const ImprovementIndexTrackerFramework = [];
                 const recentLessonsDataFramework = ["L11"];
                 /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
                 const progressTrackerdataFramework = {
@@ -1624,8 +1634,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 for (let QDFDBI=0; QDFDBI<Object.keys(progressTrackerdataFramework).length; QDFDBI++) {
                     dataAmender(db, "ProgressTracker", progressTrackerdataFramework[Object.keys(progressTrackerdataFramework)[QDFDBI]], true, Object.keys(progressTrackerdataFramework)[QDFDBI]);
                 }
+                dataAmender(db, "ImprovementIndexTracker", ImprovementIndexTrackerFramework, true, 1);
                 dataAmender(db, "RecentLessons", recentLessonsDataFramework, true, 1);
-                dataAmender(db, "Quizzes", recentLessonsDataFramework, true, 1);
+                dataAmender(db, "Quizzes", quizzesDataFramework, true, 1);
             } else if (DBI == 4) {
                 console.error("Undocumented error. (error code: 4)");
                 alert("Error Code 4: Try refreshing your webpage, and if that does not work, delete your webpage data. (On Google, click on the lock button on the top left, site settings, and press on delete data)");
@@ -1642,6 +1653,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const homePage_rightSide_titleDiv_titleText = document.getElementById("homePage_rightSide_titleDiv_titleContent");
                 const lesson_rightSide_lowerPage_quizPage_nextButton = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_nextButton")[0];
                 const lesson_rightSide_lowerPage_quizPage_returnButton = document.getElementsByClassName("lesson_rightSide_lowerPage_quizPage_returnButton")[0];
+                if (unitLessonData.toString() == "52") {
+                    lesson_rightSide_lowerPage_quizPage_nextButton.style.pointerEvents = "none";
+                    lesson_rightSide_lowerPage_quizPage_nextButton.style.backgroundColor = "#68ccfb";
+                }
                 lesson_rightSide_lowerPage_quizPage_nextButton.addEventListener("click", () => {
                     if (dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1] != undefined) {
                         pageRedirect(dataLinkMap[parseInt(unitLessonData[0])][parseInt(unitLessonData[1]) + 1]);
@@ -1649,10 +1664,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         dataUpdater(db, "ProgressTracker", unitLessonData[0] + (1 + parseInt(unitLessonData[1])).toString(), -10, 0, true, () => {});
                         continueDataUpdater(db, "RecentLessons", 1, "L" + unitLessonData[0] + (1 + parseInt(unitLessonData[1])).toString(), () => {});
                     } else {
-                        pageRedirect(dataLinkMap[parseInt(unitLessonData[0]) + 1][1]);
-                        dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", 1, 2, false, () => {});
-                        dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", -10, 0, true, () => {});
-                        continueDataUpdater(db, "RecentLessons", 1, "L" +(parseInt(unitLessonData[0]) + 1).toString() + "1", () => {});
+                        if (unitLessonData.toString() != "52") {
+                            pageRedirect(dataLinkMap[parseInt(unitLessonData[0]) + 1][1]);
+                            dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", 1, 2, false, () => {});
+                            dataUpdater(db, "ProgressTracker", (parseInt(unitLessonData[0]) + 1).toString() + "1", -10, 0, true, () => {});
+                            continueDataUpdater(db, "RecentLessons", 1, "L" +(parseInt(unitLessonData[0]) + 1).toString() + "1", () => {});
+                        } else {}
                     }
                 })
                 homePage_rightSide_titleDiv_titleText.textContent = "Unit " + unitLessonData[0] + ", Lesson " + unitLessonData[1] + ": " + dataMap[unitLessonData[0]][2][unitLessonData[1]] + " Quiz";
@@ -1890,8 +1907,62 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 })
                 const mainPageGraph = document.getElementById("mainPage_graph");
+                const homePage_rightSide_upperDiv_leftDiv_button = document.getElementById("homePage_rightSide_upperDiv_leftDiv_button");
                 let mainGraphLabels = [];
-                let mainGraphData = []
+                let mainGraphData = [];
+                let graphTracker = null;
+                const homePage_rightSide_upperDiv_leftDiv_titleTextContent = document.getElementById("homePage_rightSide_upperDiv_leftDiv_titleTextContent");
+                homePage_rightSide_upperDiv_leftDiv_button.addEventListener("click", () => {
+                    graphTracker.destroy();
+                    mainGraphLabels = [];
+                    mainGraphData = [];
+                    if (homePage_rightSide_upperDiv_leftDiv_button.textContent == "Quiz Score Data") {
+                        dataAccessor(db, "Quizzes", 1, DAGRAPH => {
+                            mainGraphData = JSON.parse(DAGRAPH).slice(1);
+                            for (let DALGRAPH=1; DALGRAPH<mainGraphData.length; DALGRAPH++) {
+                                mainGraphLabels.push(DALGRAPH+1);
+                            }
+                            mainPageGraph.style.color = "black";
+                            const mainPage_graphCreation = new Chart(mainPageGraph, {
+                                type: "line",
+                                data: {
+                                    labels: mainGraphLabels,
+                                    datasets: [{
+                                        label: "Score of Quizzes Taken",
+                                        data: mainGraphData
+                                    }]
+                                },
+                                options: {responsive: true, maintainAspectRatio: false}
+                            })
+                            graphTracker = mainPage_graphCreation;
+                        })
+                        homePage_rightSide_upperDiv_leftDiv_titleTextContent.textContent = "Quiz Scores"
+                        homePage_rightSide_upperDiv_leftDiv_button.textContent = "Improvement Index Data";
+                    } else if (homePage_rightSide_upperDiv_leftDiv_button.textContent == "Improvement Index Data") {
+                        dataAccessor(db, "ImprovementIndexTracker", 1, DAGRAPH => {
+                            mainGraphData = JSON.parse(DAGRAPH).slice(0);
+                            for (let DALGRAPH=0; DALGRAPH<mainGraphData.length; DALGRAPH++) {
+                                mainGraphLabels.push(DALGRAPH+1);
+                            }
+                            mainPageGraph.style.color = "black";
+                            const newGraph = new Chart(mainPageGraph, {
+                                type: "line",
+                                data: {
+                                    labels: mainGraphLabels,
+                                    datasets: [{
+                                        label: "Total Improvement Index",
+                                        data: mainGraphData
+                                    }]
+                                },
+                                options: {responsive: true, maintainAspectRatio: false}
+                            })
+                            mainGraphData.height = mainPageGraph.offsetHeight;
+                            graphTracker = newGraph;
+                        })
+                        homePage_rightSide_upperDiv_leftDiv_button.textContent = "Quiz Score Data";
+                        homePage_rightSide_upperDiv_leftDiv_titleTextContent.textContent = "Improvement Index Data";
+                    }
+                })
                 dataAccessor(db, "Quizzes", 1, DAGRAPH => {
                     mainGraphData = JSON.parse(DAGRAPH).slice(1);
                     for (let DALGRAPH=1; DALGRAPH<mainGraphData.length; DALGRAPH++) {
@@ -1899,6 +1970,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     mainPageGraph.style.width = "90%";
                     mainPageGraph.style.height = "80%";
+                    mainPageGraph.style.maxHeight = "30vh"
+                    mainPageGraph.style.maxWidth = "38vw"
                     mainPageGraph.style.color = "black";
                     const mainPage_graphCreation = new Chart(mainPageGraph, {
                         type: "line",
@@ -1911,8 +1984,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         },
                         options: {responsive: false, maintainAspectRatio: true}
                     })
+                    graphTracker = mainPage_graphCreation;
                 })
-                
                 dataAccessor(db, "ProgressTracker", null, DARLC => {
                     const progressTrackerdataFramework = {
                         11: [0, 0, 0, 0],
@@ -1935,6 +2008,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const homePage_rightSide_lowerDiv_mainDiv_rightDiv_mainContent = document.getElementsByClassName("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent")[1];
                     dataAccessor(db, "ProgressTracker", null, mainData => {
                         const mainDataJSON = JSON.parse(mainData);
+                        console.log(mainDataJSON)
                         for (let DALS=0; DALS<mainDataJSON.length; DALS++) {
                             const contextOfTextDiv = document.createElement("div");
                             const homePage_rightSide_lowerDiv_mainDiv_rightDiv_decrease = document.createElement("div");
@@ -1983,15 +2057,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                     console.log(unitLessons)
                     const improvementIndexArray = [];
+                    const improvementIndexDictMapper = {
+
+                    }
                     const mainData = JSON.parse(DARLC);
                     for (let DAII=0; DAII<mainData.length; DAII++) {
                         improvementIndexArray.push(mainData[DAII][0]);
+                        improvementIndexDictMapper[DAII] = mainData[DAII][0]
                     }
+                    const sortedIndexValues = Object.values(improvementIndexDictMapper).sort((a, b) => b - a);
+                    console.log(sortedIndexValues)
                     const unchangeableImproveIndexArray = improvementIndexArray.slice();
-                    const sortedImprovementIndexArray = improvementIndexArray.sort((a,b) => b - a);
+                    const sortedImprovementIndexArray = improvementIndexArray;
+                    console.log(sortedImprovementIndexArray)
                     for (let sortedImprovementIndexArrayCounter=0; sortedImprovementIndexArrayCounter<sortedImprovementIndexArray.length; sortedImprovementIndexArrayCounter++) {
                         if (sortedImprovementIndexArray[sortedImprovementIndexArrayCounter] > 0) {
-                            let contentOfText = "Unit " + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0] + ": " + dataMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][1] + ", Lesson " + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1] + ": " + dataMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][2][unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1]];
+                            let unitNum = unitLessons[sortedImprovementIndexArrayCounter][0];
+                            let unitName = dataMap[unitLessons[sortedImprovementIndexArrayCounter][0]][1];
+                            let lessonNum = unitLessons[sortedImprovementIndexArrayCounter][1];
+                            let lessonName = dataMap[unitLessons[sortedImprovementIndexArrayCounter][0]][2][unitLessons[sortedImprovementIndexArrayCounter][1]];
+                            let lesson =  unitNum.toString() + lessonNum.toString();
+
+                            let contentOfText = "Unit " + unitNum + ": " + unitName + ", Lesson " + lessonNum + ": " + lessonName;
                             const contextOfTextDiv = document.createElement("div");
                             contextOfTextDiv.classList.add("contextOfTextDiv");
                             contextOfTextDiv.textContent = contentOfText;
@@ -2004,11 +2091,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.textContent = "Start Lesson";
                             homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.classList.add("homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start");
                             homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.addEventListener("click", HPLS => {
-                                continueDataUpdater(db, "RecentLessons", 1, "L" + unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])], () =>{})
-                                console.log(unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1])
-                                pageRedirect("lessonFiles/" + dataLinkMap[unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][0]][unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])][1]]);
-                                dataUpdater(db, "ProgressTracker", unitLessons[unchangeableImproveIndexArray.indexOf(sortedImprovementIndexArray[sortedImprovementIndexArrayCounter])], -5, 0, true, DULS => {
-                                })
+                                continueDataUpdater(db, "RecentLessons", 1, "L" + lesson, () =>{})
+                                pageRedirect("lessonFiles/" + dataLinkMap[unitNum][lessonNum]);
+                                dataUpdater(db, "ProgressTracker", lesson, -5, 0, true, DULS => {})
                             })
                             homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.addEventListener("mouseenter", () => {
                                 homePage_rightSide_lowerDiv_mainDiv_leftDiv_mainContent_lessons_start.style.backgroundColor = "#64cbfb";
@@ -2028,10 +2113,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     )}
-    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname == "/") {
-        console.log("e")
-    }       
-
     if (window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "vocabulary") {   
         const homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array = document.getElementsByClassName("homePage_rightSide_vocabularyDivHolder_unitDivSeparator");
         const homePage_rightSide_vocabularySearch = document.getElementById("homePage_rightSide_vocabularySearch");

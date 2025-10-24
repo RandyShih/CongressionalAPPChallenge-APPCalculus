@@ -115,13 +115,16 @@
 
 /*Page below the main header*/
 #imageBackground {
+    display: flex;
     background-image: url("imageFiles/mainBackgroundTemp.png");
     position: absolute;
     z-index: -100;
-    width: 100%;
+    margin-right: 50%;
+    width: 150%;
     height: 160vh;
+    transform: translateX(-20%);
     filter: blur(2px);
-
+    transition: all .5s ease-in-out;
 }
 
 #mainPage {
@@ -130,6 +133,7 @@
     align-items: flex-end;
     flex-direction: column;
     width: 100%;
+    overflow-x: hidden;
     height: 160vh;
     animation: mainPageInitAnimation 1s forwards;
     z-index: -5;
@@ -1297,6 +1301,8 @@
     align-items: center;
     justify-content: center;
     font-size: 5vmax;
+    padding-right: 2%;
+    padding-left: 2%;
     margin-bottom: 1%;
 }
 
@@ -1872,6 +1878,7 @@
     background-color: #04afff;
     color:#dcf4ff;
     font-size: 1vmax;
+    text-align: center;
     align-items: center;
     border: 0px;
     justify-content: center;
@@ -1899,6 +1906,7 @@
     font-size: .8vmax;
     align-items: center;
     border: 0px;
+    text-align: center;
     justify-content: center;
     transform: scale(1);
     box-shadow: 0px 0px 0px grey;
@@ -2059,6 +2067,7 @@
     color:#dcf4ff;
     font-size: .8vmax;
     align-items: center;
+    text-align: center;
     border: 0px;
     justify-content: center;
     transform: scale(1);
@@ -2067,7 +2076,7 @@
     margin-left: 2%;
     border-radius: 4px;
     height: 90%;
-    width: 12%;
+    width: 12.5%;
 }
 
 .homePage_rightSide_lowerDiv_mainDiv_rightDiv_title {
@@ -2615,4 +2624,45 @@
     margin-left: 4%;
     height: 1vh;
     width: 90%;
+}
+
+#homePage_rightSide_upperDiv_leftDiv_button {
+    display: flex;
+    margin-left: 40%;
+    font-size: 1vmax;
+    background-color:#dcf4ff;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    border-radius: 4px;
+    color:#04afff;
+    width: 40%;
+    transform: scale(1);
+    height: 70%;
+    box-shadow: 0px 0px 0px grey;
+    transition: all .8s ease-in-out;
+}
+
+#homePage_rightSide_upperDiv_leftDiv_titleTextContent {
+    display: flex;
+    width: 10%;
+    text-wrap: nowrap;
+    align-items: center;
+}
+
+#homePage_rightSide_upperDiv_leftDiv_button:hover {
+    transform: scale(1.025);
+    background-color: #b1ddf1;
+    box-shadow: 0px 0px 4px grey;
+}
+
+#mainPage_graph {
+    width: 100%;
+    height: 80%;
+}
+
+#homePage_rightSide_titleDiv_titleContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
