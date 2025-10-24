@@ -2028,6 +2028,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     )}
+    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname.split("/").pop() == "index") {
+        
+    }       
+
     if (window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "vocabulary") {   
         const homePage_rightSide_vocabularyDivHolder_unitDivSeparator_array = document.getElementsByClassName("homePage_rightSide_vocabularyDivHolder_unitDivSeparator");
         const homePage_rightSide_vocabularySearch = document.getElementById("homePage_rightSide_vocabularySearch");
