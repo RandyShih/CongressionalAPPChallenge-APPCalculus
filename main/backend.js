@@ -2028,8 +2028,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     )}
-    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname.split("/").pop() == "index") {
-        
+    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname.split("/").pop() == "") {
+        console.log("e")
     }       
 
     if (window.location.pathname.split("/").pop() == "vocabulary.html" || window.location.pathname.split("/").pop() == "vocabulary") {   
