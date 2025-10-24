@@ -2028,7 +2028,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     )}
-    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname.split("/").pop() == "") {
+    if (window.location.pathname.split("/").pop() == "index.html" || window.location.pathname == "/") {
         console.log("e")
     }       
 
