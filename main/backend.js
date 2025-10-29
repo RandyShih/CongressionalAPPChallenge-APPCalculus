@@ -4,7 +4,7 @@ if (localStorage.getItem("databaseActive") == null) {
 }
 
 let databaseActive = localStorage.getItem("databaseActive");
-let testDataActive = false;
+let testDataActive = "false";
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
 const questionsUnit1 = {
@@ -1692,6 +1692,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
                         }}
                 }
+            
             if (DBI == 2) {
                 let quizzesDataFramework = ["L11"]
                 let ImprovementIndexTrackerFramework = [];
@@ -1710,13 +1711,19 @@ document.addEventListener("DOMContentLoaded", () => {
                    51: [0, 0, 0, 0],
                    52: [0, 0, 0, 0]
                 } 
-                if (testDataActive == true) {
+                try {
+                    const testDataChecker = new URLSearchParams(window.location.search);
+                    testDataActive = testDataChecker.get("id");
+                    console.log(testDataActive)
+                } catch(error) {
+                    console.error(error);
+                }
+                if (testDataActive == "true") {
                     quizzesDataFramework = ["L11", 49, 89, 100, 23, 43, 87, 65, 43, 78, 45, 54]
-                    ImprovementIndexTrackerFramework = [120, 150, 160, 180, 120, 110, 100, 90, 80, 70];
                     recentLessonsDataFramework = ["L51", "Q21", "L11", "Q41"];
                     /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
                     progressTrackerdataFramework = {
-                        11: [123, 1, 1, 1],
+                        11: [120, 1, 1, 1],
                         12: [-10, 0, 1, 0],
                         13: [23, 0, 1, 0],
                         21: [23, 1, 1, 1],
