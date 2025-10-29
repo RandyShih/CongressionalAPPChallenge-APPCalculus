@@ -2,11 +2,28 @@
 <html>
     <!--Head/Main Configs-->
     <head>
+        <script>
+            const newUrlData = new URLSearchParams(window.location.search);
+            const unitLessonData = newUrlData.get("id");
+            window.MathJax = {
+                
+                tex: {
+                    inlineMath: [["$", "$"], ["\\(", "\\)"]]
+                },
+                options: {
+                    enableExplorer: false,
+                },
+                svg: {
+                    displayOverflow: "overflow"
+                }
+            };
+        </script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../imageFiles/logo.png">
-        <link rel="stylesheet" href="../mainStyling.css?v=.7611">
-        <script src="../backend.js?v=.7611" defer></script>
+        <link rel="stylesheet" href="../mainStyling.css?v=1.0">
+        <script src="../backend.js?v=1.0" defer></script>
     </head>
     <body>
     <div id="mainBackgroundDiv">
@@ -53,7 +70,7 @@
                 <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator">
                     <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv">
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent">
-                            Unit 1: Derivatives
+                            Unit 1: Algebraic Review
                         </div>
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider"></div>
                     </div>
@@ -61,7 +78,7 @@
                 <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator">
                     <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv">
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent">
-                            Unit 2: Polynomials
+                            Unit 2: Finding Zeros
                         </div>
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider"></div>
                     </div>
@@ -69,7 +86,7 @@
                 <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator">
                     <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv">
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent">
-                            Unit 3: Graphical Analysis
+                            Unit 3: Logarithmic Functions
                         </div>
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider"></div>
                     </div>
@@ -77,7 +94,7 @@
                 <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator">
                     <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv">
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent">
-                            Unit 4: Graphical Reasoning
+                            Unit 4: Transformation of Functions
                         </div>
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider"></div>
                     </div>
@@ -85,7 +102,7 @@
                 <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator">
                     <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDiv">
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleContent">
-                            Unit 5: Power Rules
+                            Unit 5: Trigonometry
                         </div>
                         <div class="homePage_rightSide_vocabularyDivHolder_unitDivSeparator_titleDivider"></div>
                     </div>

@@ -1,7 +1,0 @@
-?v=.3
-.3: Local database is operational, accounted for database failure, and user initiation framework done. 
-.0952 - .22: Lessons page partially complete, sidebar changes, new main pages made. 
-.0951 - .101: Database setup is almost done and the main dashboard is being worked on.
-.09 - .094: Main page concept is done. Fixed cache requests.
-.08 - .0852: Main page sidebar and top bar is done.
-.01 - .018: Basic website details and setup are complete.

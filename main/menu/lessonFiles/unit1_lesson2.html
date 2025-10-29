@@ -21,8 +21,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../../imageFiles/logo.png">
-        <link rel="stylesheet" href="../../mainStyling.css?v=.7611">
-        <script src="../../backend.js?v=.7611" defer></script>
+        <link rel="stylesheet" href="../../mainStyling.css?v=1.0">
+        <script src="../../backend.js?v=1.0" defer></script>
     </head>
     <body>
     <div id="mainBackgroundDiv">
@@ -60,7 +60,7 @@
 
         <div id="lesson_homePage_rightSide">
             <div id="homePage_rightSide_titleDiv">
-                <div id="homePage_rightSide_titleDiv_title">Unit 1, Lesson 2: Trinomials
+                <div id="homePage_rightSide_titleDiv_title" style="font-size: 1.6vmax;">Unit 1, Lesson 2: Simplifying Rational Functions P.1
                     <div id="lesson_rightSide_lowerPage_videoDiv_improvementIndex">Loading...</div>
                     <script>
                         setTimeout(function() {
@@ -93,7 +93,7 @@
                     <div class="lesson_rightSide_lowerPage_videoDiv_divider">
                         
                     </div>
-                    <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1128723137"></iframe> 
+                    <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1130769356"></iframe> 
                     <div class="lesson_rightSide_lowerPage_buttonHolder">
                         <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("../lessons.html")' id="lessons_rightSide_lowerPage_buttonReturn">Return</div>
                         <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("quiz_practice.html?id=12"); dataUpdater(db, "ProgressTracker", "12", 1, 3, false, () => {}); continueDataUpdater(db, "RecentLessons", 1, "Q12", () => {})' id="lessons_rightSide_lowerPage_buttonNext">Next</div>
@@ -108,15 +108,14 @@
                         
                     </div>
                     <div class="lesson_rightSide_lowerPage_articleMainContent">
-                        The derivation of a function is essentially the slope of a line at a certain point, and you find the derivative or slope of a 
-                        function at any point, you must first find the derivative of the initial function. For basic derivation of exponential functions, multiply 
-                        the function by the value of the exponent, and then subtract the value of the exponent by 1. $${\color{#04afff}f(x) = bx^{c} \\ \color{#04afff}c,
-                         b \in \mathbb{R} \\ \color{#04afff}\frac{dx}{dy} = c * bx^{c - 1}}$$ For instance, if you choose a random point in a graph, such as $${\color{#04afff}f(x) = 2x^{3}}$$ then the derivative at any point o
-                          graph will be $${\color{#04afff}\frac{dx}{dy} = 6x^{2}}$$ This results in said random point's derivative being the value of the derivation function with the point plugged into it.
-                        <div class="lesson_rightSide_lowerPage_articleMainDivider"></div>
-                        Finding the derivative of a function with this method is only applicable to the first function presented in this summary, which could also be a 
-                        polynomial function as long as each term abides by the format of the function. We will explore how to derive other functions using other methods
-                        in the next couple of videos.
+                        Fraction simplification for rational fractions such as $$\color{#04afff}{\frac{f(x)}{g(x)}}$$ With the function f(x) and g(x)
+                        being in factored form, such as (x+2), (2x+5)(5+x). Simplifying fractions is based on the principle of the same
+                        value being divided by itself resulting in the value of 1. $$\color{#04afff}{\frac{(2x+1)}{(2x+1)} = 1}$$
+                        Now, this principle can be applied to simplify rational fractions, for example, if we have the function $$\color{#04afff}{\frac{(2x-1)^2}{(2x-1)}}$$
+                        We can see that the factor for the numerator and denominator are the same, so we can simply use the exponent rule of $$\color{#04afff}{\frac{x^a}{x^b} = x^{a-b}}$$
+                        To simplify it into (2x+1). Now this is a simple example of simplification, but there are some situations in which the numerator or denominator are in polynomial form.
+                        $$\color{#04afff}{\frac{x^2+5x+4}{x+4}}$$ Now for this, we can factor the numerator to get the fraction $$\color{#04afff}{\frac{(x+4)(x+1)}{x+4}}$$ To simplify the
+                        equation to $$\color{#04afff}{(x+1)}$$
                     </div>
                 </div>
 

@@ -21,8 +21,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <title>APPCalculus</title>
         <link rel="icon" href="../../imageFiles/logo.png">
-        <link rel="stylesheet" href="../../mainStyling.css?v=.7611">
-        <script src="../../backend.js?v=.7611" defer></script>
+        <link rel="stylesheet" href="../../mainStyling.css?v=1.0">
+        <script src="../../backend.js?v=1.0" defer></script>
     </head>
     <body>
     <div id="mainBackgroundDiv">
@@ -60,7 +60,7 @@
 
         <div id="lesson_homePage_rightSide">
             <div id="homePage_rightSide_titleDiv">
-                <div id="homePage_rightSide_titleDiv_title">Unit 2, Lesson 2: Graphical Transition
+                <div id="homePage_rightSide_titleDiv_title">Unit 2, Lesson 2: Quadratic Formula
                     <div id="lesson_rightSide_lowerPage_videoDiv_improvementIndex">Loading...</div>
                     <script>
                         setTimeout(function() {
@@ -93,7 +93,7 @@
                     <div class="lesson_rightSide_lowerPage_videoDiv_divider">
                         
                     </div>
-                    <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1128723137"></iframe> 
+                    <iframe class="lessons_rightSide_lowerPage_videoDiv_videoFrame" src="https://player.vimeo.com/video/1130773115"></iframe> 
                     <div class="lesson_rightSide_lowerPage_buttonHolder">
                         <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("../lessons.html")' id="lessons_rightSide_lowerPage_buttonReturn">Return</div>
                         <div class="lessons_rightSide_lowerPage_button" onclick='pageRedirect("quiz_practice.html?id=22"); dataUpdater(db, "ProgressTracker", "22", 1, 3, false, () => {}); continueDataUpdater(db, "RecentLessons", 1, "Q22", () => {})' id="lessons_rightSide_lowerPage_buttonNext">Next</div>
@@ -108,15 +108,18 @@
                         
                     </div>
                     <div class="lesson_rightSide_lowerPage_articleMainContent">
-                        The derivation of a function is essentially the slope of a line at a certain point, and you find the derivative or slope of a 
-                        function at any point, you must first find the derivative of the initial function. For basic derivation of exponential functions, multiply 
-                        the function by the value of the exponent, and then subtract the value of the exponent by 1. $${\color{#04afff}f(x) = bx^{c} \\ \color{#04afff}c,
-                         b \in \mathbb{R} \\ \color{#04afff}\frac{dx}{dy} = c * bx^{c - 1}}$$ For instance, if you choose a random point in a graph, such as $${\color{#04afff}f(x) = 2x^{3}}$$ then the derivative at any point o
-                          graph will be $${\color{#04afff}\frac{dx}{dy} = 6x^{2}}$$ This results in said random point's derivative being the value of the derivation function with the point plugged into it.
-                        <div class="lesson_rightSide_lowerPage_articleMainDivider"></div>
-                        Finding the derivative of a function with this method is only applicable to the first function presented in this summary, which could also be a 
-                        polynomial function as long as each term abides by the format of the function. We will explore how to derive other functions using other methods
-                        in the next couple of videos.
+                        When you cannot factor polynomials, such as $$\color{#04afff}{x^2+8x+2}$$ You will have to utilize 
+                        the quadratic formula to solve for the zeros of the function. The quadratic formula can be derived from 
+                        the polynomial, $$\color{#04afff}{ax^2+bx+c}$$ But, it would be better for students to just memorize it for now.
+                        The formula for the quadratic formula is as follows: $$\color{#04afff}{x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}}$$
+                        To use the quadratic formula, you need to first identify where the variables of the formula are in 
+                        your polynomial. For example, the provided example has an a value of 1, b value of 8, and a c value of 2.
+                        Which is found through referencing with the formula that the quadratic formula is dervied from to find out
+                        what coefficients are assigned to what value. $$\color{#04afff}{x = \frac{-8 + \sqrt{8^2-4(1)(2)}}{2(1)}\\\\
+                        x = \frac{-8 - \sqrt{8^2-4(1)(2)}}{2(1)}}$$ As seen above, the plus and minus sign results in you needing to
+                        evaulate the formula twice, with one with a negative sign and one with a positive one. $$\color{#04afff}{x=-4+\sqrt{14},\, x=-4-\sqrt{14}}$$
+                        These two values are the zeros of the polynomial provided in this example, which can be double checked with a graph
+                        or plugged into the original equation to see if it evaluates to 0. 
                     </div>
                 </div>
 

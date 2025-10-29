@@ -4,96 +4,171 @@ if (localStorage.getItem("databaseActive") == null) {
 }
 
 let databaseActive = localStorage.getItem("databaseActive");
+let testDataActive = false;
 let db;
 let objectStoreNames = ["Quizzes", "ProgressTracker"];
 const questionsUnit1 = {
-    1: {"What is the derivative of \u00A0 $5x$?": {1: ["5x", "5", "10x^2", "0"]}, 
-        "What is the derivative of \u00A0 $6x^2?$": {2: ["0", "6x", "12x", "3x"]},
-        "What is the derivative of \u00A0 $12x^{-2}$?": {3: ["24x^{-1}", "-24", "24x^{-3}", "-24x^{-3}"]}
+    1: {"What is the factored form of \u00A0 $x^2 + 4x + 4$?": {1: ["(x+4)(x+1)", "(x+2)^2", "(x-2)(x+2)", "(x+4)(x+1)"]}, 
+        "What is the factored form of \u00A0 $4x^2 + 9x + 5$": {2: ["(2x+3)(4x+2)", "(x+5)(x+4)", "(4x+5)(x+1)", "3x"]},
+        "What is the factored form of \u00A0 $x^2 + 10x + 24$?": {3: ["(x-6)(x-4)", "(x+4)(x-6)", "x(x+24)", "(x+6)(x+4)"]},
+        "What is the factored form of \u00A0 $3x^2 + 5x + 2$?": {0: ["(3x+2)(x+1)", "(x+2)(x+1)", "(2x+2)(x+2)", "0"]}
     },
-    2: {"What is the derivative of \u00A0 $(2x-1)(4x+2)$?": {0: ["2(4x+2) + 4(2x-1)", "2(4x+2) * 4(2x-1)", "4(4x+2) + 2(2x-1)", "6"]}
+    2: {"What is the simplified form of \u00a0 $\\frac{(x+2)(x+2)}{(x+2)}$": {0: ["(x+2)", "(x+2)^2", "(x+2)(x+2)", "0"]},
+        "What is the simplified form of \u00a0 $\\frac{(2x+3)^2}{(2x+3)}$": {1: ["(x+2)(2x+3)", "(2x+3)", "(x+2)", "(3x+5)"]},
+        "What is the simplified form of \u00a0 $\\frac{x^2 + 5x + 4}{(x+4)}$": {2: ["\\frac{x^2 + 5x + 4}{(x+4)}", "(x+4)", "(x+1)", "(x-1)"]},
+        "What is the simplified form of \u00a0 $\\frac{x^2 + 10x + 9}{(x+1)}$": {3: ["(x^2 + 10x + 9)^2", "(x+9)(x+1)", "(x+1)", "(x+9)"]}
+    },
+    3: {
+        "Simplify \u00a0 $\\frac{1}{x^2+5x+4} = \\frac{1}{(x+4)} + \\frac{2}{(x+1)}$": {0: ["3x+8", "(x+4)(x+1)", "\\frac{1}{x^2+5x+4}", "6x+4"]},
+        "Simplify \u00a0 $\\frac{2}{x^2+9x+18} = \\frac{1}{(x+3)} + \\frac{2}{(x+6)}$": {1: ["Cannot\\, be\\, simplified", "-3x-10", "\\frac{(x^2+9x+18)}{x+3}", "(4+x)(x+3)"]}
+    }
+}
+
+const questionUnit2 = {
+    1: {"What are the zeros of the polynomial \u00a0 $x^2 + 5x + 4$?": {0: ["x = -1, \\,-4", "x = 1,\\,4", "x = 1", "x = 4"]}, 
+        "What are the zeros of the polynomial \u00a0 $6x^2 + 9x + 5$?": {1: ["No\\, zeros", "x = \\frac{-5}{6}, \\, -1", "1", "x = -5, \\,-1"]},
+        "What are the zeros of \u00a0 $(x+2)(2x+4)$?": {2: ["x = 2,\\, 4", "x = -2, \\, 4", "x = -2", "x = 2"]}
+    },
+    2: {"Solve for the zeros of \u00a0 $x^2 + 20x + 9$.": {0: ["x = -10 + \\sqrt{91}, \\, -10 + \\sqrt{91}", "Does \\, not \\, exist", "x = -10 + \\sqrt{91}", "x = -91 - \\sqrt{10}"]},
+        "Solve for the zeros of \u00a0 $x^2 + 15x + 12$.": {1: ["x = \\frac{15 \\pm \\sqrt{177}}{2}","x = \\frac{-15 \\pm \\sqrt{177}}{2}", "Does \\,not\\,exist", "x = -6, \\,-2"]}
+    }
+}
+
+const questionUnit3 = {
+    1: {"What is the value of \u00a0$\\log_{5}23$?": {0: ["1.948", "1.648", "1.232", ".513"]},
+        "What is the value of \u00a0$\\log_{10}100$?": {1: [".1", "2", "10", "0"]},
+        "What is the value of \u00a0$\\log_{5}125$?": {2: ["10", "25", "3", "5"]},
+        "What is the value of \u00a0$\\log_{2}2$?": {3: ["5", "2", "0", "1"]}
+    },
+    2: {"What is the simplified version of \u00a0 $\\log_{}x+\\log_{}y$?": {0: ["\\log_{}xy", "\\log_{}\\frac{x}{y}", "\\log_{}x", "\\log_{}y"]},
+        "What is the simplified version of \u00a0 $\\log_{}x-\\log_{}y$?": {1: ["\\log_{x}y", "\\log_{}\\frac{x}{y}", "\\log_{}x", "\\log_{}y"]},
+        "What is the another version of \u00a0 $\\log_{}x^y$?": {2: ["\\log_{x}y", "\\log_{}\\frac{x}{y}", "y\\log_{}x", "x\\log_{}y"]},
+        "What is the simplified version of \u00a0 $\\log_{x}y$?": {3: ["\\log_{}xy", "x\\log_{}\\frac{x}{y}", "Cannot \\, be \\,simplified", "\\frac{\\log_{}y}{\\log_{}x}"]}
+    }
+}
+
+const questionUnit4 = {
+    1: {"What is the translation of f(x - 1)?": {0: ["\\text{1 unit right}", "\\text{1 unit left}", "\\text{1 unit up}", "\\text{1 unit down}"]}, 
+        "What is the translation of f(x + 5)?": {1: ["\\text{5 units right}", "\\text{5 units left}", "\\text{5 units up}", "\\text{5 units down}"]}, 
+        "What is the translation of f(x) + 2?": {2: ["\\text{2 units right}", "\\text{2 units left}", "\\text{2 units up}", "\\text{2 units down}"]}, 
+        "What is the translation of f(x) - 10?": {3: ["\\text{10 units right}", "\\text{10 units left}", "\\text{10 units up}", "\\text{10 units down}"]}, 
+    },
+    2: {"What is the reflection of f(x * -1)?": {0: ["\\text{Reflection over the y-axis}", "\\text{Reflection over the x-axis}", "\\text{1 unit right}", "\\text{1 unit left}"]}, 
+        "What is the reflection of \u00a0 $f(-\\frac{5}{3} * x)$??": {1: ["\\text{Reflection over the x-axis}", "\\text{Reflection over the y-axis}", "-\\frac{5}{3}\\text{ units right}", "-\\frac{5}{3}\\text{ units left}"]}, 
+        "What is the reflection of -2f(x)?": {2: ["\\text{2 units up}", "\\text{2 units down}", "\\text{Reflection over the x-axis}", "\\text{Reflection over the y-axis}"]}, 
+        "What is the reflection of \u00a0 $-\\frac{10}{7} * f(x)$?": {3: ["-\\frac{10}{7}\\text{ units down}", "-\\frac{10}{7}\\text{ units up}", "\\text{Reflection over the y-axis}", "\\text{Reflection over the x-axis}"]}, 
+    }
+}
+
+const questionUnit5 = {
+    1: {"What is the radian conversion of 100 degrees?": {0: ["\\frac{5\\pi}{9}", "\\frac{\\pi}{9}", "\\frac{9\\pi}{5}", "\\frac{5}{9}"]},
+        "What is the radian conversion of 20 degrees?": {1: ["\\frac{\\pi}{20}", "\\frac{\\pi}{9}", "\\frac{9}{\\pi}", "\\frac{20}{\\pi}"]},
+        "What is the degree conversion of 2 radians?": {2: ["\\text{360°}", "\\text{120.562°}", "\\text{114.592°}", "\\text{252.849°}"]},
+        "What is the degree conversion of 1.5 radians?": {3: ["\\text{72.578°}", "\\text{250.392°}", "\\text{80°}", "\\text{85.944°}"]}
+    },
+    2: {"What function is equal to \u00a0 $\\cos^2\\theta$?": {0: ["1 - \\sin^2\\theta", "1", "1 - \\cos^2\\theta", "\\sin\\theta + \\cos\\theta"]},
+        "What function is equal to \u00a0 $\\cot^2\\theta$?": {1: ["\\csc^2\\theta", "\\csc^2\\theta - 1", "\\sec^2\\theta - 1", "\\sec^2\\theta"]},
+        "What function is equal to \u00a0 $\\tan^2\\theta$?": {2: ["\\csc^2\\theta", "\\csc^2\\theta - 1", "\\sec^2\\theta - 1", "\\sec^2\\theta"]},
+        "What function is equal to \u00a0 $1$": {3: ["\\sin^2\\theta", "\\sin^2\\theta - \\cos^2\\theta", "\\sin\\theta + \\cos\\theta", "\\sin^2\\theta + \\cos^2\\theta"]}
     }
 }
 
 let questionExplanationObject = {
-    "5": "This is the correct answer due to the fact This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
-    "12x": "This is the answer choice, which is 12x.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
-    "-24x^{-3}": "This is the answer choice, which is -24x^{-3}.This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t",
-    "2(4x+2) + 4(2x-1)": "This is the answer choice, which is 2(4x+2) + 4(2x-1).This is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to tThis is the correct answer due to t"
+    "(x+2)^2": "Good job! This is correct after you combine the two factors together after factoring.",
+    "(4x+5)(x+1)": "Nice one! Factoring when a is not 1 is the same as factoring if it was 1.",
+    "(x+6)(x+4)": "Also a reminder that you can just skip to the factored form once finding the two needed values if a = 1.",
+    "(3x+2)(x+1)": "Do not forget to multiply a by c everytime you factor trinomials!",
+    "(x+2)": "Remember that the denominator and numerator have to be in factored form in order for this to work.",
+    "(2x+3)": "Good choice, you can treat the factors as variables and use the rules of exponents on them.",
+    "(x+1)": "Nice one, factoring the numerator or denominator can allow you to simplify even further.",
+    "(x+9)": "Good job, always remember that just because there is a polynomial, it does not mean that is cannot be simplified.",
+    "3x+8": "Yes! First simplify the numerator in the first fraction, multiply the whole equation by the factored form, and cancel out and combine values.",
+    "-3x-10": "Good job, do not forget to expand the equation out after multiplying the entire equation to further simplify it.",
+
+    "x = -1, \\,-4": "Good job! Set the factors of the factored polynomial to 0 and solve for x.",
+    "x = \\frac{-5}{6}, \\, -1": "Nice one, set the factors of the factored polynomial to 0 and solve for x.",
+    "x = -2": "Good job! Even though there are technically two zeros, them being same implies that they are just one intersection on a graph.",
+    "x = -10 + \\sqrt{91}, \\, -10 + \\sqrt{91}": "Yep! Just plug the values into the quadratic formula, and make sure that you account for the plus and minus symbol!",
+    "x = \\frac{-15 \\pm \\sqrt{177}}{2}": "Just a reminder, you can check out the vocabulary or lesson page to get a refresher on the quadratic formula!",
+
+    "1.948": "Good job! You should plug this into a calculator to solve it.",
+    "2": "Nice one, 10, the based, raised to the power of 2 is 100.",
+    "3": "Correct choice! 5 raised to the power of 5 is 125.",
+    "1": "Nice one, just a reminder that if the argument and base are the same, then the value will always be 1.",
+    "\\log_{}xy": "When adding logs with the same base, you can combine them into one by multiplying their parameters together.",
+    "\\log_{}\\frac{x}{y}": "When subtracting logs with the same base, combine them by dividing the parameter of the positive log by the parameter of the negative log.",
+    "y\\log_{}x": "Yes! If the entire parameter is being raised to a power, you can remove it by multiplying the log by its value.",
+    "\\frac{\\log_{}y}{\\log_{}x}": "Good job! Remember to check the lesson or vocabulary to refresh your memory!.",
+
+    "\\text{1 unit right}": "Yes! Subtracting any positive value from the x value of a function will translate it right.",
+    "\\text{5 units left}": "Correct! Adding any positive value to the x value of a function will translate it left.",
+    "\\text{2 units up}": "Excellent work! Adding any positive value to an entire function will translate it upwards.",
+    "\\text{10 units down}": "Nice one! Subtracting any positive value from a function will translate it downwards. ",
+    "\\text{Reflection over the x-axis}": "Good job! Multiplying or dividing an entire function by a negative number will result in a reflection over the x-axis.",
+    "\\text{Reflection over the y-axis}": "Good job! Multiplying or dividing a function's entire x value by a negative number will result in a reflection over the y-axis.",    
+    
+    "\\frac{5\\pi}{9}": "Good job! Just remember to simplify your answer afterwards.",
+    "\\frac{\\pi}{9}": "Just a reminder, revisit our lessons or vocabulary page to get a recap on how to convert degrees to radians!",
+    "\\text{114.592°}": "Good job! This answer should be rounded to the nearest thousandth value.",
+    "\\text{85.944°}": "Congratulations! This value is just an approixmation, but sometimes you may be required to simplify it, not round.",
+
+    "1 - \\sin^2\\theta": "Good job! You can solve for value of cosine in the trigonometry identity that has it in it.",
+    "\\csc^2\\theta - 1": "Congratulations! Consult our vocabulary page or lesson to revisit the Pythagorean Identities!",
+    "\\sec^2\\theta - 1": "Nice one, make sure you do not forget that the trigonometric expressiosn in the Pythagorean Identities are squared!",
+    "\\sin^2\\theta + \\cos^2\\theta": "It is good to remember Pythagorean Identities to simplify or even solve certain functions!"
 }                                                           
 
 const unitReferenceHolder = ["placeholder",
-    questionsUnit1
+    questionsUnit1, questionUnit2, questionUnit3, questionUnit4, questionUnit5
 ]
 
+let nothingherev1 = '$\\\\\\color{#04afff}{}$';
+
 const unit1VocabularyWords = {
-    "1placeholder": "definition",
-    "2placfeholder": "definition",
-    "3placehodlfder": "definition",
-    "2placeholdfer": "definition",
-    "3placeholdefr": "definition",
-    "2placeholderf": "definition",
-    "1placehowlderf": "definition",
-    "3placehodlderf": "definition",
-    "1placedholderf": "definition",
-    
+    "1Polynomial": "A mathematical function that is composed of constants, variables, and coefficients. Some examples include:\u00A0 $\\\\\\color{#04afff}{(6), (5x), (7x^2 + 2x + 8)}$",
+    "1Trinomial": "A function that has exactly three terms. Some examples include: \u00A0 $\\\\\\color{#04afff}{(x^3 + 2x + 6), (8x^2 + 5x - 2), (7x^2 + x^3 + 8), (9x^9 + 2x + 8)}$",
+    "1Term": "A single value in a polynomial expression, which could be 2x or 5 in the polynomial expression of 2x + 5, but it cannot be 2x + 5 as that is now two terms and a binomial. Every value in a polynomial is a single term.",
+    "1Binomial": "A polynomial that consists of only two terms, with some examples being: $\\\\\\color{#04afff}{(x^3 + 2x), (8x^2 - 2), (x^3 + 8), (9x^9 + 1)}$",
+    "2Rational Function": "A function that consists of a polynomial being divided by another polynomial, which the formal formula being: \u00A0 $\\\\\\color{#04afff}{f(x) = \\frac{p(x)}{t(x)}},\\,\\,Example: \\,\\,f(x) = \\frac{(x+2)(2x+2)^2}{(x+3)}$",
+    "2Numerator": "The function (function as in the entire equation that represents this part of the fraction) that appears on the top of a divider sign, which is denotated by the function p(x) in the fraction: $\\\\\\color{#04afff}{g(x) = \\frac{p(x)}{f(x)}}$",
+    "2Denominator": "The function (function as in the entire equation that represents this part of the fraction) that appears on the bottom of the divider sign, which is denotated by the function f(x) in the fraction: $\\\\\\color{#04afff}{g(x) = \\frac{p(x)}{f(x)}}$",
+    "3Partial Fractions": "Partial Fractions are fractions that are reduced to multiple fractions if, and only if, the denominator of the initial fraction is in its factored form, with it at least having two or more factors (factors are the functions being multiplied together, such as the factor (x-2) in the factored function (x-2)(x+2)). An example of a partial fraction could be: $\\\\\\color{#04afff}{f(x) = \\frac{5}{(2x+2)(4x+1)} = \\frac{A}{2x+2} + \\frac{B}{4x+1} = \\frac{B}{2x+2} + \\frac{A}{4x+1}}$",    
 }
 
 const unit2VocabularyWords = {
-    "1placeaholder": "definition",
-    "2plaaceholder": "definition",
-    "1placaeholader": "definition",
-    "1money": "definition",
-    "2placehbolder": "definition",
-    "2placeahcolder": "definition",
-    "2placeholxder": "definition",
-    "2placeholdzer": "definition",
-    "2placeholdeccr": "definition",
-    "1placeholdecr": "definition",
-    
+    "1Zeros": "The x values in which a graph intersects the x-axis, which can be multiple or one, single value.",
+    "1Factor": "The equations enclosed by parentheses in a factored function, which could be (x+2) or (x+3) in the function (x+2)(x+3).",
+    "2Quadratic Formula": "The quadratic formula is a method that can be used to solve for the zeros of a polynomial that cannot be factored.$\\\\\\color{#04afff}{Formula: \\,x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}}$",
+    "2Addition and Subtraction Sign": "The addition and subtraction sign is present in the quadratic formula, which indicates that you have to solve for the equation for when the sign is negative, and for when the sign is positive. $\\\\\\color{#04afff}{Plus\\,and\\,Minus\\,Sign:\\, \\pm}$",
 }
 
 const unit3VocabularyWords = {
-    "1placeholder": "definition",
-    "1placejholder": "definition",
-    "1placehjolder": "definition",
-    "1placehohdflder": "definition",
-    "1placeholdedr": "definition",
-    "1placeholddsaer": "definition",
-    "2power": "definition",
-    "1placehdwadolder": "definition",
-    "1placehdwaolder": "definition",
-    "2placehdwadolder": "definition",
+    "1Logarithms": "Logarithms are expressions that are used to find the value that raising a known value by will reach the value of a known value. Logarithms have 2 main components, the base and the argument, with the base being what is being raised to an unknown power to reach the value of the argument. The basic expression and what it equates to is as follows: $\\\\\\color{#04afff}{\\,\\log_ba = y,\\,b^y = a}$",
+    "1Base": "The base is the subscript value of a logarithmic expression, and it is the value that will be raised to a certain value to equal to the parameter. The base is the variable b in the example below: $\\\\\\color{#04afff}{\\log_ba=y}$",
+    "1Parameter": "The parameter is the value, which is usually enclosed by parenthesses and defined to the right of the log and its base, is the value that will be reached when the base is raised to a certain power. The argument is the variable a in the example below: $\\\\\\color{#04afff}{\\log_ba=y}$",
+    "2Product Rule": "This rule is based on the principle of simplifying functions, with the same base that is being multiplied together, by adding their exponent values together.$\\\\\\color{#04afff}{\\log_b(xy) = \\log_bx+\\log_by}$",
+    "2Quotient Rule": "This rule is based on the principle of simplifying functions, with the same base that is being divided by one another, by subtracting the value of the exponent in the numerator with the value of the exponent in the denominator.$\\\\\\color{#04afff}{log_b(\\frac{x}{y})=\\log_bx - \\log_by}$",
+    "2Power Rule": "This rule is based on the principle of simplifying a function, that already has an exponent present but it being raised to another power, through multiplying their values together.  $\\\\\\color{#04afff}{\\log_b(x^y) = y\\log_b(x)}$",
+    "2Change of Base Rule": "This rule is significant for many reasons, but it is also most useful when the calculator that you have does not support base changes.$\\\\\\color{#04afff}{log_bx = \\frac{\\log_{c}x}{\\log_{c}b}}$",
     
 }
 
 const unit4VocabularyWords = {
-    "1placewadholder": "definition",
-    "2placehodwadlder": "definition",
-    "1placehdwadaolder": "definition",
-    "1placehdwadolder": "definition",
-    "1placehdwadaolder": "definition",
-    "1placedwadawholder": "definition",
-    "2placeholdawdcccder": "definition",
-    "2moni": "definition",
-    "2placeholwadcder": "definition",
-    
+    "1Translation Upwards": "A function can get shifted upwards if its entire equation gets added by any positive value, which can be seen in this example: f(x) + b.",
+    "1Translation Downwards": "A function can be shifted downwards if its entire equation gets subtracted by any positive value, which can be seen in this example: f(x) - b.",
+    "1Translation Right": "A function can be shifted to the right if its entire x value gets subtracted by any positive value, which can be seen in this example: f(x - b).",
+    "1Translation Left": "A function can be shifted to the left if its entire x value gets added by any positive value, which can be seen in this example: f(x + b).",
+    "2Reflection Over the x-Axis": "A function can be reflected over the x-axis if the entire funciton gets multiplied or divided by a negative value, which can be seen in this example: -b(f(x)).",
+    "2Reflection Over the y-Axis": "A function can be reflected over the y-axis if the function's entire x value gets mulitplied or divded by a negative value, which can be seen in this example: f(-b * x).",
 }
 
 const unit5VocabularyWords = {
-    "2placehoczcslder": "definition",
-    "2placeholcwacacder": "definition",
-    "2placeholcsddawder": "definition",
-    "2placeholdwzcer": "definition",
-    "2placeholwdadcder": "definition",
-    "2placehocwzclder": "definition",
-    "2mower": "definition",
-    "1zcwzcwcwz": "definition",
-    "2placeholder": "definition",
-    "2placedwdahczcoldcwzczer": "definition",
-    "2placehdwadadvolder": "definition",
-    "2placehodawdwadwadlder": "definition",
-    "2placehcawcawcwawcolder": "definition",
+    "1Radian/Degree Conversion": "Converting a radian to a degree is useful for more easily visualizing the actual rotation of a value across a unit circle.$\\\\\\color{#04afff}{degrees = \\frac{180°}{\\pi} * radians}$",
+    "1Degree/Radian Conversion": "Converting a degree to a radian is useful for simplification of equations or if your calculator does not accept degrees. $\\\\\\color{#04afff}{radians = \\frac{\\pi}{180°}*degrees}$",
+    "2Tangent Relationship": "Being able to convert tangent trigonometric expressions into sines and cosines will be useful for simplifying certain equations.$\\\\\\color{#04afff}{\\tan\\theta=\\frac{\\sin\\theta}{\\cos\\theta}}$",
+    "2Secant Relationship": "Secant can be remembered as the inverse of cosine, or 1 divided by cosine or cosine raised to the power of negative one.$\\\\\\color{#04afff}{\\sec\\theta=\\frac{1}{\\cos\\theta}}$",
+    "2Cosecant Relationship": "Cosecant can be remembered as the inverse of sine, or 1 divided by sine or sin raised to the power of negative one.$\\\\\\color{#04afff}{\\csc\\theta=\\frac{1}{\\sin\\theta}}$",
+    "2Pythagorean Identities": "These three identities will be the most significant trigonometry identities that you will need for precalculus, precalculus AB and BC, and even beyond.$\\\\\\color{#04afff}{\\sin^2\\theta + \\cos^2\\theta=1\\\\\\\\1+\\tan^2\\theta=\\sec^2\\theta\\\\\\\\1+\\cot^2\\theta=\\csc^2\\theta\\\\}$"
 }
 
 const unitVocabularyWordsReferenceArray = [
@@ -136,36 +211,36 @@ const dataLinkMap = {
 
 const dataMap = {1: [
     "Unit 1", 
-    "Derivatives", {
-        1: "Basic Derivation",
-        2: "Product Rule",
-        3: "Quotient Rule",
+    "Algebraic Review", {
+        1: "Factoring",
+        2: "Simplifying Rational Functions P.1",
+        3: "Simplifying Rational Functions P.2",
     }], 
     2: [
     "Unit 2",
-    "Graphical Analysis", {
-        1: "Interpretations of Functions",
-        2: "Interpretations of Derivatives",
+    "Finding Zeros", {
+        1: "Zeros of a Polynomial",
+        2: "Quadratic Formula",
     }],
     3: [
     "Unit 3",
-    "Integrals", {
-        1: "Integral Approximations",
-        2: "Antiderivatives",
+    "Logarithmic Functions", {
+        1: "Logarithm Definition",
+        2: "Logarithm Properties",
     }
     ],
     4: [
     "Unit 4",
-    "Applications of Integrals", {
-        1: "Washer Method",
-        2: "Disc Method",
+    "Transformation of Functions", {
+        1: "Translations",
+        2: "Reflections",
     } 
     ],
     5: [
     "Unit 5",
-    "Introductory Kinematic Equations", {
-        1: "Derivation of Kinematics",
-        2: "Change by Integration"
+    "Trigonometry", {
+        1: "Degree and Radian Conversion",
+        2: "Trigonometry Identities"
     }
     ]
 }
@@ -254,9 +329,10 @@ let correctQuestionTracker = [];
 let temporaryQuestionBlockerArray = [];
 let RQQFTemporaryQuestionArray = [];
 let totalCorrectQuestions = 0;
-let timeWaitT = 4000;
-let RQQCounterMax = 5;
+let timeWaitT = 5000;
+let RQQCounterMax = 4;
 let quizGameDivTracker = []
+
 
 function createEndCardScreen(quizAccurracyData, quizData, chosenDivName) {
     let chosenDiv = null;
@@ -300,7 +376,10 @@ function createEndCardScreen(quizAccurracyData, quizData, chosenDivName) {
     })
 } 
 
-function requestQuestionQuizFrame(quizData, chosenDivName) {
+function requestQuestionQuizFrame(mainQuizData, chosenDivName) {
+    chosenQuestionData = mainQuizData[Math.floor(Math.random() * mainQuizData.length)];
+    quizData = keyMapParser(chosenQuestionData[0]).toString() + keyMapParser(chosenQuestionData[1]).toString();
+    console.log(quizData)
     if (RQQInit) {
         RQQCounter = 0;
         RQQInit = false;
@@ -379,7 +458,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
                 questionDivHolder[GEROGFC].remove();
             }
             if (RQQCounter < RQQCounterMax) {
-                    requestQuestionQuizFrame(quizData, chosenDivName);
+                    requestQuestionQuizFrame(mainQuizData, chosenDivName);
                     questionTrackerScore.push(answerCorrect);
                     const temporaryQuizCover = document.createElement("div");
                     temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
@@ -392,12 +471,13 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
                     const lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation = document.createElement("div");
                     lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation");
                     lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.textContent = questionExplanationObject[actualAnswer];
-
+                    lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation.style.zIndex = 4000;
                     temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
                     temporaryQuizCover.appendChild(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
                     temporaryQuestionBlockerArray.push(temporaryQuizCover);
                     temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_titleTextContent);
                     temporaryQuestionBlockerArray.push(lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation);
+                    MathJax.typesetPromise([lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker_briefExplanation]);
                     appendedDiv.appendChild(temporaryQuizCover);
                     setTimeout(() => {
                         for (let TQC=0; TQC<temporaryQuestionBlockerArray.length; TQC++) {
@@ -468,7 +548,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
             if (RQQCounter < RQQCounterMax) {
                 temporaryQuestionBlockerArray = []
                 correctQuestionTracker.push(true);
-                requestQuestionQuizFrame(quizData, chosenDivName);
+                requestQuestionQuizFrame(mainQuizData, chosenDivName);
                 /* Main Correct Answer Manager */
                 const temporaryQuizCover = document.createElement("div");
                 temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
@@ -556,7 +636,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
                 questionDivHolder[GEROGFC].remove();
             }
             if (RQQCounter < RQQCounterMax) {
-                requestQuestionQuizFrame(quizData, chosenDivName);
+                requestQuestionQuizFrame(mainQuizData, chosenDivName);
                 const temporaryQuizCover = document.createElement("div");
                 temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
                 if (quizGameDiv) {
@@ -642,7 +722,7 @@ function requestQuestionQuizFrame(quizData, chosenDivName) {
                 questionDivHolder[GEROGFC].remove();
             }
             if (RQQCounter < RQQCounterMax) {
-                requestQuestionQuizFrame(quizData, chosenDivName);
+                requestQuestionQuizFrame(mainQuizData, chosenDivName);
                 const temporaryQuizCover = document.createElement("div");
                 temporaryQuizCover.classList.add("lesson_rightSide_lowerPage_quizPage_temporaryQuizPageBlocker");
                 if (quizGameDiv) {
@@ -1157,7 +1237,7 @@ function deleteDatabase(aDatabase) {
 
 function databaseInitialization(callback) {
     let tempDBIU = false; 
-    const request = window.indexedDB.open("mainDatabase", 1);
+    const request = window.indexedDB.open("mainDatabase", 2);
     request.onerror = (errorEvent) => {
         console.error("mainDatabase was not able to be loaded.");
         if (sessionStorage.getItem("DBError") != "1") {
@@ -1613,11 +1693,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         }}
                 }
             if (DBI == 2) {
-                const quizzesDataFramework = ["L11"]
-                const ImprovementIndexTrackerFramework = [];
-                const recentLessonsDataFramework = ["L11"];
+                let quizzesDataFramework = ["L11"]
+                let ImprovementIndexTrackerFramework = [];
+                let recentLessonsDataFramework = ["L11"];
                 /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
-                const progressTrackerdataFramework = {
+                let progressTrackerdataFramework = {
                    11: [1, 0, 0, 0],
                    12: [0, 0, 0, 0],
                    13: [0, 0, 0, 0],
@@ -1630,6 +1710,25 @@ document.addEventListener("DOMContentLoaded", () => {
                    51: [0, 0, 0, 0],
                    52: [0, 0, 0, 0]
                 } 
+                if (testDataActive == true) {
+                    quizzesDataFramework = ["L11", 49, 89, 100, 23, 43, 87, 65, 43, 78, 45, 54]
+                    ImprovementIndexTrackerFramework = [120, 150, 160, 180, 120, 110, 100, 90, 80, 70];
+                    recentLessonsDataFramework = ["L51", "Q21", "L11", "Q41"];
+                    /*[improvementIndex, video completion, interactive lesson completion, quiz completion] */
+                    progressTrackerdataFramework = {
+                        11: [123, 1, 1, 1],
+                        12: [-10, 0, 1, 0],
+                        13: [23, 0, 1, 0],
+                        21: [23, 1, 1, 1],
+                        22: [40, 0, 1, 0],
+                        31: [50, 0, 0, 1],
+                        32: [120, 0, 1, 0],
+                        41: [520, 0, 0, 0],
+                        42: [-230, 0, 0, 1],
+                        51: [10, 0, 0, 0],
+                        52: [0, 0, 1, 0]
+                    } 
+                }
 
                 for (let QDFDBI=0; QDFDBI<Object.keys(progressTrackerdataFramework).length; QDFDBI++) {
                     dataAmender(db, "ProgressTracker", progressTrackerdataFramework[Object.keys(progressTrackerdataFramework)[QDFDBI]], true, Object.keys(progressTrackerdataFramework)[QDFDBI]);
@@ -1637,11 +1736,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 dataAmender(db, "ImprovementIndexTracker", ImprovementIndexTrackerFramework, true, 1);
                 dataAmender(db, "RecentLessons", recentLessonsDataFramework, true, 1);
                 dataAmender(db, "Quizzes", quizzesDataFramework, true, 1);
-            } else if (DBI == 4) {
+            } else if (DBI == 4) {  
                 console.error("Undocumented error. (error code: 4)");
                 alert("Error Code 4: Try refreshing your webpage, and if that does not work, delete your webpage data. (On Google, click on the lock button on the top left, site settings, and press on delete data)");
+            } else if (DBI == 3) {
+                console.error("Database blocked.")  
             } else if (DBI == 1) {
                 console.log("The database was successfully loaded without any upgrades necessary.")
+            } else if (DBI == 0) {
+                console.log("Database encountered an error while loading...");
             } else {
                 console.error("Unknown error.")
             }
@@ -1696,7 +1799,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     lesson_rightSide_lowerPage_quizPage_quizStartButton.style.backgroundColor = "#dcf4ff";
                 })
                 lesson_rightSide_lowerPage_quizPage_quizStartButton.addEventListener("click", () => {
-                    requestQuestionQuizFrame(unitLessonData, "lesson_rightSide_lowerPage_quizPage");
+                    mainData = [numberParser(unitLessonData.toString().substring(0, 1)), numberParser(unitLessonData.toString().substring(1))].flat();
+                    console.log("MainData: " + mainData);
+                    requestQuestionQuizFrame([mainData], "lesson_rightSide_lowerPage_quizPage");
                 })
                 lesson_rightSide_lowerPage_quizPage_improvementIndexDiv.addEventListener("mouseenter", () => {
                     lesson_rightSide_lowerPage_quizPage_buttonDiv_improvementIndexInformation.style.display = "flex";
@@ -1855,6 +1960,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 })
             } 
+
             if (window.location.pathname.split("/").pop() == "home.html" || window.location.pathname.split("/").pop() == "home") {
                 const homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder = document.getElementById("homePage_rightSide_upperDiv_rightDiv_verticalDiv_mainContinueDivHolder");
                 dataAccessor(db, "RecentLessons", 1, DAHOMEC => {
@@ -2146,6 +2252,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 homePage_rightSide_vocabularyDefintion.classList.add("homePage_rightSide_vocabularyDefintion");
                 homePage_rightSide_vocabularyDefintion.textContent = Object.values(questionDict)[QRA];
 
+                MathJax.typesetPromise([homePage_rightSide_vocabularyDefintion]);
                 homePage_rightSide_vocabularyDetail.appendChild(homePage_rightSide_vocabularySummary);
                 homePage_rightSide_vocabularySummary.appendChild(homePage_rightSide_vocabularyText);
                 homePage_rightSide_vocabularySummary.appendChild(homePage_rightSide_vocabularyUnit);
@@ -2157,7 +2264,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         homePage_rightSide_vocabularySearch.addEventListener("input", () => {
             for (let HRSVS=0; HRSVS<vocabularyHolder.length; HRSVS++) {
-                if (vocabularyHolder[HRSVS].id.indexOf(homePage_rightSide_vocabularySearch.value) >= 0) {
+                if (vocabularyHolder[HRSVS].id.toLowerCase().indexOf(homePage_rightSide_vocabularySearch.value.toLowerCase()) >= 0) {
                     vocabularyHolder[HRSVS].style.display = "flex";
                 } else {
                     vocabularyHolder[HRSVS].style.display = "none";
@@ -2248,11 +2355,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mUpg_title");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton = document.getElementById("hiddenDivGame_mainScreen_gameScreen_upgHolder_rebirthButton");
         const hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg = document.getElementsByClassName("hiddenDivGame_mainScreen_gameScreen_upgHolder_mRUpg");
-
-        /* Temporary Code */
-        const adaptiveQuestionAdderButton = document.getElementById("mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_addAdaptiveQuestions");
-        adaptiveQuestionAdderButton.style.pointerEvents = "none";
-        adaptiveQuestionAdderButton.style.backgroundColor = "#5abdea"
 
         rUpgDivHolder1.addEventListener("click", UP1C => {
             rUpgDivHolder1.classList.add("clickEventRB");
@@ -2612,10 +2714,9 @@ document.addEventListener("DOMContentLoaded", () => {
             hiddenQuiz_mainScreen_gameScreen.style.transform = "scaleY(100%)"
             hiddenQuiz_title.style.transform = "translateY(0%)";
             dataAccessor(db, "TemporaryQuestionHolder", null, data => {
-                quizGameQuestionList = JSON.parse(data).slice();
-                chosenQuestionData = quizGameQuestionList[Math.floor(Math.random() * quizGameQuestionList.length)];
-                quizChosenQuestion = keyMapParser(chosenQuestionData[0]).toString() + keyMapParser(chosenQuestionData[1]).toString();
-                requestQuestionQuizFrame(quizChosenQuestion, "hiddenQuiz_mainScreen_gameScreen");
+                quizGameQuestionList = JSON.parse(data).slice();     
+                requestQuestionQuizFrame(quizGameQuestionList, "hiddenQuiz_mainScreen_gameScreen");
+
             })
         })
         quizStartButton.addEventListener("click", () => {
@@ -2721,11 +2822,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         gameButton.style.opacity = ".7";
                                         quizStartButton.style.pointerEvents = "none";
                                         quizStartButton.style.opacity = ".7";
-                                    }
-                                    
-                                    
- 
-                                    
+                                    }                                    
                                 })
                                 newChild.appendChild(childOfNewChild);
                                 mainPage_contentDivHolder_rightDiv_unitLessonChooserDiv_questionPreviewHolder_questionHolder.appendChild(newChild);
